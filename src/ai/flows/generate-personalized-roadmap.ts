@@ -19,7 +19,7 @@ const GeneratePersonalizedRoadmapInputSchema = z.object({
 export type GeneratePersonalizedRoadmapInput = z.infer<typeof GeneratePersonalizedRoadmapInputSchema>;
 
 const GeneratePersonalizedRoadmapOutputSchema = z.object({
-  roadmap: z.string().describe('The generated learning roadmap.'),
+  roadmap: z.string().describe('The generated learning roadmap as a numbered, step-by-step list.'),
 });
 export type GeneratePersonalizedRoadmapOutput = z.infer<typeof GeneratePersonalizedRoadmapOutputSchema>;
 
@@ -37,6 +37,10 @@ Goal: {{{goal}}}
 Current Skill Level: {{{currentSkillLevel}}}
 
 Here is the skill ontology: {{{skillOntology}}}
+
+Generate a clear, numbered, step-by-step list for the roadmap. Each step should have a title and a brief description. For example:
+1. Step Title: Step description.
+2. Step Title: Step description.
 
 Roadmap:`, 
 });
