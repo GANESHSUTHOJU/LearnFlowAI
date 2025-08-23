@@ -86,32 +86,33 @@ export default function SkillsPage() {
         />
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {filteredSkills.map((category) => (
-          <Link href={`/skills/${category.slug}`} key={category.title} className="group">
-            <GlassCard 
-              className="h-full hover:border-accent transition-colors duration-300 cursor-pointer"
-            >
-              <CardHeader>
-                <div className="flex items-center gap-4">
-                    <div className={`p-3 rounded-lg ${category.bgColor}`}>
-                      <category.icon className={`w-6 h-6 ${category.color}`} />
-                    </div>
-                    <CardTitle>{category.title}</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>{category.description}</CardDescription>
-              </CardContent>
-            </GlassCard>
-          </Link>
-        ))}
-      </div>
-       {filteredSkills.length === 0 && (
-          <div className="text-center col-span-full py-12">
+      {filteredSkills.length > 0 ? (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {filteredSkills.map((category) => (
+            <Link href={`/skills/${category.slug}`} key={category.title} className="group">
+              <GlassCard 
+                className="h-full hover:border-accent transition-colors duration-300 cursor-pointer"
+              >
+                <CardHeader>
+                  <div className="flex items-center gap-4">
+                      <div className={`p-3 rounded-lg ${category.bgColor}`}>
+                        <category.icon className={`w-6 h-6 ${category.color}`} />
+                      </div>
+                      <CardTitle>{category.title}</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription>{category.description}</CardDescription>
+                </CardContent>
+              </GlassCard>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center col-span-full py-12">
             <p className="text-muted-foreground">No skills found matching your search.</p>
-          </div>
-        )}
+        </div>
+      )}
     </div>
   );
 }
