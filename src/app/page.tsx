@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -19,7 +20,7 @@ export default function Home() {
         </p>
         <div className="mt-8 flex gap-4">
           <Button asChild size="lg" className="group">
-            <Link href="/dashboard">
+            <Link href="/login">
               Get Started
               <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
             </Link>
