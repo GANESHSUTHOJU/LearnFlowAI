@@ -36,8 +36,8 @@ export default function AiInsights() {
       <CardContent>
         <div className="space-y-4">
           {insights.map((insight, index) => (
-            <div key={index} className="flex items-start gap-4 p-3 rounded-lg bg-background/50">
-              <insight.icon className="w-5 h-5 mt-1 text-accent" />
+            <div key={index} className="flex items-start gap-4">
+              <insight.icon className={`w-5 h-5 mt-1 ${insight.badge === 'Positive' ? 'text-green-400' : 'text-yellow-400'}`} />
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <h4 className="font-semibold">{insight.title}</h4>

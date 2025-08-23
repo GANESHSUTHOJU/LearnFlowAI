@@ -1,6 +1,6 @@
 import { GlassCard, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle2, GitMerge } from "lucide-react";
+import { ArrowRight, CircleDot, GitMerge } from "lucide-react";
 import Link from "next/link";
 
 const roadmapSteps = [
@@ -28,10 +28,13 @@ export default function RoadmapPreview() {
                 <div className="space-y-4">
                     {roadmapSteps.map((step, index) => (
                         <div key={index} className="flex items-center gap-3">
-                            <div className={`w-6 h-6 rounded-full flex items-center justify-center ${step.completed ? 'bg-primary text-primary-foreground' : 'bg-muted'}`}>
-                                {step.completed ? <CheckCircle2 className="w-4 h-4" /> : <div className="w-2 h-2 rounded-full bg-muted-foreground" />}
+                            <div className="flex items-center justify-center w-6 h-6">
+                                {step.completed ? 
+                                    <CircleDot className="w-4 h-4 text-primary" /> : 
+                                    <div className="w-2 h-2 rounded-full bg-muted-foreground" />
+                                }
                             </div>
-                            <span className={`${step.completed ? 'text-muted-foreground line-through' : 'text-foreground'}`}>
+                            <span className={`${step.completed ? 'text-muted-foreground' : 'text-foreground'}`}>
                                 {step.title}
                             </span>
                         </div>
