@@ -26,7 +26,7 @@ export default function GeneratorForm() {
     };
 
     return (
-        <GlassCard>
+        <GlassCard className="animate-float">
             <CardContent className="p-6">
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-2">
