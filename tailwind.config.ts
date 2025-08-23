@@ -104,8 +104,8 @@ export default {
           '50%': { transform: 'translateY(-10px)' },
         },
         'moving-lines': {
-            '0%': { 'background-position': '0 0, 0 0' },
-            '100%': { 'background-position': '40px 40px, 40px 40px' },
+            '0%': { 'background-position': '0 0' },
+            '100%': { 'background-position': '40px 40px' },
         }
       },
       animation: {
