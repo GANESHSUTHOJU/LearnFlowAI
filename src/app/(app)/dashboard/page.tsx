@@ -4,6 +4,7 @@ import RoadmapPreview from "@/components/dashboard/roadmap-preview";
 import AiInsights from "@/components/dashboard/ai-insights";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpen } from "lucide-react";
+import Link from "next/link";
 
 export default function DashboardPage() {
   return (
@@ -35,17 +36,19 @@ export default function DashboardPage() {
                           <BookOpen className="w-6 h-6" />
                       </div>
                       <div>
-                          <CardTitle>Continue Learning</CardTitle>
-                          <CardDescription>Jump back into your last lesson.</CardDescription>
+                          <CardTitle>Start Learning</CardTitle>
+                          <CardDescription>Begin your journey by picking a new skill.</CardDescription>
                       </div>
                   </div>
               </CardHeader>
               <CardContent>
                   <div className="space-y-4">
-                      <h3 className="text-lg font-semibold">Advanced CSS Techniques</h3>
-                      <p className="text-sm text-muted-foreground">You are 75% through this module. Keep up the great work!</p>
-                      <Button className="w-full group">
-                          Continue Lesson <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                      <h3 className="text-lg font-semibold">Explore the Skill Catalog</h3>
+                      <p className="text-sm text-muted-foreground">Browse our available skills and choose what you want to learn next.</p>
+                      <Button className="w-full group" asChild>
+                          <Link href="/skills">
+                            Explore Skills <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                          </Link>
                       </Button>
                   </div>
               </CardContent>
