@@ -36,28 +36,23 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
         <CardDescription>Follow these steps to achieve your learning goal.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="relative pl-6">
-          <div className="absolute left-[1.125rem] top-0 bottom-0 w-0.5 bg-border -translate-x-1/2"></div>
+        <div className="space-y-6">
           {roadmapSteps.map((step, index) => (
-            <div key={index} className="relative mb-8 pl-8">
-              <div className="absolute left-0 top-1">
-                <div className="w-9 h-9 rounded-full bg-primary/10 border-4 border-background flex items-center justify-center -translate-x-1/2">
-                  <Check className="w-4 h-4 text-primary" />
-                </div>
+            <div key={index} className="flex items-start gap-4">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <Check className="h-5 w-5" />
               </div>
-              <div className="pl-6 pt-1">
+              <div>
                 <h3 className="font-bold text-lg font-headline">{step.title}</h3>
                 {step.description && <p className="text-muted-foreground mt-1 whitespace-pre-line text-sm">{step.description}</p>}
               </div>
             </div>
           ))}
-           <div className="relative pl-8">
-               <div className="absolute left-0 top-1">
-                <div className="w-9 h-9 rounded-full bg-accent/20 border-4 border-background flex items-center justify-center -translate-x-1/2">
-                    <Rocket className="w-4 h-4 text-accent" />
-                </div>
+          <div className="flex items-start gap-4">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/20 text-accent">
+                <Rocket className="h-5 w-5" />
               </div>
-              <div className="pl-6 pt-1">
+              <div>
                 <h3 className="font-bold text-lg font-headline text-accent">Goal Achieved!</h3>
                 <p className="text-muted-foreground mt-1 text-sm">Congratulations on completing your learning journey!</p>
               </div>
