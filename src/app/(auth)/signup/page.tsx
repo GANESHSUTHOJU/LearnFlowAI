@@ -40,10 +40,13 @@ export default function SignupPage() {
                     setError("This email is already associated with an account.");
                     break;
                 case 'auth/weak-password':
-                    setError("Password is too weak. Please choose a stronger password.");
+                    setError("Password is too weak. Please choose a stronger password of at least 6 characters.");
+                    break;
+                case 'auth/invalid-email':
+                    setError("The email address is not valid.");
                     break;
                 default:
-                    setError("An unexpected error occurred. Please try again.");
+                    setError("Could not create an account. Please try again.");
                     break;
             }
         } else {
