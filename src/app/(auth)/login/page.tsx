@@ -29,20 +29,10 @@ export default function LoginPage() {
       await login(email, password);
       router.push("/dashboard");
     } catch (err) {
-      if (err instanceof FirebaseError) {
-        switch (err.code) {
-          case 'auth/user-not-found':
-          case 'auth/wrong-password':
-          case 'auth/invalid-credential':
-          case 'auth/invalid-email':
-            setError("Invalid email or password. Please try again.");
-            break;
-          default:
-            setError("An unexpected error occurred. Please try again.");
-            break;
-        }
+      if (err instanceof FirebaseError && err.code.startsWith('auth/')) {
+        setError("Invalid email or password. Please try again.");
       } else {
-        setError("Failed to log in. Please check your credentials.");
+        setError("An unexpected error occurred. Please try again.");
       }
       setIsLoading(false);
     }
