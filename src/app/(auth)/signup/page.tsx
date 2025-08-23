@@ -71,14 +71,14 @@ export default function SignupPage() {
 
   if (!isClient || loading) {
       return (
-          <div className="flex min-h-screen items-center justify-center p-8 bg-background relative overflow-hidden">
+          <div className="flex min-h-screen items-center justify-center p-8 app-background relative overflow-hidden">
                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 to-transparent to-70% -z-0"></div>
           </div>
       )
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-8 bg-background relative overflow-hidden">
+    <div className="flex min-h-screen items-center justify-center p-8 app-background relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 to-transparent to-70% -z-0"></div>
         <div className="z-10 w-full max-w-md">
             <form onSubmit={handleSubmit}>
