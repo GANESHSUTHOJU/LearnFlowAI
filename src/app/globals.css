@@ -80,15 +80,6 @@ body {
   }
 }
 
-@keyframes moving-lines {
-    0% {
-        background-position: 0 0, 0 0;
-    }
-    100% {
-        background-position: 56px 56px, 56px 56px;
-    }
-}
-
 .app-background {
     @apply bg-background;
     background-image: 
@@ -98,4 +89,13 @@ body {
         linear-gradient(90deg, hsl(var(--border) / 0.05) 1px, transparent 1px);
     background-size: 40px 40px, 40px 40px, 20px 20px, 20px 20px;
     animation: moving-lines 4s linear infinite;
+}
+
+@keyframes moving-lines {
+    0% {
+        background-position: 0 0, 0 0;
+    }
+    100% {
+        background-position: 56px 56px, 56px 56px;
+    }
 }
