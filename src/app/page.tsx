@@ -6,7 +6,7 @@ import Logo from "@/components/logo";
 
 export default function Home() {
   return (
-    <main className="flex flex-col min-h-screen items-center justify-center p-8 bg-background relative overflow-hidden">
+    <main className="flex flex-col min-h-screen items-center justify-center p-8 app-background relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 to-transparent to-70% -z-0"></div>
       <div className="z-10 flex flex-col items-center text-center max-w-2xl">
         <Logo className="w-20 h-20 mb-6 text-primary" />
