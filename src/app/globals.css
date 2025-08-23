@@ -58,14 +58,15 @@ body {
     background-position: 0 0;
   }
   100% {
-    background-position: 40px 40px;
+    background-position: 20px 20px;
   }
 }
 
 .app-background {
   @apply bg-background;
-  background-size: 40px 40px;
+  background-size: 20px 20px;
   background-image:
+    radial-gradient(ellipse at center, transparent 30%, hsl(var(--background)) 100%),
     linear-gradient(to right, hsl(var(--foreground) / 0.1) 1px, transparent 1px),
     linear-gradient(to bottom, hsl(var(--foreground) / 0.1) 1px, transparent 1px);
   animation: moving-grid 2s linear infinite;
