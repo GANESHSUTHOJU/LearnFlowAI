@@ -126,7 +126,7 @@ const skillDetails: { [key: string]: { name: string, description: string } } = {
   "backend-systems": { name: "Backend Systems", description: "Courses to build robust server-side applications and APIs." },
 };
 
-export default function SkillCoursesPage({ params }: { params: { skill: string } }) {
+export default async function SkillCoursesPage({ params }: { params: { skill: string } }) {
   const skillInfo = skillDetails[params.skill] || { name: "Courses", description: "Explore the available courses." };
   const courseList = courses[params.skill] || [];
 
