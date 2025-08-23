@@ -83,19 +83,7 @@ body {
 .app-background {
     @apply bg-background;
     background-image: 
-        linear-gradient(hsl(var(--border) / 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, hsl(var(--border) / 0.05) 1px, transparent 1px),
-        linear-gradient(45deg, hsl(var(--border) / 0.1) 1px, transparent 0), 
-        linear-gradient(-45deg, hsl(var(--border) / 0.1) 1px, transparent 0);
-    background-size: 20px 20px, 20px 20px, 40px 40px, 40px 40px;
-    animation: moving-lines 4s linear infinite;
-}
-
-@keyframes moving-lines {
-    0% {
-        background-position: 0 0, 0 0, 0 0, 0 0;
-    }
-    100% {
-        background-position: 0 0, 0 0, 56px 56px, 56px 56px;
-    }
+        linear-gradient(hsl(var(--border) / 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, hsl(var(--border) / 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
 }

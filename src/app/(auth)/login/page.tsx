@@ -52,14 +52,14 @@ export default function LoginPage() {
 
   if (!isClient || loading) {
     return (
-       <div className="flex min-h-screen items-center justify-center p-8 app-background relative overflow-hidden">
+       <div className="flex min-h-screen items-center justify-center p-8 app-background">
        </div>
     )
   }
 
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-8 app-background relative overflow-hidden">
+    <div className="flex min-h-screen items-center justify-center p-8 app-background">
         <div className="z-10 w-full max-w-md">
             <form onSubmit={handleSubmit}>
                 <GlassCard className="animate-float">

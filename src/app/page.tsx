@@ -6,7 +6,7 @@ import Logo from "@/components/logo";
 
 export default function Home() {
   return (
-    <main className="flex flex-col min-h-screen items-center justify-center p-8 app-background relative overflow-hidden">
+    <main className="flex flex-col min-h-screen items-center justify-center p-8 app-background">
       <div className="z-10 flex flex-col items-center text-center max-w-2xl">
         <Logo className="w-20 h-20 mb-6 text-primary" />
         <h1 className="text-5xl md:text-7xl font-bold font-headline bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70 pb-2">
@@ -26,7 +26,6 @@ export default function Home() {
           </Button>
         </div>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-background to-transparent z-0" />
     </main>
   );
 }
