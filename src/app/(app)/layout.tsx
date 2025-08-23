@@ -38,7 +38,7 @@ export default function AppLayout({
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
+      <SidebarInset className="app-background">
         <div className="p-4 sm:p-6 lg:p-8">
           {children}
         </div>

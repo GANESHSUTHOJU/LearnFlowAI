@@ -79,3 +79,9 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.app-background {
+    @apply bg-background;
+    background-image: radial-gradient(hsl(var(--muted-foreground)) 0.5px, transparent 0.5px);
+    background-size: 10px 10px;
+}
