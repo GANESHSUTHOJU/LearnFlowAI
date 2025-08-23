@@ -1,3 +1,4 @@
+
 "use client";
 
 import { GlassCard, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/glass-card";
@@ -41,7 +42,7 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
             <div key={index} className="relative mb-8 pl-8">
               <div className="absolute left-0 top-1">
                 <div className="w-9 h-9 rounded-full bg-primary/10 border-4 border-background flex items-center justify-center -translate-x-1/2">
-                  <span className="text-sm font-bold text-primary">{index + 1}</span>
+                  <Check className="w-4 h-4 text-primary" />
                 </div>
               </div>
               <div className="pl-6 pt-1">
