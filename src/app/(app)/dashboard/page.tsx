@@ -14,45 +14,46 @@ export default function DashboardPage() {
         <p className="text-muted-foreground">Welcome back, let's continue your learning journey!</p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <div className="space-y-6">
-          <GlassCard>
-            <CardHeader>
-              <CardTitle>Overall Progress</CardTitle>
-              <CardDescription>Your progress across all skills.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ProgressChart />
-            </CardContent>
-          </GlassCard>
-          <RoadmapPreview />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-6">
+            <GlassCard>
+                <CardHeader>
+                    <CardTitle>Overall Progress</CardTitle>
+                    <CardDescription>Your progress across all skills.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <ProgressChart />
+                </CardContent>
+            </GlassCard>
+            <RoadmapPreview />
         </div>
-        <div className="space-y-6">
-          <AiInsights />
-          <GlassCard>
-              <CardHeader>
-                  <div className="flex items-center gap-3">
-                      <div className="p-3 bg-primary/10 rounded-lg text-primary">
-                          <BookOpen className="w-6 h-6" />
-                      </div>
-                      <div>
-                          <CardTitle>Start Learning</CardTitle>
-                          <CardDescription>Begin your journey by picking a new skill.</CardDescription>
-                      </div>
-                  </div>
-              </CardHeader>
-              <CardContent>
-                  <div className="space-y-4">
-                      <h3 className="text-lg font-semibold">Explore the Skill Catalog</h3>
-                      <p className="text-sm text-muted-foreground">Browse our available skills and choose what you want to learn next.</p>
-                      <Button className="w-full group" asChild>
-                          <Link href="/skills">
-                            Explore Skills <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-                          </Link>
-                      </Button>
-                  </div>
-              </CardContent>
-          </GlassCard>
+
+        <div className="lg:col-span-1 space-y-6">
+            <AiInsights />
+            <GlassCard>
+                <CardHeader>
+                    <div className="flex items-center gap-3">
+                        <div className="p-3 bg-primary/10 rounded-lg text-primary">
+                            <BookOpen className="w-6 h-6" />
+                        </div>
+                        <div>
+                            <CardTitle>Start Learning</CardTitle>
+                            <CardDescription>Begin your journey by picking a new skill.</CardDescription>
+                        </div>
+                    </div>
+                </CardHeader>
+                <CardContent>
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Explore the Skill Catalog</h3>
+                        <p className="text-sm text-muted-foreground">Browse our available skills and choose what you want to learn next.</p>
+                        <Button className="w-full group" asChild>
+                            <Link href="/skills">
+                                Explore Skills <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                            </Link>
+                        </Button>
+                    </div>
+                </CardContent>
+            </GlassCard>
         </div>
       </div>
     </div>
