@@ -1,41 +1,38 @@
 
 "use client";
 
+import { useState } from "react";
 import { GlassCard, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/glass-card";
-import { Check, Rocket } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Check, Rocket, Youtube } from "lucide-react";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
-interface RoadmapDisplayProps {
-  roadmap: string;
+interface RoadmapStep {
+    step: number;
+    title: string;
+    description: string;
+    youtubeSearchQuery: string;
 }
 
-const parseRoadmap = (roadmapText: string) => {
-    // Improved parsing to handle numbered lists.
-    const steps = roadmapText.split(/\n(?=\d+\.\s)/).filter(step => step.trim() !== "");
-    
-    if (steps.length > 0) {
-        return steps.map((step) => {
-            const match = step.trim().match(/(\d+)\.\s(.*?):\s(.*)/);
-            if (match) {
-                const [, stepNumber, title, description] = match;
-                return { title: title.trim(), description: description.trim(), stepNumber };
-            }
-            // Fallback for simple lines
-            const simpleMatch = step.trim().match(/(\d+)\.\s(.*)/);
-            if (simpleMatch) {
-                 const [, stepNumber, title] = simpleMatch;
-                 return { title: title.trim(), description: "", stepNumber };
-            }
-            return { title: step.trim(), description: "", stepNumber: "" };
-        });
-    }
+interface RoadmapDisplayProps {
+  roadmapSteps: RoadmapStep[];
+}
 
-    // Fallback for simple newline-separated text
-    return roadmapText.split('\n').filter(line => line.trim() !== "").map((line, index) => ({ title: line.replace(/^- /, '').trim(), description: "", stepNumber: (index + 1).toString() }));
-};
+export default function RoadmapDisplay({ roadmapSteps }: RoadmapDisplayProps) {
+  const [completedSteps, setCompletedSteps] = useState<number[]>([]);
 
-
-export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
-  const roadmapSteps = parseRoadmap(roadmap);
+  const toggleStep = (stepNumber: number) => {
+    setCompletedSteps((prev) =>
+      prev.includes(stepNumber)
+        ? prev.filter((s) => s !== stepNumber)
+        : [...prev, stepNumber]
+    );
+  };
+  
+  const getYoutubeLink = (query: string) => {
+    return `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+  }
 
   return (
     <GlassCard>
@@ -45,14 +42,24 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
       </CardHeader>
       <CardContent>
         <div className="space-y-6">
-          {roadmapSteps.map((step, index) => (
-            <div key={index} className="flex items-start gap-4">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-lg">
-                {step.stepNumber || index + 1}
+          {roadmapSteps.map((step) => (
+            <div key={step.step} className="flex items-start gap-4">
+              <div className={cn("flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-lg", completedSteps.includes(step.step) && "bg-green-500/20 text-green-400")}>
+                {completedSteps.includes(step.step) ? <Check /> : step.step}
               </div>
-              <div>
+              <div className="flex-1">
                 <h3 className="font-bold text-lg font-headline">{step.title}</h3>
                 {step.description && <p className="text-muted-foreground mt-1 whitespace-pre-line text-sm">{step.description}</p>}
+                <div className="mt-3 flex gap-2">
+                    <Button asChild variant="outline" size="sm">
+                       <Link href={getYoutubeLink(step.youtubeSearchQuery)} target="_blank">
+                           <Youtube className="mr-2" /> Watch on YouTube
+                       </Link>
+                    </Button>
+                     <Button onClick={() => toggleStep(step.step)} variant={completedSteps.includes(step.step) ? "secondary" : "default"} size="sm">
+                        <Check className="mr-2" /> {completedSteps.includes(step.step) ? 'Mark as Incomplete' : 'Mark as Complete'}
+                    </Button>
+                </div>
               </div>
             </div>
           ))}

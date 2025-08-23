@@ -86,9 +86,6 @@ export default function AppSidebar() {
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter className="p-2">
-        <Button className="w-full bg-walnut-noir text-amber-100 hover:opacity-90">
-            <Sparkles className="mr-2 h-4 w-4" /> Go Premium
-        </Button>
         <Separator className="my-2" />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

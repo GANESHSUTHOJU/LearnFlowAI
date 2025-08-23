@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -18,8 +19,15 @@ const GeneratePersonalizedRoadmapInputSchema = z.object({
 });
 export type GeneratePersonalizedRoadmapInput = z.infer<typeof GeneratePersonalizedRoadmapInputSchema>;
 
+const RoadmapStepSchema = z.object({
+    step: z.number().describe("The step number."),
+    title: z.string().describe("The title of the learning step."),
+    description: z.string().describe("A brief description of the learning step."),
+    youtubeSearchQuery: z.string().describe("A concise search query for finding relevant tutorials on YouTube for this step."),
+});
+
 const GeneratePersonalizedRoadmapOutputSchema = z.object({
-  roadmap: z.string().describe('The generated learning roadmap as a numbered, step-by-step list.'),
+  roadmap: z.array(RoadmapStepSchema).describe('The generated learning roadmap as a list of steps.'),
 });
 export type GeneratePersonalizedRoadmapOutput = z.infer<typeof GeneratePersonalizedRoadmapOutputSchema>;
 
@@ -38,11 +46,8 @@ Current Skill Level: {{{currentSkillLevel}}}
 
 Here is the skill ontology: {{{skillOntology}}}
 
-Generate a clear, numbered, step-by-step list for the roadmap. Each step should have a title and a brief description. For example:
-1. Step Title: Step description.
-2. Step Title: Step description.
-
-Roadmap:`, 
+Generate a clear, step-by-step list for the roadmap. Each step must have a step number, a title, a brief description, and a concise YouTube search query.
+`, 
 });
 
 const generatePersonalizedRoadmapFlow = ai.defineFlow(

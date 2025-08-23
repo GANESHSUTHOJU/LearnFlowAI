@@ -1,6 +1,7 @@
+
 import GeneratorForm from "@/components/roadmap/generator-form";
 import RoadmapDisplay from "@/components/roadmap/roadmap-display";
-import { generatePersonalizedRoadmap } from "@/ai/flows/generate-personalized-roadmap";
+import { generatePersonalizedRoadmap, type GeneratePersonalizedRoadmapOutput } from "@/ai/flows/generate-personalized-roadmap";
 
 export default async function RoadmapPage({
   searchParams,
@@ -10,7 +11,9 @@ export default async function RoadmapPage({
   const goal = typeof searchParams.goal === "string" ? searchParams.goal : undefined;
   const skillLevel = typeof searchParams.skillLevel === "string" ? searchParams.skillLevel : "beginner";
 
-  let roadmapData = null;
+  let roadmapData: GeneratePersonalizedRoadmapOutput['roadmap'] | null = null;
+  let error: string | null = null;
+
   if (goal) {
     try {
       const response = await generatePersonalizedRoadmap({
@@ -19,9 +22,9 @@ export default async function RoadmapPage({
         skillOntology: "Web Development: HTML, CSS, JavaScript, React, Node.js, Databases",
       });
       roadmapData = response.roadmap;
-    } catch (error) {
-      console.error(error);
-      roadmapData = "Could not generate roadmap. Please try again.";
+    } catch (e) {
+      console.error(e);
+      error = "Could not generate roadmap. Please try again.";
     }
   }
 
@@ -37,7 +40,8 @@ export default async function RoadmapPage({
 
       <GeneratorForm />
 
-      {roadmapData && <RoadmapDisplay roadmap={roadmapData} />}
+      {roadmapData && <RoadmapDisplay roadmapSteps={roadmapData} />}
+      {error && <p className="text-destructive">{error}</p>}
     </div>
   );
 }
