@@ -1,5 +1,4 @@
 
-
 import { GlassCard, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpen, Clock, BarChart } from "lucide-react";
