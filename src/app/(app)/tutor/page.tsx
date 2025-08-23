@@ -1,12 +1,13 @@
+
 import ChatClient from "@/components/tutor/chat-client";
 
 export default function TutorPage() {
   return (
-    <div className="space-y-8 h-[calc(100vh-10rem)] flex flex-col">
-      <div>
+    <div className="space-y-8 h-[calc(100vh-6rem)] flex flex-col">
+      <div className="flex-shrink-0">
         <h1 className="text-3xl font-bold font-headline">AI Tutor</h1>
         <p className="text-muted-foreground">
-          Get daily guidance and motivation from your personal AI tutor.
+          Ask me anything about programming.
         </p>
       </div>
 

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -17,7 +18,7 @@ interface Message {
 
 const initialMessage: Message = {
     role: "assistant",
-    content: "Hello! I'm your AI Tutor. What skill are you working on today, and how can I help you?"
+    content: "Hello! I'm your AI Tutor. Ask me anything about programming, and I'll do my best to help you."
 }
 
 export default function ChatClient() {
@@ -37,7 +38,6 @@ export default function ChatClient() {
 
     try {
       const result = await chatbotTutorGuidance({
-        skill: "React Development", // This could be dynamic based on user context
         question: input,
       });
 
@@ -124,7 +124,7 @@ export default function ChatClient() {
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask a question about your current skill..."
+            placeholder="Ask a question..."
             disabled={isLoading}
           />
           <Button type="submit" disabled={isLoading || !input} size="icon">
