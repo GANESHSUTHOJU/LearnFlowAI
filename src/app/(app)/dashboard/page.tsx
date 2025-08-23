@@ -1,7 +1,7 @@
-import { GlassCard, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/glass-card";
 import ProgressChart from "@/components/dashboard/progress-chart";
 import RoadmapPreview from "@/components/dashboard/roadmap-preview";
 import AiInsights from "@/components/dashboard/ai-insights";
+import { GlassCard, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpen } from "lucide-react";
 import Link from "next/link";
@@ -14,22 +14,17 @@ export default function DashboardPage() {
         <p className="text-muted-foreground">Welcome back, let's continue your learning journey!</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
-            <GlassCard>
-                <CardHeader>
-                    <CardTitle>Overall Progress</CardTitle>
-                    <CardDescription>Your progress across all skills.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <ProgressChart />
-                </CardContent>
-            </GlassCard>
-            <RoadmapPreview />
+      <div className="grid grid-cols-1 xl:grid-cols-5 gap-8">
+        
+        {/* Central Progress Chart */}
+        <div className="xl:col-span-3 flex items-center justify-center min-h-[450px]">
+          <ProgressChart />
         </div>
 
-        <div className="lg:col-span-1 space-y-6">
-            <AiInsights />
+        {/* Side Cards */}
+        <div className="xl:col-span-2 space-y-6">
+          <AiInsights />
+          <RoadmapPreview />
             <GlassCard>
                 <CardHeader>
                     <div className="flex items-center gap-3">
