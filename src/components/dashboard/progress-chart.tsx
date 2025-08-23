@@ -1,15 +1,16 @@
+
 "use client"
 
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts"
 import { ChartTooltip, ChartTooltipContent, ChartContainer } from "@/components/ui/chart"
 
 const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 273 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
+  { month: "January", desktop: 0 },
+  { month: "February", desktop: 0 },
+  { month: "March", desktop: 0 },
+  { month: "April", desktop: 0 },
+  { month: "May", desktop: 0 },
+  { month: "June", desktop: 0 },
 ]
 
 const chartConfig = {
@@ -33,7 +34,7 @@ export default function ProgressChart() {
               axisLine={false}
               stroke="hsl(var(--muted-foreground))"
             />
-            <YAxis stroke="hsl(var(--muted-foreground))" />
+            <YAxis stroke="hsl(var(--muted-foreground))" domain={[0, 100]} />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="dot" />}
