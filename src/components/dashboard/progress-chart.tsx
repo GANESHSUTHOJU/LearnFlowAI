@@ -5,12 +5,12 @@ import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 
 import { ChartTooltip, ChartTooltipContent, ChartContainer } from "@/components/ui/chart"
 
 const chartData = [
-  { month: "January", desktop: 0 },
-  { month: "February", desktop: 0 },
-  { month: "March", desktop: 0 },
-  { month: "April", desktop: 0 },
-  { month: "May", desktop: 0 },
-  { month: "June", desktop: 0 },
+  { month: "January", desktop: 18 },
+  { month: "February", desktop: 30 },
+  { month: "March", desktop: 45 },
+  { month: "April", desktop: 60 },
+  { month: "May", desktop: 75 },
+  { month: "June", desktop: 90 },
 ]
 
 const chartConfig = {
