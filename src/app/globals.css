@@ -53,20 +53,20 @@ body {
   }
 }
 
-@keyframes moving-lines {
+@keyframes moving-grid {
   0% {
     background-position: 0 0;
   }
   100% {
-    background-position: 40px 40px;
+    background-position: -40px -40px;
   }
 }
 
 .app-background {
   @apply bg-background;
-  background-image: 
+  background-size: 40px 40px;
+  background-image:
     linear-gradient(to right, hsl(var(--border) / 0.2) 1px, transparent 1px),
     linear-gradient(to bottom, hsl(var(--border) / 0.2) 1px, transparent 1px);
-  background-size: 40px 40px;
-  animation: moving-lines 4s linear infinite;
+  animation: moving-grid 2s linear infinite;
 }
