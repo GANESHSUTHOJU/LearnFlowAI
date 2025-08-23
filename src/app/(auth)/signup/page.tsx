@@ -12,6 +12,7 @@ import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import Logo from "@/components/logo";
 import { FirebaseError } from "firebase/app";
+import AnimatedError from "@/components/ui/animated-error";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
@@ -54,11 +55,12 @@ export default function SignupPage() {
       router.push("/dashboard");
     } catch (err) {
         if (err instanceof FirebaseError) {
-            // Display a more specific error message from Firebase
             if (err.code === 'auth/weak-password') {
                  setError('Password is too weak. Please choose a stronger password.');
             } else if (err.code === 'auth/email-already-in-use') {
                 setError('This email is already associated with an account.');
+            } else if (err.code === 'auth/network-request-failed') {
+                setError("A network error occurred. Please check your connection and try again.");
             } else {
                 setError(`Could not create an account: ${err.message}`);
             }
@@ -79,63 +81,69 @@ export default function SignupPage() {
   return (
     <div className="flex min-h-screen items-center justify-center p-8 app-background">
         <div className="z-10 w-full max-w-md">
-            <form onSubmit={handleSubmit}>
-                <GlassCard className="animate-float">
-                    <CardHeader className="text-center">
-                        <div className="flex justify-center mb-4">
-                            <Logo className="w-12 h-12 text-primary" />
-                        </div>
-                        <CardTitle>Create an Account</CardTitle>
-                        <CardDescription>Start your personalized learning path today.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
-                            <Input
-                                id="email"
-                                type="email"
-                                placeholder="you@example.com"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="password">Password</Label>
-                            <Input
-                                id="password"
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="confirm-password">Confirm Password</Label>
-                            <Input
-                                id="confirm-password"
-                                type="password"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                required
-                            />
-                        </div>
-                        {error && <p className="text-sm text-destructive">{error}</p>}
-                    </CardContent>
-                    <CardFooter className="flex flex-col gap-4">
-                        <Button type="submit" className="w-full" disabled={isLoading}>
-                            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            Sign Up
-                        </Button>
-                        <p className="text-sm text-muted-foreground">
-                            Already have an account?{" "}
-                            <Link href="/login" className="text-primary hover:underline">
-                                Log In
-                            </Link>
-                        </p>
-                    </CardFooter>
-                </GlassCard>
-            </form>
+            {error ? (
+              <AnimatedError message={error} onReset={() => setError(null)} />
+            ) : (
+                <form onSubmit={handleSubmit}>
+                    <GlassCard className="animate-float">
+                        <CardHeader className="text-center">
+                            <div className="flex justify-center mb-4">
+                                <Logo className="w-12 h-12 text-primary" />
+                            </div>
+                            <CardTitle>Create an Account</CardTitle>
+                            <CardDescription>Start your personalized learning path today.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="email">Email</Label>
+                                <Input
+                                    id="email"
+                                    type="email"
+                                    placeholder="you@example.com"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                    disabled={isLoading}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="password">Password</Label>
+                                <Input
+                                    id="password"
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                    disabled={isLoading}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="confirm-password">Confirm Password</Label>
+                                <Input
+                                    id="confirm-password"
+                                    type="password"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    required
+                                    disabled={isLoading}
+                                />
+                            </div>
+                        </CardContent>
+                        <CardFooter className="flex flex-col gap-4">
+                            <Button type="submit" className="w-full" disabled={isLoading}>
+                                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                Sign Up
+                            </Button>
+                            <p className="text-sm text-muted-foreground">
+                                Already have an account?{" "}
+                                <Link href="/login" className="text-primary hover:underline">
+                                    Log In
+                                </Link>
+                            </p>
+                        </CardFooter>
+                    </GlassCard>
+                </form>
+            )}
         </div>
     </div>
   );
