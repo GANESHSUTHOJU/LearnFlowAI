@@ -54,19 +54,13 @@ export default function SignupPage() {
       router.push("/dashboard");
     } catch (err) {
         if (err instanceof FirebaseError) {
-            switch (err.code) {
-                case 'auth/email-already-in-use':
-                    setError("This email is already associated with an account.");
-                    break;
-                case 'auth/weak-password':
-                    setError("Password is too weak. Please choose a stronger password.");
-                    break;
-                case 'auth/invalid-email':
-                    setError("The email address is not valid.");
-                    break;
-                default:
-                    setError("Could not create an account. Please try again.");
-                    break;
+            // Display a more specific error message from Firebase
+            if (err.code === 'auth/weak-password') {
+                 setError('Password is too weak. Please choose a stronger password.');
+            } else if (err.code === 'auth/email-already-in-use') {
+                setError('This email is already associated with an account.');
+            } else {
+                setError(`Could not create an account: ${err.message}`);
             }
         } else {
              setError("An unexpected error occurred. Please try again.");
