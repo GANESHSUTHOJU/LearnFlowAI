@@ -1,4 +1,3 @@
-
 import { GlassCard, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpen, Clock, BarChart } from "lucide-react";
@@ -21,7 +20,7 @@ const courses: { [key: string]: any[] } = {
       description: "Take your CSS skills to the next level with advanced techniques.",
       duration: "6h 15m",
       level: "Intermediate",
-      imageUrl: "https://placehold.co/600x400.png",
+      imageUrl: "https://placehold.co/600x401.png",
       imageHint: "abstract colorful"
     },
      {
@@ -29,7 +28,7 @@ const courses: { [key: string]: any[] } = {
       description: "Build a complete full-stack application using the Next.js framework.",
       duration: "12h",
       level: "Advanced",
-      imageUrl: "https://placehold.co/600x400.png",
+      imageUrl: "https://placehold.co/600x402.png",
       imageHint: "abstract dark"
     },
   ],
@@ -39,7 +38,7 @@ const courses: { [key: string]: any[] } = {
       description: "Get started with Python and the libraries you need for data analysis.",
       duration: "5h",
       level: "Beginner",
-       imageUrl: "https://placehold.co/600x400.png",
+       imageUrl: "https://placehold.co/600x403.png",
       imageHint: "python logo"
     },
   ],
@@ -49,7 +48,7 @@ const courses: { [key: string]: any[] } = {
       description: "An introduction to the foundational concepts of neural networks.",
       duration: "8h",
       level: "Intermediate",
-      imageUrl: "https://placehold.co/600x400.png",
+      imageUrl: "https://placehold.co/600x404.png",
       imageHint: "neural network"
     },
      {
@@ -57,7 +56,7 @@ const courses: { [key: string]: any[] } = {
       description: "Understand and build models that can process and understand human language.",
       duration: "10h",
       level: "Advanced",
-      imageUrl: "https://placehold.co/600x400.png",
+      imageUrl: "https://placehold.co/600x405.png",
       imageHint: "natural language"
     },
   ],
@@ -67,7 +66,7 @@ const courses: { [key: string]: any[] } = {
           description: "Learn the basics of SQL for database manipulation.",
           duration: "4h",
           level: "Beginner",
-          imageUrl: "https://placehold.co/600x400.png",
+          imageUrl: "https://placehold.co/600x406.png",
           imageHint: "database server"
       },
       {
@@ -75,7 +74,7 @@ const courses: { [key: string]: any[] } = {
           description: "Explore the world of NoSQL with MongoDB and others.",
           duration: "6h",
           level: "Intermediate",
-          imageUrl: "https://placehold.co/600x400.png",
+          imageUrl: "https://placehold.co/600x407.png",
           imageHint: "database cluster"
       }
   ],
@@ -85,7 +84,7 @@ const courses: { [key: string]: any[] } = {
           description: "Learn how to design and prototype with Figma.",
           duration: "7h",
           level: "Beginner",
-          imageUrl: "https://placehold.co/600x400.png",
+          imageUrl: "https://placehold.co/600x408.png",
           imageHint: "design wireframe"
       },
       {
@@ -93,7 +92,7 @@ const courses: { [key: string]: any[] } = {
           description: "Master the techniques for effective user research.",
           duration: "5h",
           level: "Intermediate",
-          imageUrl: "https://placehold.co/600x400.png",
+          imageUrl: "https://placehold.co/600x409.png",
           imageHint: "user feedback"
       }
   ],
@@ -103,7 +102,7 @@ const courses: { [key: string]: any[] } = {
           description: "Create robust and scalable APIs from scratch.",
           duration: "9h",
           level: "Intermediate",
-          imageUrl: "https://placehold.co/600x400.png",
+          imageUrl: "https://placehold.co/600x410.png",
           imageHint: "server code"
       },
       {
@@ -111,7 +110,7 @@ const courses: { [key: string]: any[] } = {
           description: "Learn how to design and build microservices-based applications.",
           duration: "11h",
           level: "Advanced",
-          imageUrl: "https://placehold.co/600x400.png",
+          imageUrl: "https://placehold.co/600x411.png",
           imageHint: "cloud infrastructure"
       }
   ]
@@ -129,6 +128,10 @@ const skillDetails: { [key: string]: { name: string, description: string } } = {
 export default async function SkillCoursesPage({ params }: { params: { skill: string } }) {
   const skillInfo = skillDetails[params.skill] || { name: "Courses", description: "Explore the available courses." };
   const courseList = courses[params.skill] || [];
+
+  const getYoutubeLink = (query: string) => {
+    return `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+  }
 
   return (
     <div className="space-y-8">
@@ -168,7 +171,7 @@ export default async function SkillCoursesPage({ params }: { params: { skill: st
                   </div>
                 </div>
                  <Button className="w-full mt-4 group" asChild>
-                  <Link href="#">
+                  <Link href={getYoutubeLink(course.title)} target="_blank">
                     Start Course <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </Button>
