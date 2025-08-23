@@ -41,6 +41,14 @@ const courses: { [key: string]: any[] } = {
        imageUrl: "https://placehold.co/600x403.png",
       imageHint: "python logo"
     },
+     {
+      title: "Data Visualization with D3.js",
+      description: "Create stunning interactive charts and graphs for the web.",
+      duration: "7h",
+      level: "Intermediate",
+      imageUrl: "https://placehold.co/600x404.png",
+      imageHint: "data visualization"
+    },
   ],
   "ai-machine-learning": [
     {
@@ -48,7 +56,7 @@ const courses: { [key: string]: any[] } = {
       description: "An introduction to the foundational concepts of neural networks.",
       duration: "8h",
       level: "Intermediate",
-      imageUrl: "https://placehold.co/600x404.png",
+      imageUrl: "https://placehold.co/600x405.png",
       imageHint: "neural network"
     },
      {
@@ -56,7 +64,7 @@ const courses: { [key: string]: any[] } = {
       description: "Understand and build models that can process and understand human language.",
       duration: "10h",
       level: "Advanced",
-      imageUrl: "https://placehold.co/600x405.png",
+      imageUrl: "https://placehold.co/600x406.png",
       imageHint: "natural language"
     },
   ],
@@ -66,7 +74,7 @@ const courses: { [key: string]: any[] } = {
           description: "Learn the basics of SQL for database manipulation.",
           duration: "4h",
           level: "Beginner",
-          imageUrl: "https://placehold.co/600x406.png",
+          imageUrl: "https://placehold.co/600x407.png",
           imageHint: "database server"
       },
       {
@@ -74,7 +82,7 @@ const courses: { [key: string]: any[] } = {
           description: "Explore the world of NoSQL with MongoDB and others.",
           duration: "6h",
           level: "Intermediate",
-          imageUrl: "https://placehold.co/600x407.png",
+          imageUrl: "https://placehold.co/600x408.png",
           imageHint: "database cluster"
       }
   ],
@@ -84,7 +92,7 @@ const courses: { [key: string]: any[] } = {
           description: "Learn how to design and prototype with Figma.",
           duration: "7h",
           level: "Beginner",
-          imageUrl: "https://placehold.co/600x408.png",
+          imageUrl: "https://placehold.co/600x409.png",
           imageHint: "design wireframe"
       },
       {
@@ -92,7 +100,7 @@ const courses: { [key: string]: any[] } = {
           description: "Master the techniques for effective user research.",
           duration: "5h",
           level: "Intermediate",
-          imageUrl: "https://placehold.co/600x409.png",
+          imageUrl: "https://placehold.co/600x410.png",
           imageHint: "user feedback"
       }
   ],
@@ -102,7 +110,7 @@ const courses: { [key: string]: any[] } = {
           description: "Create robust and scalable APIs from scratch.",
           duration: "9h",
           level: "Intermediate",
-          imageUrl: "https://placehold.co/600x410.png",
+          imageUrl: "https://placehold.co/600x411.png",
           imageHint: "server code"
       },
       {
@@ -110,7 +118,7 @@ const courses: { [key: string]: any[] } = {
           description: "Learn how to design and build microservices-based applications.",
           duration: "11h",
           level: "Advanced",
-          imageUrl: "https://placehold.co/600x411.png",
+          imageUrl: "https://placehold.co/600x412.png",
           imageHint: "cloud infrastructure"
       }
   ]
