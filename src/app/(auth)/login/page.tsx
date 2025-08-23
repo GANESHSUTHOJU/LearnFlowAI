@@ -11,6 +11,7 @@ import { GlassCard, CardHeader, CardTitle, CardDescription, CardContent, CardFoo
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import Logo from "@/components/logo";
+import { FirebaseError } from "firebase/app";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -28,7 +29,20 @@ export default function LoginPage() {
       await login(email, password);
       router.push("/dashboard");
     } catch (err) {
-      setError("Failed to log in. Please check your credentials.");
+      if (err instanceof FirebaseError) {
+        switch (err.code) {
+          case 'auth/user-not-found':
+          case 'auth/wrong-password':
+          case 'auth/invalid-credential':
+            setError("Invalid email or password. Please try again.");
+            break;
+          default:
+            setError("An unexpected error occurred. Please try again.");
+            break;
+        }
+      } else {
+        setError("Failed to log in. Please check your credentials.");
+      }
       setIsLoading(false);
     }
   };

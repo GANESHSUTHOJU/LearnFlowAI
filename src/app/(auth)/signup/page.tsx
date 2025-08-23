@@ -11,6 +11,7 @@ import { GlassCard, CardHeader, CardTitle, CardDescription, CardContent, CardFoo
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import Logo from "@/components/logo";
+import { FirebaseError } from "firebase/app";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
@@ -33,8 +34,22 @@ export default function SignupPage() {
       await signup(email, password);
       router.push("/dashboard");
     } catch (err) {
-      setError("Failed to create an account. The email might already be in use.");
-      setIsLoading(false);
+        if (err instanceof FirebaseError) {
+            switch (err.code) {
+                case 'auth/email-already-in-use':
+                    setError("This email is already associated with an account.");
+                    break;
+                case 'auth/weak-password':
+                    setError("Password is too weak. Please choose a stronger password.");
+                    break;
+                default:
+                    setError("An unexpected error occurred. Please try again.");
+                    break;
+            }
+        } else {
+             setError("Failed to create an account. The email might already be in use.");
+        }
+        setIsLoading(false);
     }
   };
 
