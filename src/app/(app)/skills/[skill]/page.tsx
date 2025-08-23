@@ -43,7 +43,78 @@ const courses: { [key: string]: any[] } = {
       imageHint: "python logo"
     },
   ],
-  // Add more placeholder courses for other skills
+  "ai-machine-learning": [
+    {
+      title: "Neural Networks and Deep Learning",
+      description: "An introduction to the foundational concepts of neural networks.",
+      duration: "8h",
+      level: "Intermediate",
+      imageUrl: "https://placehold.co/600x400.png",
+      imageHint: "neural network"
+    },
+     {
+      title: "Natural Language Processing with Transformers",
+      description: "Understand and build models that can process and understand human language.",
+      duration: "10h",
+      level: "Advanced",
+      imageUrl: "https://placehold.co/600x400.png",
+      imageHint: "natural language"
+    },
+  ],
+  "database-management": [
+      {
+          title: "SQL for Beginners",
+          description: "Learn the basics of SQL for database manipulation.",
+          duration: "4h",
+          level: "Beginner",
+          imageUrl: "https://placehold.co/600x400.png",
+          imageHint: "database server"
+      },
+      {
+          title: "NoSQL Databases Explained",
+          description: "Explore the world of NoSQL with MongoDB and others.",
+          duration: "6h",
+          level: "Intermediate",
+          imageUrl: "https://placehold.co/600x400.png",
+          imageHint: "database cluster"
+      }
+  ],
+  "ui-ux-design": [
+      {
+          title: "Figma for UI/UX Design",
+          description: "Learn how to design and prototype with Figma.",
+          duration: "7h",
+          level: "Beginner",
+          imageUrl: "https://placehold.co/600x400.png",
+          imageHint: "design wireframe"
+      },
+      {
+          title: "User Research and Usability Testing",
+          description: "Master the techniques for effective user research.",
+          duration: "5h",
+          level: "Intermediate",
+          imageUrl: "https://placehold.co/600x400.png",
+          imageHint: "user feedback"
+      }
+  ],
+  "backend-systems": [
+      {
+          title: "Building RESTful APIs with Node.js and Express",
+          description: "Create robust and scalable APIs from scratch.",
+          duration: "9h",
+          level: "Intermediate",
+          imageUrl: "https://placehold.co/600x400.png",
+          imageHint: "server code"
+      },
+      {
+          title: "Microservices Architecture",
+          description: "Learn how to design and build microservices-based applications.",
+          duration: "11h",
+          level: "Advanced",
+          imageUrl: "https://placehold.co/600x400.png",
+          imageHint: "cloud infrastructure"
+      }
+  ]
 };
 
 const skillDetails: { [key: string]: { name: string, description: string } } = {
