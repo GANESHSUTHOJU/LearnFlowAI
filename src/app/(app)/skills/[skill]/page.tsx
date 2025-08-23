@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 // Placeholder data - this would eventually come from a database
-const courses = {
+const courses: { [key: string]: any[] } = {
   "web-development": [
     {
       title: "React for Beginners",
@@ -57,7 +57,7 @@ const skillDetails: { [key: string]: { name: string, description: string } } = {
 
 export default function SkillCoursesPage({ params }: { params: { skill: string } }) {
   const skillInfo = skillDetails[params.skill] || { name: "Courses", description: "Explore the available courses." };
-  const courseList = courses[params.skill as keyof typeof courses] || [];
+  const courseList = courses[params.skill] || [];
 
   return (
     <div className="space-y-8">
@@ -105,7 +105,7 @@ export default function SkillCoursesPage({ params }: { params: { skill: string }
             </GlassCard>
           ))
         ) : (
-          <div className="text-center col-span-full py-12">
+          <div className="col-span-full min-h-[40vh] flex flex-col items-center justify-center text-center">
             <BookOpen className="w-12 h-12 mx-auto text-muted-foreground" />
             <p className="mt-4 text-muted-foreground">No courses available for this skill yet. Please check back later!</p>
           </div>
