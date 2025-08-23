@@ -40,6 +40,13 @@ export default function SignupPage() {
       setError("Passwords do not match.");
       return;
     }
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{6,}$/;
+    if (!passwordRegex.test(password)) {
+      setError("Password must be at least 6 characters long, and include at least one uppercase letter, one lowercase letter, and one special symbol.");
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
     try {
@@ -52,7 +59,7 @@ export default function SignupPage() {
                     setError("This email is already associated with an account.");
                     break;
                 case 'auth/weak-password':
-                    setError("Password is too weak. Please choose a stronger password of at least 6 characters.");
+                    setError("Password is too weak. Please choose a stronger password.");
                     break;
                 case 'auth/invalid-email':
                     setError("The email address is not valid.");
