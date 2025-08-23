@@ -43,7 +43,7 @@ export default function LoginPage() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 to-transparent to-70% -z-0"></div>
         <div className="z-10 w-full max-w-md">
             <form onSubmit={handleSubmit}>
-                <GlassCard>
+                <GlassCard className="animate-float">
                     <CardHeader className="text-center">
                         <div className="flex justify-center mb-4">
                             <Logo className="w-12 h-12 text-primary" />
