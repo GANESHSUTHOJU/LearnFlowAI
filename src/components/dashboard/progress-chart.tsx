@@ -5,12 +5,12 @@ import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 
 import { ChartTooltip, ChartTooltipContent, ChartContainer } from "@/components/ui/chart"
 
 const chartData = [
-  { month: "January", desktop: 18 },
-  { month: "February", desktop: 30 },
-  { month: "March", desktop: 45 },
-  { month: "April", desktop: 60 },
-  { month: "May", desktop: 75 },
-  { month: "June", desktop: 90 },
+  { month: "January", desktop: 0 },
+  { month: "February", desktop: 0 },
+  { month: "March", desktop: 0 },
+  { month: "April", desktop: 0 },
+  { month: "May", desktop: 0 },
+  { month: "June", desktop: 0 },
 ]
 
 const chartConfig = {
@@ -21,8 +21,14 @@ const chartConfig = {
 }
 
 export default function ProgressChart() {
+  const allZero = chartData.every(item => item.desktop === 0);
   return (
     <div className="h-64 w-full">
+      {allZero ? (
+        <div className="flex h-full w-full items-center justify-center text-muted-foreground">
+          Start a course to see your progress.
+        </div>
+      ) : (
       <ChartContainer config={chartConfig} className="w-full h-full">
         <ResponsiveContainer>
           <BarChart data={chartData} margin={{ top: 20, right: 20, bottom: 5, left: 0 }}>
@@ -43,6 +49,7 @@ export default function ProgressChart() {
           </BarChart>
         </ResponsiveContainer>
       </ChartContainer>
+      )}
     </div>
   )
 }
