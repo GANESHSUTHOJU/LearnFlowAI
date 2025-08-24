@@ -12,6 +12,7 @@ interface RoadmapState {
   startedCourses: Course[];
   startCourse: (course: Pick<Course, 'title'>) => void;
   updateProgress: (title: string, progress: number) => void;
+  completeCourse: (title: string) => void;
 }
 
 export const useRoadmapStore = create<RoadmapState>()(
@@ -26,7 +27,7 @@ export const useRoadmapStore = create<RoadmapState>()(
           }
           const newCourse: Course = {
               ...course,
-              progress: 10,
+              progress: 0,
               startDate: new Date().toISOString(),
           }
           return { startedCourses: [...state.startedCourses, newCourse] };
@@ -34,9 +35,15 @@ export const useRoadmapStore = create<RoadmapState>()(
       updateProgress: (title, progress) =>
         set((state) => ({
           startedCourses: state.startedCourses.map((course) =>
-            course.title === title ? { ...course, progress } : course
+            course.title === title ? { ...course, progress: Math.min(100, progress) } : course
           ),
         })),
+      completeCourse: (title) =>
+        set((state) => ({
+            startedCourses: state.startedCourses.map((course) =>
+                course.title === title ? { ...course, progress: 100 } : course
+            )
+        }))
     }),
     {
       name: 'roadmap-storage', // name of the item in the storage (must be unique)
