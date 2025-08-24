@@ -1,3 +1,4 @@
+
 import ProgressChart from "@/components/dashboard/progress-chart";
 import RoadmapPreview from "@/components/dashboard/roadmap-preview";
 import AiInsights from "@/components/dashboard/ai-insights";
