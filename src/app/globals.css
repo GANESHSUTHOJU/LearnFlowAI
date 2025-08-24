@@ -85,7 +85,7 @@ body {
   background-image:
     linear-gradient(to right, hsl(var(--foreground) / 0.05) 1px, transparent 1px),
     linear-gradient(to bottom, hsl(var(--foreground) / 0.05) 1px, transparent 1px);
-  background-size: 40px 40px;
+  background-size: 20px 20px;
   pointer-events: none;
   z-index: 1;
 }
