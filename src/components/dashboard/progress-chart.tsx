@@ -2,48 +2,48 @@
 "use client"
 
 import { RadialBar, RadialBarChart, Legend, ResponsiveContainer, PolarAngleAxis, Tooltip } from "recharts"
-import { ChartTooltip, ChartTooltipContent, ChartContainer } from "@/components/ui/chart"
+import { ChartTooltipContent, ChartContainer } from "@/components/ui/chart"
+import { useRoadmapStore } from "@/store/roadmap-store"
+import { useMemo } from "react";
 
-const chartData = [
-  { skill: "JavaScript", progress: 75, fill: "var(--color-javascript)" },
-  { skill: "React", progress: 60, fill: "var(--color-react)" },
-  { skill: "CSS", progress: 80, fill: "var(--color-css)" },
-  { skill: "Node.js", progress: 45, fill: "var(--color-nodejs)" },
-  { skill: "TypeScript", progress: 30, fill: "var(--color-typescript)" },
-  { skill: "SQL", progress: 50, fill: "var(--color-sql)" },
-]
-
-const chartConfig = {
+const chartConfigBase = {
   progress: {
     label: "Progress",
   },
-  javascript: {
-    label: "JavaScript",
-    color: "hsl(var(--chart-1))",
-  },
-  react: {
-    label: "React",
-    color: "hsl(var(--chart-2))",
-  },
-  css: {
-    label: "CSS",
-    color: "hsl(var(--chart-3))",
-  },
-  nodejs: {
-    label: "Node.js",
-    color: "hsl(var(--chart-4))",
-  },
-  typescript: {
-    label: "TypeScript",
-    color: "hsl(var(--chart-5))",
-  },
-  sql: {
-    label: "SQL",
-    color: "hsl(var(--chart-1) / 0.7)",
-  }
-}
+  '1': { color: "hsl(var(--chart-1))" },
+  '2': { color: "hsl(var(--chart-2))" },
+  '3': { color: "hsl(var(--chart-3))" },
+  '4': { color: "hsl(var(--chart-4))" },
+  '5': { color: "hsl(var(--chart-5))" },
+  '6': { color: "hsl(var(--chart-1) / 0.7)" },
+  '7': { color: "hsl(var(--chart-2) / 0.7)" },
+  '8': { color: "hsl(var(--chart-3) / 0.7)" },
+  '9': { color: "hsl(var(--chart-4) / 0.7)" },
+  '10': { color: "hsl(var(--chart-5) / 0.7)" },
+};
 
 export default function ProgressChart() {
+  const { startedCourses } = useRoadmapStore();
+
+  const { chartData, chartConfig } = useMemo(() => {
+    const data = startedCourses.map((course, index) => ({
+      skill: course.title,
+      progress: 10, // All courses start at 10%
+      fill: `var(--color-${(index % 10) + 1})`,
+    }));
+
+    const config = data.reduce((acc, course, index) => {
+      acc[course.skill] = {
+        label: course.title,
+        color: `hsl(var(--chart-${(index % 10) + 1}))`,
+      };
+      return acc;
+    }, { ...chartConfigBase } as any);
+    
+    return { chartData: data, chartConfig: config };
+
+  }, [startedCourses]);
+
   const allZero = chartData.every(item => item.progress === 0);
 
   return (
@@ -51,7 +51,7 @@ export default function ProgressChart() {
         <h2 className="text-2xl font-bold font-headline mb-2">Overall Progress</h2>
         <p className="text-muted-foreground mb-4">Your progress across all skills.</p>
         <div className="w-full h-full">
-            {allZero ? (
+            {chartData.length === 0 ? (
                 <div className="flex h-full w-full items-center justify-center text-muted-foreground">
                 Start a course to see your progress.
                 </div>
