@@ -61,7 +61,7 @@ body {
 
 .app-background::before {
   content: "";
-  position: absolute;
+  position: fixed;
   left: var(--x, 50%);
   top: var(--y, 50%);
   width: 100%;
@@ -76,7 +76,7 @@ body {
 
 .app-background::after {
   content: '';
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
