@@ -54,10 +54,13 @@ export default function AppLayout({
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="app-background">
-        <div className="p-4 sm:p-6 lg:p-8">
+      <SidebarInset className="app-background flex flex-col min-h-screen">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8">
           {children}
-        </div>
+        </main>
+        <footer className="text-center p-4 text-xs text-muted-foreground">
+          © 2025 all rights reserved to Botla Varshini
+        </footer>
       </SidebarInset>
     </SidebarProvider>
   );
