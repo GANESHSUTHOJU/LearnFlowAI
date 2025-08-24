@@ -43,10 +43,10 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased min-h-screen bg-background flex flex-col app-background">
         <AuthProvider>
-            <div className="flex-1 flex flex-col">
+            <div className="flex-1 flex flex-col relative z-10">
                 {children}
             </div>
-            <footer className="text-center p-4 text-xs text-muted-foreground">
+            <footer className="text-center p-4 text-xs text-muted-foreground relative z-10">
                 © 2025 all rights reserved to Botla Varshini
             </footer>
         </AuthProvider>

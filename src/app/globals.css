@@ -89,8 +89,3 @@ body {
   pointer-events: none;
   z-index: 0;
 }
-
-.app-background > * {
-  position: relative;
-  z-index: 1;
-}
