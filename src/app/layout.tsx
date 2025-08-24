@@ -4,12 +4,26 @@
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 import { AuthProvider } from '@/hooks/use-auth';
+import { useEffect } from 'react';
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      document.body.style.setProperty('--x', `${e.clientX}px`);
+      document.body.style.setProperty('--y', `${e.clientY}px`);
+    };
+
+    document.body.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      document.body.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
 
   return (
     <html lang="en" className="dark">

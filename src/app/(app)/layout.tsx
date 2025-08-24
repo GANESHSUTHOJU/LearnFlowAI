@@ -27,21 +27,6 @@ export default function AppLayout({
     }
   }, [user, loading, router, isClient]);
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const { clientX, clientY } = e;
-      document.body.style.setProperty('--x', `${clientX}px`);
-      document.body.style.setProperty('--y', `${clientY}px`);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []);
-
-
   if (!isClient || loading || !user) {
     return (
         <div className="flex h-screen w-screen items-center justify-center bg-background">
