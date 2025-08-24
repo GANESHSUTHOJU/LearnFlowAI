@@ -5,6 +5,7 @@
 
 body {
   font-family: 'Inter', sans-serif;
+  isolation: isolate;
 }
 
 .background-effects-container::before {
@@ -19,44 +20,44 @@ body {
   filter: blur(200px);
   opacity: 0.8;
   pointer-events: none;
-  z-index: -1;
+  z-index: -10;
 }
 
 @layer base {
   :root {
-    --background: 272 100% 9%;
+    --background: 240 10% 4%;
     --foreground: 0 0% 98%;
-    --card: 0 0% 15%;
+    --card: 240 10% 10%;
     --card-foreground: 0 0% 98%;
-    --popover: 0 0% 10%;
+    --popover: 240 10% 5%;
     --popover-foreground: 0 0% 98%;
-    --primary: 272 100% 50%;
+    --primary: 220 100% 50%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 272 50% 20%;
+    --secondary: 220 50% 20%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 20%;
+    --muted: 240 10% 20%;
     --muted-foreground: 0 0% 60%;
-    --accent: 180 100% 35%;
+    --accent: 220 80% 30%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 180 100% 50%;
+    --border: 240 10% 20%;
+    --input: 240 10% 20%;
+    --ring: 220 100% 50%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
 
-    --sidebar-background: 0 0% 9%;
+    --sidebar-background: 240 10% 9%;
     --sidebar-foreground: 0 0% 95.9%;
-    --sidebar-primary: 272 100% 50%;
+    --sidebar-primary: 220 100% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 20%;
+    --sidebar-accent: 240 10% 20%;
     --sidebar-accent-foreground: 0 0% 95.9%;
-    --sidebar-border: 0 0% 20%;
-    --sidebar-ring: 180 100% 50%;
+    --sidebar-border: 240 10% 20%;
+    --sidebar-ring: 220 100% 50%;
   }
 }
 
