@@ -5,12 +5,12 @@ import { RadialBar, RadialBarChart, Legend, ResponsiveContainer, PolarAngleAxis,
 import { ChartTooltip, ChartTooltipContent, ChartContainer } from "@/components/ui/chart"
 
 const chartData = [
-  { skill: "JavaScript", progress: 0, fill: "var(--color-javascript)" },
-  { skill: "React", progress: 0, fill: "var(--color-react)" },
-  { skill: "CSS", progress: 0, fill: "var(--color-css)" },
-  { skill: "Node.js", progress: 0, fill: "var(--color-nodejs)" },
-  { skill: "TypeScript", progress: 0, fill: "var(--color-typescript)" },
-  { skill: "SQL", progress: 0, fill: "var(--color-sql)" },
+  { skill: "JavaScript", progress: 75, fill: "var(--color-javascript)" },
+  { skill: "React", progress: 60, fill: "var(--color-react)" },
+  { skill: "CSS", progress: 80, fill: "var(--color-css)" },
+  { skill: "Node.js", progress: 45, fill: "var(--color-nodejs)" },
+  { skill: "TypeScript", progress: 30, fill: "var(--color-typescript)" },
+  { skill: "SQL", progress: 50, fill: "var(--color-sql)" },
 ]
 
 const chartConfig = {
