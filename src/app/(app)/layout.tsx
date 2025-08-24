@@ -58,9 +58,6 @@ export default function AppLayout({
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
           {children}
         </main>
-        <footer className="text-center p-4 text-xs text-muted-foreground">
-          © 2025 all rights reserved to Botla Varshini
-        </footer>
       </SidebarInset>
     </SidebarProvider>
   );

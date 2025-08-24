@@ -22,9 +22,14 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-body antialiased min-h-screen bg-background">
+      <body className="font-body antialiased min-h-screen bg-background flex flex-col">
         <AuthProvider>
-            {children}
+            <div className="flex-1 flex flex-col">
+                {children}
+            </div>
+            <footer className="text-center p-4 text-xs text-muted-foreground">
+                © 2025 all rights reserved to Botla Varshini
+            </footer>
         </AuthProvider>
         <Toaster />
       </body>
