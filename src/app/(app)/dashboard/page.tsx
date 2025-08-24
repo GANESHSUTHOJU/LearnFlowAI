@@ -18,7 +18,7 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 xl:grid-cols-5 gap-8">
         
         {/* Central Progress Chart */}
-        <div className="xl:col-span-3 flex items-center justify-center min-h-[450px]">
+        <div className="xl:col-span-3">
           <ProgressChart />
         </div>
 

@@ -27,11 +27,15 @@ export default function RoadmapDisplay({ roadmapSteps }: RoadmapDisplayProps) {
   const startedCourseTitles = startedCourses.map(c => c.title);
 
   const handleStartCourse = (step: RoadmapStep) => {
-    startCourse({ title: step.title, progress: 10 });
+    startCourse({ title: step.title });
     toast({
       title: "Course Started!",
       description: `"${step.title}" has been added to your dashboard.`,
     })
+  }
+
+  const getYoutubeLink = (query: string) => {
+    return `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
   }
 
   return (
@@ -56,9 +60,13 @@ export default function RoadmapDisplay({ roadmapSteps }: RoadmapDisplayProps) {
                             onClick={() => handleStartCourse(step)} 
                             size="sm"
                             disabled={startedCourseTitles.includes(step.title)}
-                            className="animate-in fade-in duration-300"
                           >
-                            <Play className="mr-2" /> {startedCourseTitles.includes(step.title) ? 'Course Started' : 'Start Course'}
+                            <Play className="mr-2 h-4 w-4" /> {startedCourseTitles.includes(step.title) ? 'Course Started' : 'Start Course'}
+                        </Button>
+                        <Button asChild variant="outline" size="sm">
+                           <Link href={getYoutubeLink(step.youtubeSearchQuery)} target="_blank">
+                             <Youtube className="mr-2 h-4 w-4" /> Watch on YouTube
+                           </Link>
                         </Button>
                     </div>
                 </div>
