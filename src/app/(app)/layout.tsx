@@ -22,7 +22,7 @@ export default function AppLayout({
   }, []);
 
   useEffect(() => {
-    if (!loading && !user && isClient) {
+    if (isClient && !loading && !user) {
       router.push('/login');
     }
   }, [user, loading, router, isClient]);
