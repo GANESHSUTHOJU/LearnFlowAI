@@ -1,29 +1,14 @@
 
-'use client';
-
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 import { AuthProvider } from '@/hooks/use-auth';
-import { useEffect } from 'react';
+import BackgroundEffects from '@/components/ui/background-effects';
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      document.body.style.setProperty('--x', `${e.clientX}px`);
-      document.body.style.setProperty('--y', `${e.clientY}px`);
-    };
-
-    document.body.addEventListener('mousemove', handleMouseMove);
-
-    return () => {
-      document.body.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []);
 
   return (
     <html lang="en" className="dark">
@@ -34,12 +19,13 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-body antialiased min-h-screen bg-background flex flex-col app-background">
+      <body className="font-body antialiased min-h-screen bg-background flex flex-col">
+        <BackgroundEffects />
         <AuthProvider>
-            <main className="flex-1 flex flex-col">
+            <main className="flex-1 flex flex-col z-10">
                 {children}
             </main>
-            <footer className="text-center p-4 text-xs text-muted-foreground">
+            <footer className="text-center p-4 text-xs text-muted-foreground z-10">
                 © 2025 all rights reserved to Botla Varshini
             </footer>
         </AuthProvider>
