@@ -1,36 +1,15 @@
 
 'use client';
 
-import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 import { AuthProvider } from '@/hooks/use-auth';
-import { useEffect } from 'react';
-
-const metadata: Metadata = {
-  title: 'LearnFlowAI',
-  description: 'Personalized Learning Roadmaps',
-};
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const { clientX, clientY } = e;
-      document.body.style.setProperty('--x', `${clientX}px`);
-      document.body.style.setProperty('--y', `${clientY}px`);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []);
 
   return (
     <html lang="en" className="dark">
