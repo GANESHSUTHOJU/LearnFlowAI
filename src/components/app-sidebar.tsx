@@ -67,7 +67,7 @@ export default function AppSidebar() {
           <SidebarTrigger />
         </div>
       </SidebarHeader>
-      <SidebarContent className="p-2">
+      <SidebarContent className="p-2 flex-1 flex flex-col justify-between">
         <SidebarMenu>
           {navItems.map((item) => (
             <SidebarMenuItem key={item.href}>
@@ -84,6 +84,16 @@ export default function AppSidebar() {
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
+        <div>
+           <SidebarMenu>
+             <SidebarMenuItem>
+                <SidebarMenuButton onClick={handleLogout} tooltip="Log Out">
+                    <LogOut />
+                    <span>Log Out</span>
+                </SidebarMenuButton>
+            </SidebarMenuItem>
+           </SidebarMenu>
+        </div>
       </SidebarContent>
       <SidebarFooter className="p-2">
         <Separator className="my-2" />
