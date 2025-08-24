@@ -25,7 +25,7 @@ export default function Home() {
         
         {/* Left Side: Headline and Description */}
         <div className="text-center lg:text-left">
-          <h1 className="text-5xl md:text-7xl font-bold font-headline pb-2 text-gradient">
+          <h1 className="text-5xl md:text-7xl font-bold font-headline pb-2 text-foreground">
             LearnFlowAI
           </h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0">
