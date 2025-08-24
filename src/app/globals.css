@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -50,21 +51,19 @@ body {
   }
   body {
     @apply bg-background text-foreground;
-    background-color: hsl(var(--background));
   }
 }
 
 .app-background {
   position: relative;
   overflow: hidden;
-  background-color: hsl(var(--background));
 }
 
 .app-background::before {
   content: "";
   position: absolute;
-  left: var(--x);
-  top: var(--y);
+  left: var(--x, 50%);
+  top: var(--y, 50%);
   width: 100%;
   height: 100%;
   transform: translate(-50%, -50%);
@@ -87,10 +86,9 @@ body {
     linear-gradient(to bottom, hsl(var(--foreground) / 0.03) 1px, transparent 1px);
   background-size: 20px 20px;
   pointer-events: none;
-  z-index: 1;
+  z-index: 0;
 }
 
 .app-background > * {
-  z-index: 2;
   position: relative;
 }

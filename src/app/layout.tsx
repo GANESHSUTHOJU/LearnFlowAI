@@ -21,8 +21,8 @@ export default function RootLayout({
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       const { clientX, clientY } = e;
-      document.documentElement.style.setProperty('--x', `${clientX}px`);
-      document.documentElement.style.setProperty('--y', `${clientY}px`);
+      document.body.style.setProperty('--x', `${clientX}px`);
+      document.body.style.setProperty('--y', `${clientY}px`);
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -41,9 +41,9 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-body antialiased min-h-screen bg-background flex flex-col">
+      <body className="font-body antialiased min-h-screen bg-background flex flex-col app-background">
         <AuthProvider>
-            <div className="flex-1 flex flex-col">
+            <div className="flex-1 flex flex-col z-10">
                 {children}
             </div>
             <footer className="text-center p-4 text-xs text-muted-foreground z-10">

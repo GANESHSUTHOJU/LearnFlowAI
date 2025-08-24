@@ -54,7 +54,7 @@ export default function AppLayout({
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="app-background flex flex-col min-h-screen">
+      <SidebarInset className="flex flex-col min-h-screen bg-transparent">
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
           {children}
         </main>

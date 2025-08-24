@@ -59,14 +59,14 @@ export default function LoginPage() {
 
   if (!isClient || loading) {
     return (
-       <div className="flex min-h-screen items-center justify-center p-8 app-background">
+       <div className="flex min-h-screen items-center justify-center p-8">
        </div>
     )
   }
 
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-8 app-background">
+    <div className="flex min-h-[calc(100vh-40px)] items-center justify-center p-8">
         <div className="z-10 w-full max-w-md">
             {error ? (
               <AnimatedError message={error} onReset={() => setError(null)} />
