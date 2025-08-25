@@ -22,6 +22,7 @@ import {
   LogOut,
   Sparkles,
   Settings,
+  Briefcase,
 } from "lucide-react";
 import Logo from "./logo";
 import { Separator } from "./ui/separator";
@@ -43,6 +44,7 @@ const navItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
   { href: "/roadmap", icon: GitMerge, label: "Roadmap" },
   { href: "/skills", icon: BookOpen, label: "Skills" },
+  { href: "/projects", icon: Briefcase, label: "Projects" },
   { href: "/tutor", icon: Bot, label: "Tutor" },
 ];
 

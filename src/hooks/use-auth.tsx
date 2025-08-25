@@ -2,7 +2,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { onAuthStateChanged, User, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import { onAuthStateChanged, User, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
 
@@ -13,6 +13,8 @@ interface AuthContextType {
   signup: (email: string, pass: string) => Promise<any>;
   logout: () => Promise<void>;
   sendPasswordResetEmail: (email: string) => Promise<void>;
+  signInWithGoogle: () => Promise<any>;
+  signInWithGitHub: () => Promise<any>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -47,6 +49,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return sendPasswordResetEmail(auth, email);
   }
 
+  const signInWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    return signInWithPopup(auth, provider);
+  };
+
+  const signInWithGitHub = () => {
+    const provider = new GithubAuthProvider();
+    return signInWithPopup(auth, provider);
+  };
+
   const value = {
     user,
     loading,
@@ -54,6 +66,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     logout,
     signup,
     sendPasswordResetEmail: resetPassword,
+    signInWithGoogle,
+    signInWithGitHub,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

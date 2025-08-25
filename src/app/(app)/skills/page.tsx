@@ -1,65 +1,80 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { GlassCard, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/glass-card";
 import { Code, Database, Bot, PenTool, BarChart, Server, Search } from "lucide-react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
+import Image from "next/image";
+import { Skeleton } from "@/components/ui/skeleton";
+import { generateSkillBanner } from "@/ai/flows/generate-skill-banner";
 
 const skillCategories = [
   {
     title: "Web Development",
     description: "Master HTML, CSS, JavaScript, React, and Node.js.",
     icon: Code,
-    color: "text-blue-400",
-    bgColor: "bg-blue-400/10",
     slug: "web-development"
   },
   {
     title: "Data Science",
     description: "Learn Python, Pandas, and machine learning algorithms.",
     icon: BarChart,
-    color: "text-green-400",
-    bgColor: "bg-green-400/10",
     slug: "data-science"
   },
   {
     title: "AI & Machine Learning",
     description: "Dive into neural networks, NLP, and computer vision.",
     icon: Bot,
-    color: "text-purple-400",
-    bgColor: "bg-purple-400/10",
     slug: "ai-machine-learning"
   },
   {
     title: "Database Management",
     description: "Explore SQL, NoSQL, and database design principles.",
     icon: Database,
-    color: "text-yellow-400",
-    bgColor: "bg-yellow-400/10",
     slug: "database-management"
   },
   {
     title: "UI/UX Design",
     description: "Create stunning user interfaces and experiences.",
     icon: PenTool,
-    color: "text-pink-400",
-    bgColor: "bg-pink-400/10",
     slug: "ui-ux-design"
   },
   {
     title: "Backend Systems",
     description: "Build robust server-side applications and APIs.",
     icon: Server,
-    color: "text-orange-400",
-    bgColor: "bg-orange-400/10",
     slug: "backend-systems"
   },
 ];
 
 export default function SkillsPage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [bannerImages, setBannerImages] = useState<Record<string, string>>({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBanners = async () => {
+      setIsLoading(true);
+      const imagePromises = skillCategories.map(category => 
+        generateSkillBanner({ skillTitle: category.title })
+          .then(result => ({ slug: category.slug, url: result.imageDataUri }))
+          .catch(() => ({ slug: category.slug, url: 'https://placehold.co/600x200.png' })) // Fallback
+      );
+      
+      const results = await Promise.all(imagePromises);
+      const imageMap = results.reduce((acc, result) => {
+        acc[result.slug] = result.url;
+        return acc;
+      }, {} as Record<string, string>);
+
+      setBannerImages(imageMap);
+      setIsLoading(false);
+    };
+
+    fetchBanners();
+  }, []);
 
   const filteredSkills = skillCategories.filter(category =>
     category.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -91,17 +106,25 @@ export default function SkillsPage() {
           {filteredSkills.map((category) => (
             <Link href={`/skills/${category.slug}`} key={category.title} className="group">
               <GlassCard 
-                className="h-full hover:border-accent transition-colors duration-300 cursor-pointer"
+                className="h-full hover:border-accent transition-all duration-300 cursor-pointer flex flex-col"
               >
+                <CardContent className="p-0">
+                  {isLoading ? (
+                    <Skeleton className="h-40 w-full rounded-t-lg" />
+                  ) : (
+                    <Image
+                      src={bannerImages[category.slug] || "https://placehold.co/600x200.png"}
+                      alt={`${category.title} banner`}
+                      width={600}
+                      height={200}
+                      className="rounded-t-lg object-cover w-full h-40"
+                    />
+                  )}
+                </CardContent>
                 <CardHeader>
-                  <div className="flex items-center gap-4">
-                      <div className={`p-3 rounded-lg ${category.bgColor}`}>
-                        <category.icon className={`w-6 h-6 ${category.color}`} />
-                      </div>
-                      <CardTitle>{category.title}</CardTitle>
-                  </div>
+                    <CardTitle>{category.title}</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex-grow">
                   <CardDescription>{category.description}</CardDescription>
                 </CardContent>
               </GlassCard>

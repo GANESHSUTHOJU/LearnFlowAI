@@ -1,17 +1,21 @@
 
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { GlassCard, CardContent } from "@/components/ui/glass-card";
-import { Sparkles } from "lucide-react";
+import { Loader2, Sparkles } from "lucide-react";
 import React from "react";
 
-export default function GeneratorForm() {
-    const router = useRouter();
+interface GeneratorFormProps {
+    onGenerate: (goal: string, skillLevel: string) => void;
+    isLoading: boolean;
+}
+
+export default function GeneratorForm({ onGenerate, isLoading }: GeneratorFormProps) {
     const searchParams = useSearchParams();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -19,11 +23,7 @@ export default function GeneratorForm() {
         const formData = new FormData(event.currentTarget);
         const goal = formData.get("goal") as string;
         const skillLevel = formData.get("skillLevel") as string;
-
-        const params = new URLSearchParams();
-        params.set("goal", goal);
-        params.set("skillLevel", skillLevel);
-        router.push(`/roadmap?${params.toString()}`);
+        onGenerate(goal, skillLevel);
     };
 
     return (
@@ -38,11 +38,12 @@ export default function GeneratorForm() {
                             placeholder="e.g., 'Become a Full-Stack Web Developer'"
                             required
                             defaultValue={searchParams.get("goal") ?? ""}
+                            disabled={isLoading}
                         />
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="skillLevel">What is your current skill level?</Label>
-                        <Select name="skillLevel" defaultValue={searchParams.get("skillLevel") ?? "beginner"}>
+                        <Select name="skillLevel" defaultValue={searchParams.get("skillLevel") ?? "beginner"} disabled={isLoading}>
                             <SelectTrigger>
                                 <SelectValue placeholder="Select your skill level" />
                             </SelectTrigger>
@@ -53,8 +54,13 @@ export default function GeneratorForm() {
                             </SelectContent>
                         </Select>
                     </div>
-                    <Button type="submit" className="w-full">
-                        <Sparkles className="mr-2 h-4 w-4" /> Generate Roadmap
+                    <Button type="submit" className="w-full" disabled={isLoading}>
+                        {isLoading ? (
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        ) : (
+                            <Sparkles className="mr-2 h-4 w-4" />
+                        )}
+                         Generate Roadmap
                     </Button>
                 </form>
             </CardContent>

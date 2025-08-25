@@ -7,13 +7,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { chatbotTutorGuidance } from "@/ai/flows/chatbot-tutor-guidance";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Bot, Loader2, Send } from "lucide-react";
+import { Bot, Loader2, Send, Link as LinkIcon } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useRoadmapStore } from "@/store/roadmap-store";
 
 interface Message {
   role: "user" | "assistant";
   content: string;
+  searchResults?: {
+      title: string;
+      link: string;
+      snippet: string;
+  }[];
 }
 
 const initialMessage: Message = {
@@ -26,6 +33,7 @@ export default function ChatClient() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const { startedCourses, completedCourses } = useRoadmapStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,13 +45,17 @@ export default function ChatClient() {
     setIsLoading(true);
 
     try {
+      const roadmapProgress = `Started: ${startedCourses.map(c => c.title).join(', ') || 'None'}. Completed: ${completedCourses.join(', ') || 'None'}.`;
+      
       const result = await chatbotTutorGuidance({
         question: input,
+        roadmapProgress,
       });
 
       const assistantMessage: Message = {
         role: "assistant",
         content: `${result.answer}\n\n**Tip:** ${result.tip}`,
+        searchResults: result.searchResults,
       };
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
@@ -88,13 +100,26 @@ export default function ChatClient() {
                 )}
                 <div
                   className={cn(
-                    "p-4 rounded-lg max-w-lg whitespace-pre-line",
+                    "p-4 rounded-lg max-w-lg",
                     message.role === "user"
                       ? "bg-primary text-primary-foreground rounded-br-none"
                       : "bg-background/80 rounded-bl-none"
                   )}
                 >
-                  {message.content}
+                  <p className="whitespace-pre-line">{message.content}</p>
+                  {message.searchResults && message.searchResults.length > 0 && (
+                      <div className="mt-4 space-y-2 border-t pt-2">
+                          <h4 className="font-bold text-sm">Sources:</h4>
+                          {message.searchResults.map((result, i) => (
+                              <div key={i} className="text-xs">
+                                  <Link href={result.link} target="_blank" className="flex items-center gap-2 hover:underline">
+                                    <LinkIcon className="w-3 h-3" />
+                                    <span>{result.title}</span>
+                                  </Link>
+                              </div>
+                          ))}
+                      </div>
+                  )}
                 </div>
                  {message.role === "user" && (
                   <Avatar className="w-8 h-8 border">

@@ -13,6 +13,7 @@ import Link from "next/link";
 import Logo from "@/components/logo";
 import { FirebaseError } from "firebase/app";
 import AnimatedError from "@/components/ui/animated-error";
+import { Google, Github } from "@/components/icons";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
@@ -20,7 +21,7 @@ export default function SignupPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { signup, user, loading } = useAuth();
+  const { signup, user, loading, signInWithGoogle, signInWithGitHub } = useAuth();
   const router = useRouter();
   const [isClient, setIsClient] = useState(false);
 
@@ -70,6 +71,31 @@ export default function SignupPage() {
         setIsLoading(false);
     }
   };
+  
+    const handleSocialLogin = async (provider: 'google' | 'github') => {
+        setIsLoading(true);
+        setError(null);
+        try {
+            if (provider === 'google') {
+                await signInWithGoogle();
+            } else {
+                await signInWithGitHub();
+            }
+            router.push('/dashboard');
+        } catch (err) {
+            if (err instanceof FirebaseError) {
+                if (err.code === 'auth/account-exists-with-different-credential') {
+                    setError('An account already exists with the same email address but different sign-in credentials.');
+                } else {
+                    setError('Could not sign in. Please try again.');
+                }
+            } else {
+                setError('An unexpected error occurred.');
+            }
+            setIsLoading(false);
+        }
+    }
+
 
   if (!isClient || loading) {
       return (
@@ -84,8 +110,8 @@ export default function SignupPage() {
             {error ? (
               <AnimatedError message={error} onReset={() => setError(null)} />
             ) : (
-                <form onSubmit={handleSubmit}>
-                    <GlassCard className="animate-float">
+                <GlassCard className="animate-float">
+                    <form onSubmit={handleSubmit}>
                         <CardHeader className="text-center">
                             <div className="flex justify-center mb-4">
                                 <Logo className="w-12 h-12 text-primary" />
@@ -134,15 +160,37 @@ export default function SignupPage() {
                                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                                 Sign Up
                             </Button>
-                            <p className="text-sm text-muted-foreground">
-                                Already have an account?{" "}
-                                <Link href="/login" className="text-primary hover:underline">
-                                    Log In
-                                </Link>
-                            </p>
                         </CardFooter>
-                    </GlassCard>
-                </form>
+                    </form>
+                    <div className="p-6 pt-0">
+                         <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <span className="w-full border-t" />
+                            </div>
+                            <div className="relative flex justify-center text-xs uppercase">
+                                <span className="bg-card px-2 text-muted-foreground">
+                                    Or continue with
+                                </span>
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 mt-4">
+                             <Button variant="outline" onClick={() => handleSocialLogin('google')} disabled={isLoading}>
+                                <Google className="mr-2 h-4 w-4" /> Google
+                            </Button>
+                            <Button variant="outline" onClick={() => handleSocialLogin('github')} disabled={isLoading}>
+                                <Github className="mr-2 h-4 w-4" /> GitHub
+                            </Button>
+                        </div>
+                    </div>
+                     <CardFooter className="flex-col gap-4 pt-0">
+                         <p className="text-sm text-muted-foreground">
+                            Already have an account?{" "}
+                            <Link href="/login" className="text-primary hover:underline">
+                                Log In
+                            </Link>
+                        </p>
+                    </CardFooter>
+                </GlassCard>
             )}
         </div>
     </div>
