@@ -11,9 +11,11 @@ interface Course {
 interface RoadmapState {
   startedCourses: Course[];
   completedCourses: string[]; // Array of completed course titles
+  quizScore: number | null;
   startCourse: (course: Pick<Course, 'title'>) => void;
   updateProgress: (title: string, progress: number) => void;
   completeCourse: (title: string) => void;
+  updateQuizScore: (score: number) => void;
 }
 
 export const useRoadmapStore = create<RoadmapState>()(
@@ -21,6 +23,7 @@ export const useRoadmapStore = create<RoadmapState>()(
     (set, get) => ({
       startedCourses: [],
       completedCourses: [],
+      quizScore: null,
       startCourse: (course) =>
         set((state) => {
           // Avoid adding duplicates
@@ -42,9 +45,30 @@ export const useRoadmapStore = create<RoadmapState>()(
         })),
       completeCourse: (title) =>
         set((state) => {
+            if (!state.startedCourses.some(c => c.title === title)) {
+                 const newCourse: Course = {
+                  title,
+                  progress: 100,
+                  startDate: new Date().toISOString(),
+                }
+                if (state.completedCourses.includes(title)) {
+                    return {
+                         startedCourses: [...state.startedCourses, newCourse],
+                    }
+                }
+                return { 
+                    startedCourses: [...state.startedCourses, newCourse],
+                    completedCourses: [...state.completedCourses, title]
+                }
+            }
+
             // Avoid adding duplicates to completed list
             if (state.completedCourses.includes(title)) {
-                return {};
+                return {
+                     startedCourses: state.startedCourses.map((course) =>
+                        course.title === title ? { ...course, progress: 100 } : course
+                    ),
+                };
             }
             return {
                 startedCourses: state.startedCourses.map((course) =>
@@ -52,7 +76,11 @@ export const useRoadmapStore = create<RoadmapState>()(
                 ),
                 completedCourses: [...state.completedCourses, title]
             }
-        })
+        }),
+      updateQuizScore: (score: number) =>
+        set(() => ({
+            quizScore: score,
+        }))
     }),
     {
       name: 'roadmap-storage', // name of the item in the storage (must be unique)

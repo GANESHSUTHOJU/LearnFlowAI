@@ -3,19 +3,13 @@
 
 import { useRoadmapStore } from "@/store/roadmap-store"
 import { GlassCard, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/glass-card"
-import { Progress } from "@/components/ui/progress"
-import { BookOpen } from "lucide-react"
+import { BookOpen, CheckCircle, PieChart, Star } from "lucide-react"
 
 export default function ProgressChart() {
-  const { startedCourses } = useRoadmapStore();
+  const { startedCourses, completedCourses, quizScore } = useRoadmapStore();
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  };
+  const startedCount = startedCourses.length;
+  const completedCount = completedCourses.length;
 
   return (
       <GlassCard className="h-full">
@@ -24,23 +18,36 @@ export default function ProgressChart() {
             <CardDescription>Your progress across all started courses.</CardDescription>
         </CardHeader>
         <CardContent>
-            {startedCourses.length === 0 ? (
+            {startedCount === 0 && completedCount === 0 && quizScore === null ? (
                  <div className="flex flex-col h-48 items-center justify-center text-center text-muted-foreground">
                     <BookOpen className="w-12 h-12" />
                     <p className="mt-4">Start a course from the roadmap to see your progress here.</p>
                 </div>
             ) : (
                 <div className="space-y-6">
-                    {startedCourses.map((course, index) => (
-                        <div key={index} className="animate-in fade-in slide-in-from-top-4 duration-500">
-                            <div className="flex justify-between items-center mb-1">
-                                <h4 className="font-semibold">{course.title}</h4>
-                                <span className="text-sm font-medium text-primary">{course.progress}%</span>
-                            </div>
-                            <Progress value={course.progress} className="h-2" />
-                             <p className="text-xs text-muted-foreground mt-1">Started on: {formatDate(course.startDate)}</p>
+                    <div className="flex justify-around text-center">
+                        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                           <div className="flex items-center justify-center gap-2">
+                             <Star className="w-6 h-6 text-yellow-400" />
+                             <p className="text-3xl font-bold">{startedCount}</p>
+                           </div>
+                           <p className="text-sm text-muted-foreground">Courses Started</p>
                         </div>
-                    ))}
+                         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 delay-200">
+                           <div className="flex items-center justify-center gap-2">
+                            <CheckCircle className="w-6 h-6 text-green-400" />
+                            <p className="text-3xl font-bold">{completedCount}</p>
+                           </div>
+                           <p className="text-sm text-muted-foreground">Courses Completed</p>
+                        </div>
+                        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 delay-400">
+                             <div className="flex items-center justify-center gap-2">
+                                <PieChart className="w-6 h-6 text-blue-400" />
+                                <p className="text-3xl font-bold">{quizScore !== null ? `${quizScore}%` : 'N/A'}</p>
+                             </div>
+                           <p className="text-sm text-muted-foreground">Latest Quiz Score</p>
+                        </div>
+                    </div>
                 </div>
             )}
         </CardContent>

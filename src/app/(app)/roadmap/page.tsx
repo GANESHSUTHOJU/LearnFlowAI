@@ -11,7 +11,7 @@ export default async function RoadmapPage({
   const goal = typeof searchParams.goal === "string" ? searchParams.goal : undefined;
   const skillLevel = typeof searchParams.skillLevel === "string" ? searchParams.skillLevel : "beginner";
 
-  let roadmapData: GeneratePersonalizedRoadmapOutput['roadmap'] | null = null;
+  let roadmapData: GeneratePersonalizedRoadmapOutput | null = null;
   let error: string | null = null;
 
   if (goal) {
@@ -21,7 +21,7 @@ export default async function RoadmapPage({
         currentSkillLevel: skillLevel,
         skillOntology: "Web Development: HTML, CSS, JavaScript, React, Node.js, Databases",
       });
-      roadmapData = response.roadmap;
+      roadmapData = response;
     } catch (e) {
       console.error(e);
       error = "Could not generate roadmap. Please try again.";
@@ -40,7 +40,7 @@ export default async function RoadmapPage({
 
       <GeneratorForm />
 
-      {roadmapData && <RoadmapDisplay roadmapSteps={roadmapData} />}
+      {roadmapData && <RoadmapDisplay roadmap={roadmapData} />}
       {error && <p className="text-destructive">{error}</p>}
     </div>
   );
