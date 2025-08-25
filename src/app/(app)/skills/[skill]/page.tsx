@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useRoadmapStore } from "@/store/roadmap-store";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import QuizClient from "@/components/quiz/quiz-client";
 
 // Placeholder data - this would eventually come from a database
 const coursesData: { [key: string]: any[] } = {
@@ -160,13 +161,7 @@ export default function SkillCoursesPage({ params }: { params: { skill: string }
         toast({
             variant: "destructive",
             title: "Quiz Locked",
-            description: "Please complete all courses in this skill to unlock the quiz.",
-        });
-    } else {
-        // In a real app, you would navigate to the quiz page for this skill
-        toast({
-            title: "Quiz Unlocked!",
-            description: "Starting the quiz now...",
+            description: "You haven't completed all modules yet.",
         });
     }
   }
@@ -221,7 +216,7 @@ export default function SkillCoursesPage({ params }: { params: { skill: string }
                         </>
                       ) : (
                         <>
-                         Mark as Complete <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                         Mark as Complete
                         </>
                       )}
                   </Button>
@@ -238,18 +233,23 @@ export default function SkillCoursesPage({ params }: { params: { skill: string }
       </div>
 
        {courseList.length > 0 && (
-         <GlassCard>
-            <CardContent className="p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div>
-                    <CardTitle>Test Your Knowledge</CardTitle>
-                    <CardDescription>Take the final quiz to solidify your understanding of {skillInfo.name}.</CardDescription>
-                </div>
-                <Button onClick={handleQuizClick} disabled={!allCoursesCompleted}>
-                    {allCoursesCompleted ? <HelpCircle className="mr-2 h-4 w-4" /> : <Lock className="mr-2 h-4 w-4" />}
-                    Take the Final Quiz
-                </Button>
-            </CardContent>
-        </GlassCard>
+         <div className="space-y-8">
+            <h2 className="text-2xl font-bold font-headline">Final Quiz</h2>
+            {allCoursesCompleted ? (
+                <QuizClient />
+            ) : (
+                 <GlassCard>
+                    <CardContent className="p-6 flex flex-col items-center justify-center text-center">
+                       <Lock className="w-12 h-12 text-muted-foreground mb-4" />
+                       <h3 className="font-bold text-xl">Quiz Locked</h3>
+                       <p className="text-muted-foreground mt-2">You haven't completed all modules yet.</p>
+                       <Button onClick={handleQuizClick} variant="outline" className="mt-4">
+                           Take the Quiz
+                       </Button>
+                    </CardContent>
+                </GlassCard>
+            )}
+        </div>
        )}
     </div>
   );

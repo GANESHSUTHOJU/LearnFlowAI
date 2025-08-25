@@ -23,9 +23,8 @@ interface RoadmapDisplayProps {
 
 export default function RoadmapDisplay({ roadmapSteps }: RoadmapDisplayProps) {
   const { toast } = useToast();
-  const { startedCourses, startCourse, completeCourse, completedCourses } = useRoadmapStore();
-  const startedCourseTitles = startedCourses.map(c => c.title);
-
+  const { startCourse, completeCourse, completedCourses } = useRoadmapStore();
+  
   const allStepsCompleted = roadmapSteps.every(step => completedCourses.includes(step.title));
 
   const handleStartCourse = (step: RoadmapStep) => {
@@ -49,7 +48,7 @@ export default function RoadmapDisplay({ roadmapSteps }: RoadmapDisplayProps) {
         toast({
             variant: "destructive",
             title: "Quiz Locked",
-            description: "Please complete all modules to unlock the quiz.",
+            description: "You haven't completed all modules yet.",
         });
      }
   }
@@ -68,7 +67,6 @@ export default function RoadmapDisplay({ roadmapSteps }: RoadmapDisplayProps) {
             <CardContent>
                 <div className="space-y-6">
                 {roadmapSteps.map((step) => {
-                  const isStarted = startedCourseTitles.includes(step.title);
                   const isCompleted = completedCourses.includes(step.title);
 
                   return (
@@ -80,32 +78,26 @@ export default function RoadmapDisplay({ roadmapSteps }: RoadmapDisplayProps) {
                         <h3 className="font-bold text-lg font-headline">{step.title}</h3>
                         {step.description && <p className="text-muted-foreground mt-1 whitespace-pre-line text-sm">{step.description}</p>}
                         <div className="mt-3 flex flex-wrap gap-2">
-                             {!isStarted && !isCompleted && (
-                                <Button 
-                                    onClick={() => handleStartCourse(step)} 
-                                    size="sm"
+                            <Button asChild variant="outline" size="sm">
+                                <Link href={getYoutubeLink(step.youtubeSearchQuery)} target="_blank">
+                                    <Youtube className="mr-2 h-4 w-4" /> Watch on YouTube
+                                </Link>
+                            </Button>
+                            <Button 
+                                onClick={() => handleCompleteCourse(step)} 
+                                size="sm"
+                                disabled={isCompleted}
                                 >
-                                    <Play className="mr-2 h-4 w-4" /> Start Course
-                                </Button>
-                             )}
-                             {(isStarted || isCompleted) && (
-                               <>
-                                 <Button asChild variant="outline" size="sm">
-                                   <Link href={getYoutubeLink(step.youtubeSearchQuery)} target="_blank">
-                                     <Youtube className="mr-2 h-4 w-4" /> Watch on YouTube
-                                   </Link>
-                                </Button>
-                                 <Button 
-                                    onClick={() => handleCompleteCourse(step)} 
-                                    size="sm"
-                                    variant="outline"
-                                    disabled={isCompleted}
-                                  >
-                                    <CheckCircle className="mr-2 h-4 w-4" /> {isCompleted ? 'Completed' : 'Mark as Complete'}
-                                </Button>
-                               </>
-                             )}
-
+                                {isCompleted ? (
+                                    <>
+                                        <CheckCircle className="mr-2 h-4 w-4" /> Completed
+                                    </>
+                                ) : (
+                                    <>
+                                        Mark as Complete
+                                    </>
+                                )}
+                            </Button>
                         </div>
                     </div>
                     </div>
@@ -133,9 +125,9 @@ export default function RoadmapDisplay({ roadmapSteps }: RoadmapDisplayProps) {
                     <CardContent className="p-6 flex flex-col items-center justify-center text-center">
                        <Lock className="w-12 h-12 text-muted-foreground mb-4" />
                        <h3 className="font-bold text-xl">Quiz Locked</h3>
-                       <p className="text-muted-foreground mt-2">You must complete all roadmap steps to unlock the final quiz.</p>
+                       <p className="text-muted-foreground mt-2">You haven't completed all modules yet.</p>
                        <Button onClick={handleQuizClick} variant="outline" className="mt-4">
-                           Unlock Quiz
+                           Take the Quiz
                        </Button>
                     </CardContent>
                 </GlassCard>
