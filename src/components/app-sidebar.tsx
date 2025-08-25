@@ -42,7 +42,6 @@ import { useRouter } from "next/navigation";
 const navItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
   { href: "/roadmap", icon: GitMerge, label: "Roadmap" },
-  { href: "/quiz", icon: HelpCircle, label: "Quiz" },
   { href: "/skills", icon: BookOpen, label: "Skills" },
   { href: "/tutor", icon: Bot, label: "Tutor" },
 ];
@@ -73,7 +72,7 @@ export default function AppSidebar() {
             <SidebarMenuItem key={item.href}>
               <SidebarMenuButton
                 asChild
-                isActive={pathname === item.href}
+                isActive={pathname.startsWith(item.href)}
                 tooltip={item.label}
               >
                 <a href={item.href}>

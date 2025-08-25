@@ -1,11 +1,17 @@
+
+"use client";
+
 import { GlassCard, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, BookOpen, Clock, BarChart } from "lucide-react";
+import { ArrowRight, BookOpen, Clock, BarChart, CheckCircle, HelpCircle, Lock } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRoadmapStore } from "@/store/roadmap-store";
+import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 // Placeholder data - this would eventually come from a database
-const courses: { [key: string]: any[] } = {
+const coursesData: { [key: string]: any[] } = {
   "web-development": [
     {
       title: "React for Beginners",
@@ -133,12 +139,36 @@ const skillDetails: { [key: string]: { name: string, description: string } } = {
   "backend-systems": { name: "Backend Systems", description: "Courses to build robust server-side applications and APIs." },
 };
 
-export default async function SkillCoursesPage({ params }: { params: { skill: string } }) {
+export default function SkillCoursesPage({ params }: { params: { skill: string } }) {
+  const { toast } = useToast();
+  const { completedCourses, completeCourse } = useRoadmapStore();
   const skillInfo = skillDetails[params.skill] || { name: "Courses", description: "Explore the available courses." };
-  const courseList = courses[params.skill] || [];
+  const courseList = coursesData[params.skill] || [];
 
-  const getYoutubeLink = (query: string) => {
-    return `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+  const allCoursesCompleted = courseList.every(course => completedCourses.includes(course.title));
+
+  const handleCompleteCourse = (title: string) => {
+    completeCourse(title);
+    toast({
+        title: "Course Completed!",
+        description: `Great job on finishing "${title}"!`,
+    });
+  }
+
+  const handleQuizClick = () => {
+    if (!allCoursesCompleted) {
+        toast({
+            variant: "destructive",
+            title: "Quiz Locked",
+            description: "Please complete all courses in this skill to unlock the quiz.",
+        });
+    } else {
+        // In a real app, you would navigate to the quiz page for this skill
+        toast({
+            title: "Quiz Unlocked!",
+            description: "Starting the quiz now...",
+        });
+    }
   }
 
   return (
@@ -150,42 +180,55 @@ export default async function SkillCoursesPage({ params }: { params: { skill: st
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {courseList.length > 0 ? (
-          courseList.map((course) => (
-            <GlassCard key={course.title} className="flex flex-col">
-              <CardContent className="p-0">
-                <Image 
-                  src={course.imageUrl} 
-                  alt={course.title}
-                  width={600}
-                  height={400}
-                  className="rounded-t-lg object-cover"
-                  data-ai-hint={course.imageHint}
-                />
-              </CardContent>
-              <div className="p-6 flex flex-col flex-1">
-                <CardHeader className="p-0">
-                  <CardTitle>{course.title}</CardTitle>
-                  <CardDescription className="pt-2">{course.description}</CardDescription>
-                </CardHeader>
-                <div className="flex-grow" />
-                <div className="flex justify-between items-center text-sm text-muted-foreground mt-4">
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4" />
-                    <span>{course.duration}</span>
+          courseList.map((course) => {
+            const isCompleted = completedCourses.includes(course.title);
+            return (
+              <GlassCard key={course.title} className="flex flex-col">
+                <CardContent className="p-0">
+                  <Image 
+                    src={course.imageUrl} 
+                    alt={course.title}
+                    width={600}
+                    height={400}
+                    className="rounded-t-lg object-cover"
+                    data-ai-hint={course.imageHint}
+                  />
+                </CardContent>
+                <div className="p-6 flex flex-col flex-1">
+                  <CardHeader className="p-0">
+                    <CardTitle>{course.title}</CardTitle>
+                    <CardDescription className="pt-2">{course.description}</CardDescription>
+                  </CardHeader>
+                  <div className="flex-grow" />
+                  <div className="flex justify-between items-center text-sm text-muted-foreground mt-4">
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4" />
+                      <span>{course.duration}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <BarChart className="w-4 h-4" />
+                      <span>{course.level}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <BarChart className="w-4 h-4" />
-                    <span>{course.level}</span>
-                  </div>
+                   <Button 
+                      className="w-full mt-4 group"
+                      onClick={() => handleCompleteCourse(course.title)}
+                      disabled={isCompleted}
+                    >
+                      {isCompleted ? (
+                        <>
+                          <CheckCircle className="w-4 h-4 mr-2" /> Completed
+                        </>
+                      ) : (
+                        <>
+                         Mark as Complete <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                        </>
+                      )}
+                  </Button>
                 </div>
-                 <Button className="w-full mt-4 group" asChild>
-                  <Link href={getYoutubeLink(course.title)} target="_blank">
-                    Start Course <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-                  </Link>
-                </Button>
-              </div>
-            </GlassCard>
-          ))
+              </GlassCard>
+            )
+          })
         ) : (
           <div className="col-span-full min-h-[40vh] flex flex-col items-center justify-center text-center">
             <BookOpen className="w-12 h-12 mx-auto text-muted-foreground" />
@@ -193,6 +236,21 @@ export default async function SkillCoursesPage({ params }: { params: { skill: st
           </div>
         )}
       </div>
+
+       {courseList.length > 0 && (
+         <GlassCard>
+            <CardContent className="p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                    <CardTitle>Test Your Knowledge</CardTitle>
+                    <CardDescription>Take the final quiz to solidify your understanding of {skillInfo.name}.</CardDescription>
+                </div>
+                <Button onClick={handleQuizClick} disabled={!allCoursesCompleted}>
+                    {allCoursesCompleted ? <HelpCircle className="mr-2 h-4 w-4" /> : <Lock className="mr-2 h-4 w-4" />}
+                    Take the Final Quiz
+                </Button>
+            </CardContent>
+        </GlassCard>
+       )}
     </div>
   );
 }
