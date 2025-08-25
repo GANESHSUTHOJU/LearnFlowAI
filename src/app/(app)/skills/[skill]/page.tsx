@@ -3,7 +3,7 @@
 
 import { GlassCard, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, BookOpen, Clock, BarChart, CheckCircle, HelpCircle, Lock } from "lucide-react";
+import { ArrowRight, BookOpen, Clock, BarChart, CheckCircle, HelpCircle, Lock, Youtube } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRoadmapStore } from "@/store/roadmap-store";
@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import QuizClient from "@/components/quiz/quiz-client";
 import { useParams } from "next/navigation";
+import { useState } from "react";
 
 // Placeholder data - this would eventually come from a database
 const coursesData: { [key: string]: any[] } = {
@@ -21,7 +22,8 @@ const coursesData: { [key: string]: any[] } = {
       duration: "4h 30m",
       level: "Beginner",
       imageUrl: "https://placehold.co/600x400.png",
-      imageHint: "abstract geometric"
+      imageHint: "abstract geometric",
+      youtubeLink: "https://www.youtube.com/watch?v=SqcY0GlETPk"
     },
     {
       title: "Advanced CSS and Sass",
@@ -29,7 +31,8 @@ const coursesData: { [key: string]: any[] } = {
       duration: "6h 15m",
       level: "Intermediate",
       imageUrl: "https://placehold.co/600x401.png",
-      imageHint: "abstract colorful"
+      imageHint: "abstract colorful",
+      youtubeLink: "https://www.youtube.com/watch?v=nu5mdN26_Wc"
     },
      {
       title: "Full-Stack with Next.js",
@@ -37,7 +40,8 @@ const coursesData: { [key: string]: any[] } = {
       duration: "12h",
       level: "Advanced",
       imageUrl: "https://placehold.co/600x402.png",
-      imageHint: "abstract dark"
+      imageHint: "abstract dark",
+      youtubeLink: "https://www.youtube.com/watch?v=gzngh3Y3f_M"
     },
   ],
   "data-science": [
@@ -47,7 +51,8 @@ const coursesData: { [key: string]: any[] } = {
       duration: "5h",
       level: "Beginner",
        imageUrl: "https://placehold.co/600x403.png",
-      imageHint: "python logo"
+      imageHint: "python logo",
+      youtubeLink: "https://www.youtube.com/watch?v=rvdkb2K-dMA"
     },
      {
       title: "Data Visualization with D3.js",
@@ -55,7 +60,8 @@ const coursesData: { [key: string]: any[] } = {
       duration: "7h",
       level: "Intermediate",
       imageUrl: "https://placehold.co/600x404.png",
-      imageHint: "data visualization"
+      imageHint: "data visualization",
+      youtubeLink: "https://www.youtube.com/watch?v=NlBt-7PuaLk"
     },
   ],
   "ai-machine-learning": [
@@ -65,15 +71,17 @@ const coursesData: { [key: string]: any[] } = {
       duration: "8h",
       level: "Intermediate",
       imageUrl: "https://placehold.co/600x405.png",
-      imageHint: "neural network"
+      imageHint: "neural network",
+      youtubeLink: "https://www.youtube.com/watch?v=aircAruvnKk"
     },
      {
       title: "Natural Language Processing with Transformers",
       description: "Understand and build models that can process and understand human language.",
       duration: "10h",
       level: "Advanced",
-      imageUrl: "https://placehold.co/600x406.png",
-      imageHint: "natural language"
+      imageUrl: "https://placehold.co/600x400.png",
+      imageHint: "natural language",
+      youtubeLink: "https://www.youtube.com/watch?v=TQQlZhbC5ps"
     },
   ],
   "database-management": [
@@ -82,8 +90,9 @@ const coursesData: { [key: string]: any[] } = {
           description: "Learn the basics of SQL for database manipulation.",
           duration: "4h",
           level: "Beginner",
-          imageUrl: "https://placehold.co/600x407.png",
-          imageHint: "database server"
+          imageUrl: "https://placehold.co/600x400.png",
+          imageHint: "database server",
+          youtubeLink: "https://www.youtube.com/watch?v=HXV3zeQKqGY"
       },
       {
           title: "NoSQL Databases Explained",
@@ -91,7 +100,8 @@ const coursesData: { [key: string]: any[] } = {
           duration: "6h",
           level: "Intermediate",
           imageUrl: "https://placehold.co/600x408.png",
-          imageHint: "database cluster"
+          imageHint: "database cluster",
+          youtubeLink: "https://www.youtube.com/watch?v=0_plvOE0T6w"
       }
   ],
   "ui-ux-design": [
@@ -101,7 +111,8 @@ const coursesData: { [key: string]: any[] } = {
           duration: "7h",
           level: "Beginner",
           imageUrl: "https://placehold.co/600x409.png",
-          imageHint: "design wireframe"
+          imageHint: "design wireframe",
+          youtubeLink: "https://www.youtube.com/watch?v=cKZEgt6182E"
       },
       {
           title: "User Research and Usability Testing",
@@ -109,7 +120,8 @@ const coursesData: { [key: string]: any[] } = {
           duration: "5h",
           level: "Intermediate",
           imageUrl: "https://placehold.co/600x410.png",
-          imageHint: "user feedback"
+          imageHint: "user feedback",
+          youtubeLink: "https://www.youtube.com/watch?v=s_U-s6DkEQU"
       }
   ],
   "backend-systems": [
@@ -119,7 +131,8 @@ const coursesData: { [key: string]: any[] } = {
           duration: "9h",
           level: "Intermediate",
           imageUrl: "https://placehold.co/600x411.png",
-          imageHint: "server code"
+          imageHint: "server code",
+          youtubeLink: "https://www.youtube.com/watch?v=pKd0Rpw7O48"
       },
       {
           title: "Microservices Architecture",
@@ -127,7 +140,8 @@ const coursesData: { [key: string]: any[] } = {
           duration: "11h",
           level: "Advanced",
           imageUrl: "https://placehold.co/600x412.png",
-          imageHint: "cloud infrastructure"
+          imageHint: "cloud infrastructure",
+          youtubeLink: "https://www.youtube.com/watch?v=CdBtNQZH8a4"
       }
   ]
 };
@@ -146,6 +160,7 @@ export default function SkillCoursesPage() {
   const skill = params.skill as string;
   const { toast } = useToast();
   const { completedCourses, completeCourse } = useRoadmapStore();
+  const [watchedVideos, setWatchedVideos] = useState<string[]>([]);
   const skillInfo = skillDetails[skill] || { name: "Courses", description: "Explore the available courses." };
   const courseList = coursesData[skill] || [];
 
@@ -157,6 +172,10 @@ export default function SkillCoursesPage() {
         title: "Course Completed!",
         description: `Great job on finishing "${title}"!`,
     });
+  }
+
+  const handleWatchVideo = (title: string) => {
+    setWatchedVideos(prev => [...prev, title]);
   }
 
   const handleQuizClick = () => {
@@ -180,6 +199,7 @@ export default function SkillCoursesPage() {
         {courseList.length > 0 ? (
           courseList.map((course) => {
             const isCompleted = completedCourses.includes(course.title);
+            const hasWatched = watchedVideos.includes(course.title);
             return (
               <GlassCard key={course.title} className="flex flex-col">
                 <CardContent className="p-0">
@@ -208,21 +228,29 @@ export default function SkillCoursesPage() {
                       <span>{course.level}</span>
                     </div>
                   </div>
-                   <Button 
-                      className="w-full mt-4 group"
-                      onClick={() => handleCompleteCourse(course.title)}
-                      disabled={isCompleted}
-                    >
-                      {isCompleted ? (
-                        <>
-                          <CheckCircle className="w-4 h-4 mr-2" /> Completed
-                        </>
-                      ) : (
-                        <>
-                         Mark as Complete
-                        </>
-                      )}
-                  </Button>
+                  <div className="mt-4 space-y-2">
+                    <Button asChild variant="outline" className="w-full" onClick={() => handleWatchVideo(course.title)}>
+                      <Link href={course.youtubeLink} target="_blank">
+                        <Youtube className="mr-2 h-4 w-4" />
+                        Watch on YouTube
+                      </Link>
+                    </Button>
+                    <Button 
+                        className="w-full"
+                        onClick={() => handleCompleteCourse(course.title)}
+                        disabled={isCompleted || !hasWatched}
+                      >
+                        {isCompleted ? (
+                          <>
+                            <CheckCircle className="w-4 h-4 mr-2" /> Completed
+                          </>
+                        ) : (
+                          <>
+                           Mark as Complete
+                          </>
+                        )}
+                    </Button>
+                  </div>
                 </div>
               </GlassCard>
             )
