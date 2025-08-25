@@ -140,7 +140,8 @@ const skillDetails: { [key: string]: { name: string, description: string } } = {
   "backend-systems": { name: "Backend Systems", description: "Courses to build robust server-side applications and APIs." },
 };
 
-export default function SkillCoursesPage({ params: { skill } }: { params: { skill: string } }) {
+export default function SkillCoursesPage({ params }: { params: { skill: string } }) {
+  const { skill } = params;
   const { toast } = useToast();
   const { completedCourses, completeCourse } = useRoadmapStore();
   const skillInfo = skillDetails[skill] || { name: "Courses", description: "Explore the available courses." };
