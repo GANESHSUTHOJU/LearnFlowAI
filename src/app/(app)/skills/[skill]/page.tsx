@@ -10,6 +10,7 @@ import { useRoadmapStore } from "@/store/roadmap-store";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import QuizClient from "@/components/quiz/quiz-client";
+import { useParams } from "next/navigation";
 
 // Placeholder data - this would eventually come from a database
 const coursesData: { [key: string]: any[] } = {
@@ -140,8 +141,9 @@ const skillDetails: { [key: string]: { name: string, description: string } } = {
   "backend-systems": { name: "Backend Systems", description: "Courses to build robust server-side applications and APIs." },
 };
 
-export default function SkillCoursesPage({ params }: { params: { skill: string } }) {
-  const { skill } = params;
+export default function SkillCoursesPage() {
+  const params = useParams();
+  const skill = params.skill as string;
   const { toast } = useToast();
   const { completedCourses, completeCourse } = useRoadmapStore();
   const skillInfo = skillDetails[skill] || { name: "Courses", description: "Explore the available courses." };
