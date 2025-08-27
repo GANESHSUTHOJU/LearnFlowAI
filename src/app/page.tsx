@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import Logo from "@/components/logo";
+import ParallaxAnimation from "@/components/ui/parallax-animation";
 
 export default function Home() {
   const features = [
@@ -15,10 +16,10 @@ export default function Home() {
   return (
     <main className="flex flex-col min-h-[calc(100vh-40px)] items-center justify-center p-4 sm:p-8 relative">
        <div className="absolute inset-0 -z-10 h-full w-full overflow-hidden">
-        <div className="absolute -left-40 -top-20 h-80 w-80 rounded-full bg-primary/20 blur-3xl animate-float-x-slow-1"></div>
-        <div className="absolute -right-40 -bottom-20 h-80 w-80 rounded-full bg-accent/20 blur-3xl animate-float-x-slow-2"></div>
-        <div className="absolute left-1/3 top-1/4 h-40 w-40 rounded-full bg-primary/10 blur-2xl animate-float-x-fast-1"></div>
-        <div className="absolute right-1/3 bottom-1/4 h-40 w-40 rounded-full bg-accent/10 blur-2xl animate-float-x-fast-2"></div>
+        <div className="absolute -left-40 -top-20 h-96 w-96 rounded-full bg-primary/20 blur-3xl animate-float-x-slow-1"></div>
+        <div className="absolute -right-40 -bottom-20 h-96 w-96 rounded-full bg-accent/20 blur-3xl animate-float-x-slow-2"></div>
+        <div className="absolute left-1/3 top-1/4 h-56 w-56 rounded-full bg-primary/10 blur-2xl animate-float-x-fast-1"></div>
+        <div className="absolute right-1/3 bottom-1/4 h-56 w-56 rounded-full bg-accent/10 blur-2xl animate-float-x-fast-2"></div>
       </div>
       
       <div className="z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl w-full">
@@ -49,24 +50,26 @@ export default function Home() {
         </div>
 
         {/* Right Side: Floating Card */}
-        <div className="relative animate-float-slow hidden lg:block">
-            <div className="bg-card/60 backdrop-blur-lg border border-white/5 shadow-2xl rounded-2xl p-8 transform transition-transform duration-500 hover:scale-105">
-                <div className="flex items-center gap-4">
-                    <Logo className="w-12 h-12 text-primary" />
-                    <div>
-                        <h2 className="text-2xl font-bold font-headline">Unlock Your Potential</h2>
-                        <p className="text-muted-foreground text-sm">Join today and start your journey.</p>
+        <div className="relative hidden lg:block">
+            <ParallaxAnimation>
+                <div className="bg-card/60 backdrop-blur-lg border border-white/5 shadow-2xl rounded-2xl p-8">
+                    <div className="flex items-center gap-4">
+                        <Logo className="w-12 h-12 text-primary" />
+                        <div>
+                            <h2 className="text-2xl font-bold font-headline">Unlock Your Potential</h2>
+                            <p className="text-muted-foreground text-sm">Join today and start your journey.</p>
+                        </div>
                     </div>
+                    <ul className="mt-6 space-y-3">
+                        {features.map((feature) => (
+                            <li key={feature} className="flex items-center gap-3">
+                                <CheckCircle className="w-5 h-5 text-accent" />
+                                <span className="text-sm">{feature}</span>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
-                <ul className="mt-6 space-y-3">
-                    {features.map((feature) => (
-                        <li key={feature} className="flex items-center gap-3">
-                            <CheckCircle className="w-5 h-5 text-accent" />
-                            <span className="text-sm">{feature}</span>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            </ParallaxAnimation>
         </div>
       </div>
     </main>
