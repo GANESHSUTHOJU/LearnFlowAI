@@ -69,3 +69,37 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Signin page styles */
+.signin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #111;
+    overflow: hidden;
+}
+
+.signin section {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+}
+
+.signin section span {
+    position: relative;
+    display: block;
+    width: calc(6.25vw - 2px);
+    height: calc(6.25vw - 2px);
+    background: #181818;
+    z-index: 2;
+    transition: 1.5s;
+}
+
+.signin section span:hover {
+    background: hsl(var(--primary));
+    transition: 0s;
+}

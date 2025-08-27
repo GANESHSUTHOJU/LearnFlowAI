@@ -15,6 +15,7 @@ import { FirebaseError } from "firebase/app";
 import AnimatedError from "@/components/ui/animated-error";
 import { Separator } from "@/components/ui/separator";
 import { Github, Google } from "@/components/icons";
+import AuthBackground from "@/components/ui/auth-background";
 
 
 export default function LoginPage() {
@@ -95,8 +96,9 @@ export default function LoginPage() {
 
 
   return (
-    <div className="flex min-h-[calc(100vh-40px)] items-center justify-center p-8">
-        <div className="z-10 w-full max-w-md">
+    <div className="signin">
+      <AuthBackground />
+        <div className="z-10 w-full max-w-md p-4">
             {error ? (
               <AnimatedError message={error} onReset={() => setError(null)} />
             ) : (

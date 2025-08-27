@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,6 +12,7 @@ import Link from "next/link";
 import Logo from "@/components/logo";
 import { FirebaseError } from "firebase/app";
 import AnimatedError from "@/components/ui/animated-error";
+import AuthBackground from "@/components/ui/auth-background";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -46,8 +47,9 @@ export default function ForgotPasswordPage() {
   };
   
   return (
-    <div className="flex min-h-[calc(100vh-40px)] items-center justify-center p-8">
-        <div className="z-10 w-full max-w-md">
+    <div className="signin">
+        <AuthBackground />
+        <div className="z-10 w-full max-w-md p-4">
              {error ? (
               <AnimatedError message={error} onReset={() => setError(null)} />
             ) : isSuccess ? (

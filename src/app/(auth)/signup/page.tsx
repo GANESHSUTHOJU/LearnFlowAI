@@ -14,6 +14,7 @@ import Logo from "@/components/logo";
 import { FirebaseError } from "firebase/app";
 import AnimatedError from "@/components/ui/animated-error";
 import { Google, Github } from "@/components/icons";
+import AuthBackground from "@/components/ui/auth-background";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
@@ -105,8 +106,9 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-40px)] items-center justify-center p-8">
-        <div className="z-10 w-full max-w-md">
+    <div className="signin">
+        <AuthBackground />
+        <div className="z-10 w-full max-w-md p-4">
             {error ? (
               <AnimatedError message={error} onReset={() => setError(null)} />
             ) : (
