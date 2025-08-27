@@ -3,7 +3,7 @@
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 import { AuthProvider } from '@/hooks/use-auth';
-import BackgroundEffects from '@/components/ui/background-effects';
+import ParticleBackground from '@/components/ui/particle-background';
 
 export default function RootLayout({
   children,
@@ -21,7 +21,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased min-h-screen bg-background flex flex-col">
-        <BackgroundEffects />
+        <ParticleBackground />
         <AuthProvider>
             <main className="flex-1 flex flex-col z-10">
                 {children}

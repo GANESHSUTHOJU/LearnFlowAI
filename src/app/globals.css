@@ -8,41 +8,36 @@ body {
   isolation: isolate;
 }
 
-.background-effects-container::before {
-  content: "";
-  position: fixed;
-  left: var(--x, 50%);
-  top: var(--y, 50%);
-  width: 150%;
-  height: 150%;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle at center, hsla(var(--primary), 0.5) 0, hsla(var(--accent), 0.4) 40%, transparent 80%);
-  filter: blur(200px);
-  opacity: 0.8;
-  pointer-events: none;
-  z-index: -10;
+#particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -10;
 }
+
 
 @layer base {
   :root {
-    --background: 220 50% 5%;
+    --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
-    --card: 220 50% 8%;
+    --card: 240 10% 3.9%;
     --card-foreground: 0 0% 98%;
-    --popover: 220 50% 5%;
+    --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
     --primary: 220 100% 60%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 220 50% 30%;
+    --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 220 50% 15%;
-    --muted-foreground: 0 0% 60%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
     --accent: 210 100% 50%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 220 50% 15%;
-    --input: 220 50% 15%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
     --ring: 220 100% 60%;
     --chart-1: 220 70% 50%;
     --chart-2: 210 60% 45%;
@@ -66,7 +61,8 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: #0d0d0d !important;
+    @apply text-foreground;
   }
 }
 
@@ -76,7 +72,9 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: #111;
+    /* Use a semi-transparent overlay for auth pages if desired */
+    background: rgba(13, 13, 13, 0.7); 
+    backdrop-filter: blur(2px);
     overflow: hidden;
 }
 
@@ -87,6 +85,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 2px;
+    z-index: -1;
 }
 
 .signin section span {
