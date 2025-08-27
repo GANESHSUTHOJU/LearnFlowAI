@@ -14,6 +14,7 @@ interface Course {
 
 interface RoadmapState {
   courses: Course[];
+  completedCourses: string[]; // Keep track of completed course titles
   startCourse: (course: { title: string, totalModules: number }) => void;
   completeModule: (courseTitle: string, moduleTitle: string) => void;
   updateQuizScore: (courseTitle: string, score: number) => void;
@@ -23,6 +24,7 @@ export const useRoadmapStore = create<RoadmapState>()(
   persist(
     (set, get) => ({
       courses: [],
+      completedCourses: [],
       startCourse: ({ title, totalModules }) =>
         set((state) => {
           if (state.courses.some(c => c.title === title)) {
@@ -53,17 +55,25 @@ export const useRoadmapStore = create<RoadmapState>()(
             const newModulesCompleted = newCompletedModules.length;
             const isCourseCompleted = newModulesCompleted === courseToUpdate.totalModules;
 
+            const updatedCourses = state.courses.map(course =>
+                course.title === courseTitle
+                    ? { 
+                        ...course, 
+                        completedModules: newCompletedModules,
+                        modulesCompleted: newModulesCompleted,
+                        isCompleted: isCourseCompleted,
+                      }
+                    : course
+            );
+            
+            let updatedCompletedCourses = state.completedCourses;
+            if (isCourseCompleted && !state.completedCourses.includes(courseTitle)) {
+                updatedCompletedCourses = [...state.completedCourses, courseTitle];
+            }
+
             return {
-                courses: state.courses.map(course =>
-                    course.title === courseTitle
-                        ? { 
-                            ...course, 
-                            completedModules: newCompletedModules,
-                            modulesCompleted: newModulesCompleted,
-                            isCompleted: isCourseCompleted,
-                          }
-                        : course
-                ),
+                courses: updatedCourses,
+                completedCourses: updatedCompletedCourses,
             };
         }),
       
