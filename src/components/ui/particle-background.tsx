@@ -54,21 +54,12 @@ export default function ParticleBackground() {
 
         document.body.appendChild(script);
 
-        // Create a div for particles to attach to
-        const particlesDiv = document.createElement('div');
-        particlesDiv.id = 'particles-js';
-        document.body.prepend(particlesDiv);
-
-
         return () => {
             document.body.removeChild(script);
-            const particlesEl = document.getElementById('particles-js');
-            if (particlesEl) {
-                document.body.removeChild(particlesEl);
-            }
-            // If particles.js has a destroy method, call it here
-            if (window.particlesJS && window.particlesJS.destroy) {
-                window.particlesJS.destroy();
+            // Optional: If particles.js has a destroy method, call it here
+            const pjs = document.querySelector('#particles-js canvas');
+            if (pjs && pjs.parentElement) {
+                pjs.parentElement.remove();
             }
         };
 
