@@ -177,7 +177,7 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
                         <CardContent>
                            {showFeedback && (
                                 <Alert variant={isCorrect ? "default" : "destructive"} className={cn(isCorrect ? "border-green-500/50" : "", "animate-in fade-in")}>
-                                     <isCorrect.icon className="h-4 w-4" />
+                                     {isCorrect ? <CheckCircleIcon className="h-4 w-4 text-green-500" /> : <XCircle className="h-4 w-4 text-red-500" />}
                                     <AlertTitle>{isCorrect ? 'Correct!' : 'Incorrect'}</AlertTitle>
                                     <AlertDescription className="space-y-2 mt-2">
                                         <p>{isCorrect ? currentQuestion.explanation : getIncorrectExplanation()}</p>
