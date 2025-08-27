@@ -15,12 +15,6 @@ export default function Home() {
   return (
     <main className="flex flex-col min-h-[calc(100vh-40px)] items-center justify-center p-4 sm:p-8 relative overflow-hidden">
       
-      {/* Decorative Floating Bars */}
-      <div className="absolute top-1/4 left-0 w-32 h-2 bg-primary/30 rounded-full animate-float-x-slow-1 opacity-50" />
-      <div className="absolute top-1/2 right-0 w-24 h-2 bg-accent/30 rounded-full animate-float-x-slow-2 opacity-50" />
-      <div className="absolute bottom-1/4 left-1/4 w-16 h-1 bg-secondary rounded-full animate-float-x-fast-1 opacity-60" />
-      <div className="absolute bottom-1/3 right-1/4 w-20 h-1.5 bg-primary/40 rounded-full animate-float-x-fast-2 opacity-50" />
-
       <div className="z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl w-full">
         
         {/* Left Side: Headline and Description */}
