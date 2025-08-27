@@ -36,7 +36,7 @@ const QuizQuestionSchema = z.object({
 
 const GeneratePersonalizedRoadmapOutputSchema = z.object({
   roadmap: z.array(RoadmapStepSchema).describe('The generated learning roadmap as a list of steps.'),
-  quiz: z.array(QuizQuestionSchema).min(25).describe('A quiz with at least 25 multiple-choice questions related to the roadmap.'),
+  quiz: z.array(QuizQuestionSchema).min(10).describe('A quiz with at least 10 multiple-choice questions related to the roadmap.'),
 });
 export type GeneratePersonalizedRoadmapOutput = z.infer<typeof GeneratePersonalizedRoadmapOutputSchema>;
 
@@ -57,7 +57,7 @@ Here is the skill ontology: {{{skillOntology}}}
 
 Generate a clear, step-by-step list for the roadmap. Each step must have a step number, a title, a brief description, and a concise YouTube search query.
 
-After the roadmap, generate a quiz with at least 25 multiple-choice questions that covers all the topics in the roadmap. For each question, you MUST provide:
+After the roadmap, generate a quiz with at least 10 multiple-choice questions that covers all the topics in the roadmap. For each question, you MUST provide:
 1. The question text.
 2. An array of exactly 4 options.
 3. The correct answer text, which must be one of the 4 options.
