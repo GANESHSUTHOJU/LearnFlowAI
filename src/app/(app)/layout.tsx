@@ -7,6 +7,7 @@ import AppSidebar from "@/components/app-sidebar";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { useAuth } from '@/hooks/use-auth';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useRoadmapStore } from '@/store/roadmap-store';
 
 export default function AppLayout({
   children,
@@ -16,16 +17,21 @@ export default function AppLayout({
   const { user, loading } = useAuth();
   const router = useRouter();
   const [isClient, setIsClient] = useState(false);
+  const { setUser } = useRoadmapStore();
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
   useEffect(() => {
-    if (isClient && !loading && !user) {
-      router.push('/login');
+    if (isClient && !loading) {
+      if (user) {
+        setUser(user.uid);
+      } else {
+        router.push('/login');
+      }
     }
-  }, [user, loading, router, isClient]);
+  }, [user, loading, router, isClient, setUser]);
 
   if (!isClient || loading || !user) {
     return (
