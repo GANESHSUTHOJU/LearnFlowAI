@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GlassCard, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/glass-card";
-import { Loader2 } from "lucide-react";
+import { Loader2, Mail, Lock } from "lucide-react";
 import Link from "next/link";
 import Logo from "@/components/logo";
 import { FirebaseError } from "firebase/app";
@@ -121,21 +121,20 @@ export default function SignupPage() {
                             <CardTitle>Create an Account</CardTitle>
                             <CardDescription>Start your personalized learning path today.</CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="email">Email</Label>
+                        <CardContent className="space-y-6">
+                            <div className="input-box">
                                 <Input
                                     id="email"
                                     type="email"
-                                    placeholder="you@example.com"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     required
                                     disabled={isLoading}
                                 />
+                                <Label htmlFor="email">Email</Label>
+                                <Mail className="icon" />
                             </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="password">Password</Label>
+                            <div className="input-box">
                                 <Input
                                     id="password"
                                     type="password"
@@ -144,9 +143,10 @@ export default function SignupPage() {
                                     required
                                     disabled={isLoading}
                                 />
+                                <Label htmlFor="password">Password</Label>
+                                <Lock className="icon" />
                             </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="confirm-password">Confirm Password</Label>
+                            <div className="input-box">
                                 <Input
                                     id="confirm-password"
                                     type="password"
@@ -155,6 +155,8 @@ export default function SignupPage() {
                                     required
                                     disabled={isLoading}
                                 />
+                                <Label htmlFor="confirm-password">Confirm Password</Label>
+                                <Lock className="icon" />
                             </div>
                         </CardContent>
                         <CardFooter className="flex flex-col gap-4">

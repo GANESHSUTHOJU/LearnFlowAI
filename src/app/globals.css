@@ -103,3 +103,34 @@ body {
     background: hsl(var(--primary));
     transition: 0s;
 }
+
+.input-box {
+  position: relative;
+  width: 100%;
+}
+.input-box input {
+  width: 100%;
+  padding-right: 2.5rem; /* Space for icon */
+}
+.input-box label {
+  position: absolute;
+  top: 50%;
+  left: 0.75rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+  transition: .3s ease;
+  color: hsl(var(--muted-foreground));
+}
+.input-box input:focus ~ label,
+.input-box input:valid ~ label {
+  top: -0.5rem;
+  font-size: 0.75rem;
+  color: hsl(var(--primary));
+}
+.input-box .icon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: hsl(var(--muted-foreground));
+}
