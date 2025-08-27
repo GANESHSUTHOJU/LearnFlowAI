@@ -14,6 +14,12 @@ export default function Home() {
 
   return (
     <main className="flex flex-col min-h-[calc(100vh-40px)] items-center justify-center p-4 sm:p-8 relative">
+       <div className="absolute inset-0 -z-10 h-full w-full overflow-hidden">
+        <div className="absolute -left-40 -top-20 h-80 w-80 rounded-full bg-primary/20 blur-3xl animate-float-x-slow-1"></div>
+        <div className="absolute -right-40 -bottom-20 h-80 w-80 rounded-full bg-accent/20 blur-3xl animate-float-x-slow-2"></div>
+        <div className="absolute left-1/3 top-1/4 h-40 w-40 rounded-full bg-primary/10 blur-2xl animate-float-x-fast-1"></div>
+        <div className="absolute right-1/3 bottom-1/4 h-40 w-40 rounded-full bg-accent/10 blur-2xl animate-float-x-fast-2"></div>
+      </div>
       
       <div className="z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl w-full">
         

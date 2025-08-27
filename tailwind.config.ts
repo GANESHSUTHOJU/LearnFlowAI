@@ -99,7 +99,7 @@ export default {
         },
         'float-slow': {
           '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-10px)' },
+          '50%': { transform: 'translateY(-20px)' },
         },
         'float-x-slow-1': {
           '0%, 100%': { transform: 'translateX(-20px)', opacity: '0.5' },
@@ -129,7 +129,7 @@ export default {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        'float-slow': 'float-slow 6s ease-in-out infinite',
+        'float-slow': 'float-slow 8s ease-in-out infinite',
         'float-x-slow-1': 'float-x-slow-1 15s ease-in-out infinite',
         'float-x-slow-2': 'float-x-slow-2 15s ease-in-out infinite',
         'float-x-fast-1': 'float-x-fast-1 8s ease-in-out infinite',
