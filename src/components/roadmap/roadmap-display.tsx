@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { GlassCard, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 import { Check, Rocket, Youtube, Lock, AlertTriangle, ArrowRight, XCircle, CheckCircle as CheckCircleIcon } from "lucide-react";
@@ -18,8 +18,21 @@ interface RoadmapDisplayProps {
 
 export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
   const { toast } = useToast();
-  const { completeCourse, completedCourses, updateQuizScore } = useRoadmapStore();
-  const allStepsCompleted = roadmap.roadmap.every(step => completedCourses.includes(step.title));
+  const { courses, completeModule, updateQuizScore, startCourse } = useRoadmapStore();
+  
+  const roadmapTitle = "Generated Roadmap"; // Or derive from roadmap.goal
+  
+  useEffect(() => {
+    startCourse({
+        title: roadmapTitle,
+        totalModules: roadmap.roadmap.length,
+    })
+  }, [roadmap, startCourse, roadmapTitle]);
+
+  const currentCourse = courses.find(c => c.title === roadmapTitle);
+  const completedModules = currentCourse?.completedModules || [];
+  const allStepsCompleted = roadmap.roadmap.every(step => completedModules.includes(step.title));
+
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -30,8 +43,8 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
   const currentQuestion = roadmap.quiz[currentQuestionIndex];
   const isCorrect = selectedOption === currentQuestion.correctAnswer;
 
-  const handleCompleteCourse = (title: string) => {
-    completeCourse(title);
+  const handleCompleteModule = (title: string) => {
+    completeModule(roadmapTitle, title);
     toast({
       title: "Module Completed!",
       description: `Great job on finishing "${title}"!`,
@@ -67,7 +80,7 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
       setCurrentQuestionIndex(i => i + 1);
     } else {
       const finalScore = Math.round(((score + (isCorrect ? 1 : 0)) / roadmap.quiz.length) * 100);
-      updateQuizScore(finalScore);
+      updateQuizScore(roadmapTitle, finalScore);
       setQuizFinished(true);
     }
   }
@@ -98,7 +111,7 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
             <CardContent>
                 <div className="space-y-6">
                 {roadmap.roadmap.map((step) => {
-                  const isCompleted = completedCourses.includes(step.title);
+                  const isCompleted = completedModules.includes(step.title);
 
                   return (
                     <div key={step.step} className="flex items-start gap-4">
@@ -115,7 +128,7 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
                                 </Link>
                             </Button>
                             <Button 
-                                onClick={() => handleCompleteCourse(step.title)} 
+                                onClick={() => handleCompleteModule(step.title)} 
                                 size="sm"
                                 disabled={isCompleted}
                                 >
@@ -207,8 +220,8 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
                         <CardContent className="p-6 flex flex-col items-center justify-center text-center">
                             <h3 className="text-2xl font-bold font-headline">Quiz Completed!</h3>
                             <p className="text-muted-foreground mt-2">You scored:</p>
-                            <p className="text-6xl font-bold my-4 text-primary">{Math.round((score / roadmap.quiz.length) * 100)}%</p>
-                            {((score / roadmap.quiz.length) * 100) >= 75 ? (
+                            <p className="text-6xl font-bold my-4 text-primary">{currentCourse?.quizScore}%</p>
+                            {(currentCourse?.quizScore ?? 0) >= 75 ? (
                                 <div className="flex items-center gap-2 text-green-400">
                                     <CheckCircleIcon className="w-8 h-8" />
                                     <p className="text-xl font-semibold">Congratulations, you passed!</p>

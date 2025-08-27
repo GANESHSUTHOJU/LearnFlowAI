@@ -6,10 +6,13 @@ import { GlassCard, CardContent, CardHeader, CardTitle, CardDescription } from "
 import { BookOpen, CheckCircle, PieChart, Star } from "lucide-react"
 
 export default function ProgressChart() {
-  const { startedCourses, completedCourses, quizScore } = useRoadmapStore();
+  const { courses } = useRoadmapStore();
 
-  const startedCount = startedCourses.length;
-  const completedCount = completedCourses.length;
+  const startedCount = courses.length;
+  const completedCount = courses.filter(c => c.isCompleted).length;
+  const averageQuizScore = courses.length > 0
+    ? Math.round(courses.reduce((acc, course) => acc + (course.quizScore ?? 0), 0) / courses.length)
+    : null;
 
   return (
       <GlassCard className="h-full">
@@ -18,10 +21,10 @@ export default function ProgressChart() {
             <CardDescription>Your progress across all started courses.</CardDescription>
         </CardHeader>
         <CardContent>
-            {startedCount === 0 && completedCount === 0 && quizScore === null ? (
+            {startedCount === 0 && completedCount === 0 ? (
                  <div className="flex flex-col h-48 items-center justify-center text-center text-muted-foreground">
                     <BookOpen className="w-12 h-12" />
-                    <p className="mt-4">Start a course from the roadmap to see your progress here.</p>
+                    <p className="mt-4">Start a course from the skills catalog or generate a roadmap to see your progress here.</p>
                 </div>
             ) : (
                 <div className="space-y-6">
@@ -43,9 +46,9 @@ export default function ProgressChart() {
                         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 delay-400">
                              <div className="flex items-center justify-center gap-2">
                                 <PieChart className="w-6 h-6 text-blue-400" />
-                                <p className="text-3xl font-bold">{quizScore !== null ? `${quizScore}%` : 'N/A'}</p>
+                                <p className="text-3xl font-bold">{averageQuizScore !== null ? `${averageQuizScore}%` : 'N/A'}</p>
                              </div>
-                           <p className="text-sm text-muted-foreground">Latest Quiz Score</p>
+                           <p className="text-sm text-muted-foreground">Average Quiz Score</p>
                         </div>
                     </div>
                 </div>

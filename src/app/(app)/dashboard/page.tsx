@@ -1,11 +1,11 @@
 
 import ProgressChart from "@/components/dashboard/progress-chart";
-import RoadmapPreview from "@/components/dashboard/roadmap-preview";
 import AiInsights from "@/components/dashboard/ai-insights";
 import { GlassCard, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpen } from "lucide-react";
 import Link from "next/link";
+import ProgressTracker from "@/components/dashboard/progress-tracker";
 
 export default function DashboardPage() {
   return (
@@ -25,7 +25,7 @@ export default function DashboardPage() {
         {/* Side Cards */}
         <div className="xl:col-span-2 space-y-6">
           <AiInsights />
-          <RoadmapPreview />
+          <ProgressTracker />
             <GlassCard>
                 <CardHeader>
                     <div className="flex items-center gap-3">

@@ -4,87 +4,79 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 
 interface Course {
   title: string;
-  progress: number;
+  totalModules: number;
+  modulesCompleted: number;
+  completedModules: string[];
+  quizScore: number | null;
+  isCompleted: boolean;
   startDate: string;
 }
 
 interface RoadmapState {
-  startedCourses: Course[];
-  completedCourses: string[]; // Array of completed course titles
-  quizScore: number | null;
-  startCourse: (course: Pick<Course, 'title'>) => void;
-  updateProgress: (title: string, progress: number) => void;
-  completeCourse: (title: string) => void;
-  updateQuizScore: (score: number) => void;
+  courses: Course[];
+  startCourse: (course: { title: string, totalModules: number }) => void;
+  completeModule: (courseTitle: string, moduleTitle: string) => void;
+  updateQuizScore: (courseTitle: string, score: number) => void;
 }
 
 export const useRoadmapStore = create<RoadmapState>()(
   persist(
     (set, get) => ({
-      startedCourses: [],
-      completedCourses: [],
-      quizScore: null,
-      startCourse: (course) =>
+      courses: [],
+      startCourse: ({ title, totalModules }) =>
         set((state) => {
-          // Avoid adding duplicates
-          if (state.startedCourses.some(c => c.title === course.title)) {
+          if (state.courses.some(c => c.title === title)) {
             return state;
           }
           const newCourse: Course = {
-              ...course,
-              progress: 0,
+              title,
+              totalModules,
+              modulesCompleted: 0,
+              completedModules: [],
+              quizScore: null,
+              isCompleted: false,
               startDate: new Date().toISOString(),
           }
-          return { startedCourses: [...state.startedCourses, newCourse] };
+          return { courses: [...state.courses, newCourse] };
         }),
-      updateProgress: (title, progress) =>
-        set((state) => ({
-          startedCourses: state.startedCourses.map((course) =>
-            course.title === title ? { ...course, progress: Math.min(100, progress) } : course
-          ),
-        })),
-      completeCourse: (title) =>
+        
+      completeModule: (courseTitle, moduleTitle) =>
         set((state) => {
-            if (!state.startedCourses.some(c => c.title === title)) {
-                 const newCourse: Course = {
-                  title,
-                  progress: 100,
-                  startDate: new Date().toISOString(),
-                }
-                if (state.completedCourses.includes(title)) {
-                    return {
-                         startedCourses: [...state.startedCourses, newCourse],
-                    }
-                }
-                return { 
-                    startedCourses: [...state.startedCourses, newCourse],
-                    completedCourses: [...state.completedCourses, title]
-                }
+            const courseToUpdate = state.courses.find(c => c.title === courseTitle);
+            if (!courseToUpdate) return state;
+
+            if (courseToUpdate.completedModules.includes(moduleTitle)) {
+                return state; 
             }
 
-            // Avoid adding duplicates to completed list
-            if (state.completedCourses.includes(title)) {
-                return {
-                     startedCourses: state.startedCourses.map((course) =>
-                        course.title === title ? { ...course, progress: 100 } : course
-                    ),
-                };
-            }
+            const newCompletedModules = [...courseToUpdate.completedModules, moduleTitle];
+            const newModulesCompleted = newCompletedModules.length;
+            const isCourseCompleted = newModulesCompleted === courseToUpdate.totalModules;
+
             return {
-                startedCourses: state.startedCourses.map((course) =>
-                    course.title === title ? { ...course, progress: 100 } : course
+                courses: state.courses.map(course =>
+                    course.title === courseTitle
+                        ? { 
+                            ...course, 
+                            completedModules: newCompletedModules,
+                            modulesCompleted: newModulesCompleted,
+                            isCompleted: isCourseCompleted,
+                          }
+                        : course
                 ),
-                completedCourses: [...state.completedCourses, title]
-            }
+            };
         }),
-      updateQuizScore: (score: number) =>
-        set(() => ({
-            quizScore: score,
+      
+      updateQuizScore: (courseTitle, score) =>
+        set((state) => ({
+            courses: state.courses.map(course => 
+                course.title === courseTitle ? { ...course, quizScore: score } : course
+            ),
         }))
     }),
     {
-      name: 'roadmap-storage', // name of the item in the storage (must be unique)
-      storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
+      name: 'roadmap-storage',
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );
