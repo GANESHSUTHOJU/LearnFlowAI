@@ -11,7 +11,9 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import QuizClient from "@/components/quiz/quiz-client";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { generateSkillBanner } from "@/ai/flows/generate-skill-banner";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // Placeholder data - this would eventually come from a database
 const coursesData: { [key: string]: any[] } = {
@@ -21,8 +23,6 @@ const coursesData: { [key: string]: any[] } = {
       description: "Learn the fundamentals of React and build your first application.",
       duration: "4h 30m",
       level: "Beginner",
-      imageUrl: "https://picsum.photos/600/400",
-      imageHint: "react code",
       youtubeLink: "https://www.youtube.com/watch?v=SqcY0GlETPk"
     },
     {
@@ -30,8 +30,6 @@ const coursesData: { [key: string]: any[] } = {
       description: "Take your CSS skills to the next level with advanced techniques.",
       duration: "6h 15m",
       level: "Intermediate",
-      imageUrl: "https://picsum.photos/600/401",
-      imageHint: "css design",
       youtubeLink: "https://www.youtube.com/watch?v=nu5mdN26_Wc"
     },
      {
@@ -39,8 +37,6 @@ const coursesData: { [key: string]: any[] } = {
       description: "Build a complete full-stack application using the Next.js framework.",
       duration: "12h",
       level: "Advanced",
-      imageUrl: "https://picsum.photos/600/402",
-      imageHint: "abstract dark",
       youtubeLink: "https://www.youtube.com/watch?v=gzngh3Y3f_M"
     },
   ],
@@ -50,8 +46,6 @@ const coursesData: { [key: string]: any[] } = {
       description: "Get started with Python and the libraries you need for data analysis.",
       duration: "5h",
       level: "Beginner",
-       imageUrl: "https://picsum.photos/600/403",
-      imageHint: "python logo",
       youtubeLink: "https://www.youtube.com/watch?v=rvdkb2K-dMA"
     },
      {
@@ -59,8 +53,6 @@ const coursesData: { [key: string]: any[] } = {
       description: "Create stunning interactive charts and graphs for the web.",
       duration: "7h",
       level: "Intermediate",
-      imageUrl: "https://picsum.photos/600/404",
-      imageHint: "data visualization",
       youtubeLink: "https://www.youtube.com/watch?v=NlBt-7PuaLk"
     },
   ],
@@ -70,8 +62,6 @@ const coursesData: { [key: string]: any[] } = {
       description: "An introduction to the foundational concepts of neural networks.",
       duration: "8h",
       level: "Intermediate",
-      imageUrl: "https://picsum.photos/600/405",
-      imageHint: "neural network",
       youtubeLink: "https://www.youtube.com/watch?v=aircAruvnKk"
     },
      {
@@ -79,8 +69,6 @@ const coursesData: { [key: string]: any[] } = {
       description: "Understand and build models that can process and understand human language.",
       duration: "10h",
       level: "Advanced",
-      imageUrl: "https://picsum.photos/600/406",
-      imageHint: "natural language",
       youtubeLink: "https://www.youtube.com/watch?v=TQQlZhbC5ps"
     },
   ],
@@ -90,8 +78,6 @@ const coursesData: { [key: string]: any[] } = {
           description: "Learn the basics of SQL for database manipulation.",
           duration: "4h",
           level: "Beginner",
-          imageUrl: "https://picsum.photos/600/407",
-          imageHint: "database server",
           youtubeLink: "https://www.youtube.com/watch?v=HXV3zeQKqGY"
       },
       {
@@ -99,8 +85,6 @@ const coursesData: { [key: string]: any[] } = {
           description: "Explore the world of NoSQL with MongoDB and others.",
           duration: "6h",
           level: "Intermediate",
-          imageUrl: "https://picsum.photos/600/408",
-          imageHint: "database cluster",
           youtubeLink: "https://www.youtube.com/watch?v=0_plvOE0T6w"
       }
   ],
@@ -110,8 +94,6 @@ const coursesData: { [key: string]: any[] } = {
           description: "Learn how to design and prototype with Figma.",
           duration: "7h",
           level: "Beginner",
-          imageUrl: "https://picsum.photos/600/409",
-          imageHint: "design wireframe",
           youtubeLink: "https://www.youtube.com/watch?v=cKZEgt6182E"
       },
       {
@@ -119,8 +101,6 @@ const coursesData: { [key: string]: any[] } = {
           description: "Master the techniques for effective user research.",
           duration: "5h",
           level: "Intermediate",
-          imageUrl: "https://picsum.photos/600/410",
-          imageHint: "user feedback",
           youtubeLink: "https://www.youtube.com/watch?v=s_U-s6DkEQU"
       }
   ],
@@ -130,8 +110,6 @@ const coursesData: { [key: string]: any[] } = {
           description: "Create robust and scalable APIs from scratch.",
           duration: "9h",
           level: "Intermediate",
-          imageUrl: "https://picsum.photos/600/411",
-          imageHint: "server code",
           youtubeLink: "https://www.youtube.com/watch?v=pKd0Rpw7O48"
       },
       {
@@ -139,8 +117,6 @@ const coursesData: { [key: string]: any[] } = {
           description: "Learn how to design and build microservices-based applications.",
           duration: "11h",
           level: "Advanced",
-          imageUrl: "https://picsum.photos/600/412",
-          imageHint: "cloud infrastructure",
           youtubeLink: "https://www.youtube.com/watch?v=CdBtNQZH8a4"
       }
   ]
@@ -161,8 +137,38 @@ export default function SkillCoursesPage() {
   const { toast } = useToast();
   const { completedCourses, completeCourse } = useRoadmapStore();
   const [watchedVideos, setWatchedVideos] = useState<string[]>([]);
+  const [courseImages, setCourseImages] = useState<Record<string, string>>({});
+  const [isLoadingImages, setIsLoadingImages] = useState(true);
+
   const skillInfo = skillDetails[skill] || { name: "Courses", description: "Explore the available courses." };
   const courseList = coursesData[skill] || [];
+
+  useEffect(() => {
+    const fetchCourseBanners = async () => {
+      if (!courseList || courseList.length === 0) {
+        setIsLoadingImages(false);
+        return;
+      };
+      
+      setIsLoadingImages(true);
+      const imagePromises = courseList.map(course => 
+        generateSkillBanner({ skillTitle: course.title })
+          .then(result => ({ title: course.title, url: result.imageDataUri }))
+          .catch(() => ({ title: course.title, url: 'https://placehold.co/600x400' })) // Fallback
+      );
+      
+      const results = await Promise.all(imagePromises);
+      const imageMap = results.reduce((acc, result) => {
+        acc[result.title] = result.url;
+        return acc;
+      }, {} as Record<string, string>);
+
+      setCourseImages(imageMap);
+      setIsLoadingImages(false);
+    };
+
+    fetchCourseBanners();
+  }, [skill]);
 
   const allCoursesCompleted = courseList.every(course => completedCourses.includes(course.title));
 
@@ -203,14 +209,17 @@ export default function SkillCoursesPage() {
             return (
               <GlassCard key={course.title} className="flex flex-col">
                 <CardContent className="p-0">
-                  <Image 
-                    src={course.imageUrl} 
-                    alt={course.title}
-                    width={600}
-                    height={400}
-                    className="rounded-t-lg object-cover"
-                    data-ai-hint={course.imageHint}
-                  />
+                  {isLoadingImages ? (
+                    <Skeleton className="h-[230px] w-full rounded-t-lg" />
+                  ) : (
+                    <Image 
+                      src={courseImages[course.title] || "https://placehold.co/600x400"} 
+                      alt={course.title}
+                      width={600}
+                      height={400}
+                      className="rounded-t-lg object-cover"
+                    />
+                  )}
                 </CardContent>
                 <div className="p-6 flex flex-col flex-1">
                   <CardHeader className="p-0">
@@ -285,3 +294,5 @@ export default function SkillCoursesPage() {
     </div>
   );
 }
+
+    
