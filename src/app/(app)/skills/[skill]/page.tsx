@@ -135,7 +135,7 @@ export default function SkillCoursesPage() {
   const params = useParams();
   const skill = params.skill as string;
   const { toast } = useToast();
-  const { completedCourses, completeCourse } = useRoadmapStore();
+  const { courses, startCourse, completeModule } = useRoadmapStore();
   const [watchedVideos, setWatchedVideos] = useState<string[]>([]);
   const [courseImages, setCourseImages] = useState<Record<string, string>>({});
   const [isLoadingImages, setIsLoadingImages] = useState(true);
@@ -143,7 +143,20 @@ export default function SkillCoursesPage() {
   const skillInfo = skillDetails[skill] || { name: "Courses", description: "Explore the available courses." };
   const courseList = coursesData[skill] || [];
 
+  const roadmapForSkill = courses.find(c => c.title === skillInfo.name);
+  const completedCoursesForSkill = roadmapForSkill?.completedModules || [];
+
+
   useEffect(() => {
+    // When the component mounts, ensure the "skill" itself is treated as a course/roadmap
+    // with each course in it being a module.
+    if(skillInfo.name && courseList.length > 0) {
+        startCourse({
+            title: skillInfo.name,
+            totalModules: courseList.length,
+        });
+    }
+
     const fetchCourseBanners = async () => {
       if (!courseList || courseList.length === 0) {
         setIsLoadingImages(false);
@@ -168,12 +181,12 @@ export default function SkillCoursesPage() {
     };
 
     fetchCourseBanners();
-  }, [skill]);
+  }, [skill, skillInfo.name, courseList.length, startCourse]);
 
-  const allCoursesCompleted = courseList.every(course => completedCourses.includes(course.title));
+  const allCoursesCompleted = courseList.every(course => completedCoursesForSkill.includes(course.title));
 
   const handleCompleteCourse = (title: string) => {
-    completeCourse(title);
+    completeModule(skillInfo.name, title);
     toast({
         title: "Course Completed!",
         description: `Great job on finishing "${title}"!`,
@@ -204,7 +217,7 @@ export default function SkillCoursesPage() {
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {courseList.length > 0 ? (
           courseList.map((course) => {
-            const isCompleted = completedCourses.includes(course.title);
+            const isCompleted = completedCoursesForSkill.includes(course.title);
             const hasWatched = watchedVideos.includes(course.title);
             return (
               <GlassCard key={course.title} className="flex flex-col">

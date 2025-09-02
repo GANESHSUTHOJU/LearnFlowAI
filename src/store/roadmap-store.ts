@@ -44,7 +44,10 @@ export const useRoadmapStore = create<RoadmapState>()(
       startCourse: ({ title, totalModules }) =>
         set((state) => {
           if (state.courses.some(c => c.title === title)) {
-            return state;
+            // If course already exists, maybe update totalModules if it's different
+            return {
+                courses: state.courses.map(c => c.title === title ? { ...c, totalModules } : c)
+            };
           }
           const newCourse: Course = {
               title,
@@ -141,3 +144,5 @@ export const useRoadmapStore = create<RoadmapState>()(
     }
   )
 );
+
+    
