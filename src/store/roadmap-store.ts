@@ -19,6 +19,7 @@ interface RoadmapState {
   setUser: (userId: string | null) => void;
   startCourse: (course: { title: string, totalModules: number }) => void;
   completeModule: (courseTitle: string, moduleTitle: string) => void;
+  completeCourse: (courseTitle: string) => void;
   updateQuizScore: (courseTitle: string, score: number) => void;
 }
 
@@ -35,19 +36,13 @@ export const useRoadmapStore = create<RoadmapState>()(
       ...initialState,
       setUser: (userId) => {
         if (get().userId !== userId) {
-            // This forces a re-hydration from localStorage with the new user's key
-            // First, reset the state to avoid data leakage from previous user
             set({...initialState, userId}); 
-            // The `onRehydrateStorage` middleware in `persist` will then load the new user's data.
         }
       },
       startCourse: ({ title, totalModules }) =>
         set((state) => {
           if (state.courses.some(c => c.title === title)) {
-            // If course already exists, maybe update totalModules if it's different
-            return {
-                courses: state.courses.map(c => c.title === title ? { ...c, totalModules } : c)
-            };
+            return state;
           }
           const newCourse: Course = {
               title,
@@ -72,7 +67,6 @@ export const useRoadmapStore = create<RoadmapState>()(
 
             const newCompletedModules = [...courseToUpdate.completedModules, moduleTitle];
             const newModulesCompleted = newCompletedModules.length;
-            const isCourseCompleted = newCompletedModules.length === courseToUpdate.totalModules;
 
             const updatedCourses = state.courses.map(course =>
                 course.title === courseTitle
@@ -80,22 +74,28 @@ export const useRoadmapStore = create<RoadmapState>()(
                         ...course, 
                         completedModules: newCompletedModules,
                         modulesCompleted: newModulesCompleted,
-                        isCompleted: isCourseCompleted,
                       }
                     : course
             );
-            
-            let updatedCompletedCourses = state.completedCourses;
-            if (isCourseCompleted && !state.completedCourses.includes(courseTitle)) {
-                updatedCompletedCourses = [...state.completedCourses, courseTitle];
-            }
 
-            return {
-                courses: updatedCourses,
-                completedCourses: updatedCompletedCourses,
-            };
+            return { courses: updatedCourses };
         }),
       
+      completeCourse: (courseTitle) => 
+        set((state) => {
+            const isAlreadyCompleted = state.completedCourses.includes(courseTitle);
+            if (isAlreadyCompleted) return state;
+
+            return {
+                courses: state.courses.map(course =>
+                    course.title === courseTitle
+                        ? { ...course, isCompleted: true }
+                        : course
+                ),
+                completedCourses: [...state.completedCourses, courseTitle],
+            };
+        }),
+
       updateQuizScore: (courseTitle, score) =>
         set((state) => ({
             courses: state.courses.map(course => 
@@ -106,15 +106,11 @@ export const useRoadmapStore = create<RoadmapState>()(
     {
       name: 'roadmap-storage',
       storage: createJSONStorage(() => localStorage),
-      // Dynamically set the storage key based on the user ID
+      skipHydration: true,
       getStorage: () => {
-          // This function is called every time an action is performed.
-          // We get the latest userId from the store.
           const userId = useRoadmapStore.getState().userId;
           
           if (!userId) {
-              // If there's no user, we use a dummy storage that does nothing.
-              // This prevents writing to a generic key or throwing errors.
               return {
                   getItem: () => null,
                   setItem: () => {},
@@ -122,7 +118,6 @@ export const useRoadmapStore = create<RoadmapState>()(
               };
           }
 
-          // If there is a user, we use a user-specific key for localStorage.
           const userSpecificStorage = {
               getItem: (name: string): string | null => {
                   return localStorage.getItem(`${name}-${userId}`);
@@ -137,12 +132,8 @@ export const useRoadmapStore = create<RoadmapState>()(
           return userSpecificStorage;
       },
       onRehydrateStorage: (state) => {
-        // This function is called when the store is rehydrated from storage.
-        // We can use it to log or perform actions after data is loaded.
         console.log("Hydration finished.");
       },
     }
   )
 );
-
-    

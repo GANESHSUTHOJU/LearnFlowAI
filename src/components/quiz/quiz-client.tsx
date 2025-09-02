@@ -22,9 +22,10 @@ interface QuizClientProps {
     quizQuestions: QuizQuestion[];
     courseTitle: string;
     onQuizComplete: (score: number) => void;
+    onQuizFinish?: () => void;
 }
 
-export default function QuizClient({ quizQuestions, courseTitle, onQuizComplete }: QuizClientProps) {
+export default function QuizClient({ quizQuestions, courseTitle, onQuizComplete, onQuizFinish }: QuizClientProps) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -52,6 +53,7 @@ export default function QuizClient({ quizQuestions, courseTitle, onQuizComplete 
     } else {
         const finalScore = Math.round((score / quizQuestions.length) * 100);
         onQuizComplete(finalScore);
+        onQuizFinish?.();
         setQuizFinished(true);
     }
   }
@@ -99,9 +101,9 @@ export default function QuizClient({ quizQuestions, courseTitle, onQuizComplete 
                         <p className="text-xl font-semibold">Keep trying! Review the material and try again.</p>
                     </div>
                 )}
-                 <Button onClick={() => window.location.reload()} className="mt-8">
-                    Finish Review
-                </Button>
+                 <p className="text-muted-foreground text-sm mt-6">
+                    You can now mark the course as complete.
+                 </p>
             </CardContent>
         </GlassCard>
     )

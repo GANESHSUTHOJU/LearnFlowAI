@@ -3,7 +3,7 @@
 
 import { GlassCard, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, BookOpen, Clock, BarChart, CheckCircle, HelpCircle, Lock, Youtube, Loader2 } from "lucide-react";
+import { ArrowRight, BookOpen, Clock, BarChart, CheckCircle, HelpCircle, Lock, Youtube, Loader2, Trophy } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRoadmapStore } from "@/store/roadmap-store";
@@ -138,18 +138,20 @@ export default function SkillCoursesPage() {
   const params = useParams();
   const skill = params.skill as string;
   const { toast } = useToast();
-  const { courses, startCourse, completeModule, updateQuizScore } = useRoadmapStore();
+  const { courses, startCourse, completeModule, updateQuizScore, completeCourse } = useRoadmapStore();
   const [watchedVideos, setWatchedVideos] = useState<string[]>([]);
   const [courseImages, setCourseImages] = useState<Record<string, string>>({});
   const [isLoadingImages, setIsLoadingImages] = useState(true);
   const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>([]);
   const [isGeneratingQuiz, setIsGeneratingQuiz] = useState(false);
+  const [quizFinished, setQuizFinished] = useState(false);
 
   const skillInfo = useMemo(() => skillDetails[skill] || { name: "Courses", description: "Explore the available courses." }, [skill]);
   const courseList = useMemo(() => coursesData[skill] || [], [skill]);
 
   const roadmapForSkill = courses.find(c => c.title === skillInfo.name);
   const completedCoursesForSkill = roadmapForSkill?.completedModules || [];
+  const isCourseCompleted = roadmapForSkill?.isCompleted || false;
 
 
   useEffect(() => {
@@ -186,7 +188,7 @@ export default function SkillCoursesPage() {
     };
 
     fetchCourseBanners();
-  }, [skill, skillInfo.name, courseList, startCourse]);
+  }, [skill, skillInfo.name, courseList.length, startCourse]);
 
   const allCoursesCompleted = courseList.every(course => completedCoursesForSkill.includes(course.title));
 
@@ -227,11 +229,20 @@ export default function SkillCoursesPage() {
   }, [allCoursesCompleted, quizQuestions.length, isGeneratingQuiz, handleGenerateQuiz]);
 
 
-  const handleCompleteCourse = (title: string) => {
+  const handleMarkModuleComplete = (title: string) => {
     completeModule(skillInfo.name, title);
     toast({
-        title: "Course Completed!",
+        title: "Module Completed!",
         description: `Great job on finishing "${title}"!`,
+    });
+  }
+
+  const handleCompleteCourse = () => {
+    completeCourse(skillInfo.name);
+    toast({
+        title: "Course Completed!",
+        description: `Congratulations! You've completed the ${skillInfo.name} course.`,
+        variant: 'default',
     });
   }
 
@@ -291,7 +302,7 @@ export default function SkillCoursesPage() {
                     </Button>
                     <Button 
                         className="w-full"
-                        onClick={() => handleCompleteCourse(course.title)}
+                        onClick={() => handleMarkModuleComplete(course.title)}
                         disabled={isCompleted || !hasWatched}
                       >
                         {isCompleted ? (
@@ -334,6 +345,7 @@ export default function SkillCoursesPage() {
                         quizQuestions={quizQuestions} 
                         courseTitle={skillInfo.name}
                         onQuizComplete={(score) => updateQuizScore(skillInfo.name, score)}
+                        onQuizFinish={() => setQuizFinished(true)}
                     />
                 ) : (
                     <GlassCard>
@@ -360,6 +372,30 @@ export default function SkillCoursesPage() {
             )}
         </div>
        )}
+
+       {quizFinished && !isCourseCompleted && (
+          <GlassCard className="mt-8 text-center animate-in fade-in">
+              <CardContent className="p-8">
+                  <Trophy className="w-12 h-12 mx-auto text-yellow-400 mb-4" />
+                  <CardTitle className="text-2xl">Final Step!</CardTitle>
+                  <CardDescription className="mt-2 mb-6">You've finished the quiz. Mark the course as complete to save your achievement.</CardDescription>
+                  <Button size="lg" onClick={handleCompleteCourse}>
+                      <CheckCircle className="mr-2 h-5 w-5" />
+                      Mark Course as Complete
+                  </Button>
+              </CardContent>
+          </GlassCard>
+        )}
+        
+        {isCourseCompleted && (
+             <GlassCard className="mt-8 text-center animate-in fade-in border-green-500/50">
+              <CardContent className="p-8">
+                  <CheckCircle className="w-12 h-12 mx-auto text-green-400 mb-4" />
+                  <CardTitle className="text-2xl text-green-400">Course Completed!</CardTitle>
+                  <CardDescription className="mt-2">Amazing work! You can see your achievement on the dashboard.</CardDescription>
+              </CardContent>
+          </GlassCard>
+        )}
     </div>
   );
 }
