@@ -31,7 +31,7 @@ const QuizQuestionSchema = z.object({
     options: z.array(z.string()).length(4).describe("An array of 4 multiple-choice options."),
     correctAnswer: z.string().describe("The correct answer from the options."),
     explanation: z.string().describe("A detailed explanation of why the correct answer is correct."),
-    incorrectExplanations: z.array(z.string()).length(3).describe("An array of explanations for the three incorrect options."),
+    incorrectExplanations: z.array(z.string()).length(3).describe("An array of 3 detailed explanations for why the other three options are incorrect. The order of these explanations should correspond to the order of the incorrect options."),
 });
 
 const GeneratePersonalizedRoadmapOutputSchema = z.object({
