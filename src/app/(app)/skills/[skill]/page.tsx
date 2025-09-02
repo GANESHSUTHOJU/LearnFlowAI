@@ -21,8 +21,8 @@ const coursesData: { [key: string]: any[] } = {
       description: "Learn the fundamentals of React and build your first application.",
       duration: "4h 30m",
       level: "Beginner",
-      imageUrl: "https://placehold.co/600x400.png",
-      imageHint: "abstract geometric",
+      imageUrl: "https://picsum.photos/600/400",
+      imageHint: "react code",
       youtubeLink: "https://www.youtube.com/watch?v=SqcY0GlETPk"
     },
     {
@@ -30,8 +30,8 @@ const coursesData: { [key: string]: any[] } = {
       description: "Take your CSS skills to the next level with advanced techniques.",
       duration: "6h 15m",
       level: "Intermediate",
-      imageUrl: "https://placehold.co/600x401.png",
-      imageHint: "abstract colorful",
+      imageUrl: "https://picsum.photos/600/401",
+      imageHint: "css design",
       youtubeLink: "https://www.youtube.com/watch?v=nu5mdN26_Wc"
     },
      {
@@ -39,7 +39,7 @@ const coursesData: { [key: string]: any[] } = {
       description: "Build a complete full-stack application using the Next.js framework.",
       duration: "12h",
       level: "Advanced",
-      imageUrl: "https://placehold.co/600x402.png",
+      imageUrl: "https://picsum.photos/600/402",
       imageHint: "abstract dark",
       youtubeLink: "https://www.youtube.com/watch?v=gzngh3Y3f_M"
     },
@@ -50,7 +50,7 @@ const coursesData: { [key: string]: any[] } = {
       description: "Get started with Python and the libraries you need for data analysis.",
       duration: "5h",
       level: "Beginner",
-       imageUrl: "https://placehold.co/600x403.png",
+       imageUrl: "https://picsum.photos/600/403",
       imageHint: "python logo",
       youtubeLink: "https://www.youtube.com/watch?v=rvdkb2K-dMA"
     },
@@ -59,7 +59,7 @@ const coursesData: { [key: string]: any[] } = {
       description: "Create stunning interactive charts and graphs for the web.",
       duration: "7h",
       level: "Intermediate",
-      imageUrl: "https://placehold.co/600x404.png",
+      imageUrl: "https://picsum.photos/600/404",
       imageHint: "data visualization",
       youtubeLink: "https://www.youtube.com/watch?v=NlBt-7PuaLk"
     },
@@ -70,7 +70,7 @@ const coursesData: { [key: string]: any[] } = {
       description: "An introduction to the foundational concepts of neural networks.",
       duration: "8h",
       level: "Intermediate",
-      imageUrl: "https://placehold.co/600x405.png",
+      imageUrl: "https://picsum.photos/600/405",
       imageHint: "neural network",
       youtubeLink: "https://www.youtube.com/watch?v=aircAruvnKk"
     },
@@ -79,7 +79,7 @@ const coursesData: { [key: string]: any[] } = {
       description: "Understand and build models that can process and understand human language.",
       duration: "10h",
       level: "Advanced",
-      imageUrl: "https://placehold.co/600x400.png",
+      imageUrl: "https://picsum.photos/600/406",
       imageHint: "natural language",
       youtubeLink: "https://www.youtube.com/watch?v=TQQlZhbC5ps"
     },
@@ -90,7 +90,7 @@ const coursesData: { [key: string]: any[] } = {
           description: "Learn the basics of SQL for database manipulation.",
           duration: "4h",
           level: "Beginner",
-          imageUrl: "https://placehold.co/600x400.png",
+          imageUrl: "https://picsum.photos/600/407",
           imageHint: "database server",
           youtubeLink: "https://www.youtube.com/watch?v=HXV3zeQKqGY"
       },
@@ -99,7 +99,7 @@ const coursesData: { [key: string]: any[] } = {
           description: "Explore the world of NoSQL with MongoDB and others.",
           duration: "6h",
           level: "Intermediate",
-          imageUrl: "https://placehold.co/600x408.png",
+          imageUrl: "https://picsum.photos/600/408",
           imageHint: "database cluster",
           youtubeLink: "https://www.youtube.com/watch?v=0_plvOE0T6w"
       }
@@ -110,7 +110,7 @@ const coursesData: { [key: string]: any[] } = {
           description: "Learn how to design and prototype with Figma.",
           duration: "7h",
           level: "Beginner",
-          imageUrl: "https://placehold.co/600x409.png",
+          imageUrl: "https://picsum.photos/600/409",
           imageHint: "design wireframe",
           youtubeLink: "https://www.youtube.com/watch?v=cKZEgt6182E"
       },
@@ -119,7 +119,7 @@ const coursesData: { [key: string]: any[] } = {
           description: "Master the techniques for effective user research.",
           duration: "5h",
           level: "Intermediate",
-          imageUrl: "https://placehold.co/600x410.png",
+          imageUrl: "https://picsum.photos/600/410",
           imageHint: "user feedback",
           youtubeLink: "https://www.youtube.com/watch?v=s_U-s6DkEQU"
       }
@@ -130,7 +130,7 @@ const coursesData: { [key: string]: any[] } = {
           description: "Create robust and scalable APIs from scratch.",
           duration: "9h",
           level: "Intermediate",
-          imageUrl: "https://placehold.co/600x411.png",
+          imageUrl: "https://picsum.photos/600/411",
           imageHint: "server code",
           youtubeLink: "https://www.youtube.com/watch?v=pKd0Rpw7O48"
       },
@@ -139,7 +139,7 @@ const coursesData: { [key: string]: any[] } = {
           description: "Learn how to design and build microservices-based applications.",
           duration: "11h",
           level: "Advanced",
-          imageUrl: "https://placehold.co/600x412.png",
+          imageUrl: "https://picsum.photos/600/412",
           imageHint: "cloud infrastructure",
           youtubeLink: "https://www.youtube.com/watch?v=CdBtNQZH8a4"
       }
