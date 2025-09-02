@@ -11,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import QuizClient from "@/components/quiz/quiz-client";
 import { useParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { generateSkillBanner } from "@/ai/flows/generate-skill-banner";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -30,14 +30,14 @@ const coursesData: { [key: string]: any[] } = {
       description: "Take your CSS skills to the next level with advanced techniques.",
       duration: "6h 15m",
       level: "Intermediate",
-      youtubeLink: "https://www.youtube.com/watch?v=roywYSEPSvc"
+      youtubeLink: "https://www.youtube.com/watch?v=_kqN4hl9bGc&list=PL4cUxeGkcC9jxJX7vojNVK-o8ubDZEcNb"
     },
      {
       title: "Full-Stack with Next.js",
       description: "Build a complete full-stack application using the Next.js framework.",
       duration: "12h",
       level: "Advanced",
-      youtubeLink: "https://www.youtube.com/watch?v=1gDhl4leEzA"
+      youtubeLink: "https://youtu.be/nxK_TCt2pKw?si=4_M4A9Dt7dwv4G5C"
     },
   ],
   "data-science": [
@@ -140,8 +140,8 @@ export default function SkillCoursesPage() {
   const [courseImages, setCourseImages] = useState<Record<string, string>>({});
   const [isLoadingImages, setIsLoadingImages] = useState(true);
 
-  const skillInfo = skillDetails[skill] || { name: "Courses", description: "Explore the available courses." };
-  const courseList = coursesData[skill] || [];
+  const skillInfo = useMemo(() => skillDetails[skill] || { name: "Courses", description: "Explore the available courses." }, [skill]);
+  const courseList = useMemo(() => coursesData[skill] || [], [skill]);
 
   const roadmapForSkill = courses.find(c => c.title === skillInfo.name);
   const completedCoursesForSkill = roadmapForSkill?.completedModules || [];
@@ -181,7 +181,7 @@ export default function SkillCoursesPage() {
     };
 
     fetchCourseBanners();
-  }, [skill, skillInfo.name, courseList.length, startCourse]);
+  }, [skill, skillInfo.name, courseList, startCourse]);
 
   const allCoursesCompleted = courseList.every(course => completedCoursesForSkill.includes(course.title));
 
@@ -307,7 +307,6 @@ export default function SkillCoursesPage() {
     </div>
   );
 }
-
     
 
     
