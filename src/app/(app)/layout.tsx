@@ -17,7 +17,7 @@ export default function AppLayout({
   const { user, loading } = useAuth();
   const router = useRouter();
   const [isClient, setIsClient] = useState(false);
-  const { setUser } = useRoadmapStore();
+  const { setUser, userId } = useRoadmapStore();
 
   useEffect(() => {
     setIsClient(true);
@@ -26,13 +26,16 @@ export default function AppLayout({
   useEffect(() => {
     if (isClient && !loading) {
       if (user) {
-        // Set user and the store will automatically rehydrate from storage
-        setUser(user.uid);
+        // Set user in the store. The store will automatically rehydrate
+        // from storage when the userId changes.
+        if (userId !== user.uid) {
+            setUser(user.uid);
+        }
       } else {
         router.push('/login');
       }
     }
-  }, [user, loading, router, isClient, setUser]);
+  }, [user, loading, router, isClient, setUser, userId]);
 
   if (!isClient || loading || !user) {
     return (

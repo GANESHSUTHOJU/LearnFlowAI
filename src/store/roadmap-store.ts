@@ -35,9 +35,10 @@ export const useRoadmapStore = create<RoadmapState>()(
     (set, get) => ({
       ...initialState,
       setUser: (userId) => {
+        // When the user changes, reset the state to initial and set the new userId.
+        // The persist middleware will then automatically rehydrate from the new user's storage.
         if (get().userId !== userId) {
             set({...initialState, userId}); 
-            useRoadmapStore.persist.rehydrate();
         }
       },
       startCourse: ({ title, totalModules }) =>
@@ -106,11 +107,8 @@ export const useRoadmapStore = create<RoadmapState>()(
     }),
     {
       name: 'roadmap-storage',
-      storage: createJSONStorage(() => localStorage),
-      skipHydration: true,
-      getStorage: () => {
+      storage: createJSONStorage(() => {
           // Dynamically get the user ID for the storage key
-          // This part runs when persistence operations (like setItem, getItem) are called
           const userId = useRoadmapStore.getState().userId;
           
           if (!userId) {
@@ -123,7 +121,7 @@ export const useRoadmapStore = create<RoadmapState>()(
           }
 
           // Return user-specific storage
-          const userSpecificStorage = {
+          return {
               getItem: (name: string): string | null => {
                   return localStorage.getItem(`${name}-${userId}`);
               },
@@ -134,11 +132,10 @@ export const useRoadmapStore = create<RoadmapState>()(
                   localStorage.removeItem(`${name}-${userId}`);
               },
           };
-          return userSpecificStorage;
-      },
+      }),
+      skipHydration: false, // Allow automatic hydration
       onRehydrateStorage: (state) => {
-        console.log("Hydration finished.");
-        // This is called when data is loaded from storage
+        console.log("Hydration finished for user:", state?.userId);
       },
     }
   )
