@@ -30,14 +30,14 @@ const coursesData: { [key: string]: any[] } = {
       description: "Take your CSS skills to the next level with advanced techniques.",
       duration: "6h 15m",
       level: "Intermediate",
-      youtubeLink: "https://www.youtube.com/watch?v=nu5mdN26_Wc"
+      youtubeLink: "https://www.youtube.com/watch?v=roywYSEPSvc"
     },
      {
       title: "Full-Stack with Next.js",
       description: "Build a complete full-stack application using the Next.js framework.",
       duration: "12h",
       level: "Advanced",
-      youtubeLink: "https://www.youtube.com/watch?v=gzngh3Y3f_M"
+      youtubeLink: "https://www.youtube.com/watch?v=1gDhl4leEzA"
     },
   ],
   "data-science": [
@@ -307,5 +307,7 @@ export default function SkillCoursesPage() {
     </div>
   );
 }
+
+    
 
     
