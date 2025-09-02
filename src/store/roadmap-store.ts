@@ -37,6 +37,7 @@ export const useRoadmapStore = create<RoadmapState>()(
       setUser: (userId) => {
         if (get().userId !== userId) {
             set({...initialState, userId}); 
+            useRoadmapStore.persist.rehydrate();
         }
       },
       startCourse: ({ title, totalModules }) =>
@@ -108,9 +109,12 @@ export const useRoadmapStore = create<RoadmapState>()(
       storage: createJSONStorage(() => localStorage),
       skipHydration: true,
       getStorage: () => {
+          // Dynamically get the user ID for the storage key
+          // This part runs when persistence operations (like setItem, getItem) are called
           const userId = useRoadmapStore.getState().userId;
           
           if (!userId) {
+              // If there's no user, we can use a dummy storage that does nothing
               return {
                   getItem: () => null,
                   setItem: () => {},
@@ -118,6 +122,7 @@ export const useRoadmapStore = create<RoadmapState>()(
               };
           }
 
+          // Return user-specific storage
           const userSpecificStorage = {
               getItem: (name: string): string | null => {
                   return localStorage.getItem(`${name}-${userId}`);
@@ -133,6 +138,7 @@ export const useRoadmapStore = create<RoadmapState>()(
       },
       onRehydrateStorage: (state) => {
         console.log("Hydration finished.");
+        // This is called when data is loaded from storage
       },
     }
   )
