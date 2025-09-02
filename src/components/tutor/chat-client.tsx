@@ -33,7 +33,7 @@ export default function ChatClient() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const { startedCourses, completedCourses } = useRoadmapStore();
+  const { courses, completedCourses } = useRoadmapStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,11 +45,12 @@ export default function ChatClient() {
     setIsLoading(true);
 
     try {
-      const roadmapProgress = `Started: ${startedCourses.map(c => c.title).join(', ') || 'None'}. Completed: ${completedCourses.join(', ') || 'None'}.`;
-      
+      const activeCourses = courses.filter(c => !c.isCompleted);
+      const progress = `Active Courses: ${activeCourses.map(c => c.title).join(', ') || 'None'}. Completed Courses: ${completedCourses.join(', ') || 'None'}.`;
+
       const result = await chatbotTutorGuidance({
         question: input,
-        roadmapProgress,
+        roadmapProgress: progress,
       });
 
       const assistantMessage: Message = {
@@ -59,6 +60,7 @@ export default function ChatClient() {
       };
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
+      console.error(error);
       const errorMessage: Message = {
         role: "assistant",
         content: "Sorry, I encountered an error. Please try again.",

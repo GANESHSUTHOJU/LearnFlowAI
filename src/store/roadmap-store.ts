@@ -106,29 +106,33 @@ export const useRoadmapStore = create<RoadmapState>()(
       // Dynamically set the storage key based on the user ID
       getStorage: () => {
           const { userId } = useRoadmapStore.getState();
-          if (userId) {
-              return {
-                  ...localStorage,
-                  getItem: (name) => {
-                      const strg = localStorage.getItem(`${name}-${userId}`);
-                      return strg;
-                  },
-                  setItem: (name, value) => {
+          const userSpecificStorage = {
+              getItem: (name: string) => {
+                  const strg = localStorage.getItem(`${name}-${userId}`);
+                  return strg;
+              },
+              setItem: (name: string, value: string) => {
+                  if (userId) {
                       localStorage.setItem(`${name}-${userId}`, value);
-                  },
-                  removeItem: (name) => {
-                      localStorage.removeItem(`${name}-${userId}`);
-                  },
-              };
+                  }
+              },
+              removeItem: (name: string) => {
+                  localStorage.removeItem(`${name}-${userId}`);
+              },
+          };
+
+          if (userId) {
+              return userSpecificStorage;
           }
-          // Return a dummy storage if no user is logged in
+          
+          // Return a dummy storage if no user is logged in to prevent writing to a generic key
           return {
               getItem: () => null,
               setItem: () => undefined,
               removeItem: () => undefined,
           };
       },
-      onRehydrateStorage: (state) => {
+      onRehydrateStorage: () => {
         // This function is called when the store is rehydrated from storage.
         // We can use it to log or perform actions after data is loaded.
         return (state, error) => {
@@ -137,6 +141,16 @@ export const useRoadmapStore = create<RoadmapState>()(
           }
         };
       },
+       // Important: This prevents the store from being rehydrated until a user is set.
+      skipHydration: true,
     }
   )
 );
+
+// Manually trigger rehydration when the user logs in
+useAuth.subscribe((state) => {
+    const userId = state.user?.uid;
+    if (userId) {
+        useRoadmapStore.persist.rehydrate();
+    }
+});
