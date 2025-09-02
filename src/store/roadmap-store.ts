@@ -69,7 +69,7 @@ export const useRoadmapStore = create<RoadmapState>()(
 
             const newCompletedModules = [...courseToUpdate.completedModules, moduleTitle];
             const newModulesCompleted = newCompletedModules.length;
-            const isCourseCompleted = newModulesCompleted === courseToUpdate.totalModules;
+            const isCourseCompleted = newCompletedModules.length === courseToUpdate.totalModules;
 
             const updatedCourses = state.courses.map(course =>
                 course.title === courseTitle
@@ -146,11 +146,3 @@ export const useRoadmapStore = create<RoadmapState>()(
     }
   )
 );
-
-// Manually trigger rehydration when the user logs in
-useAuth.subscribe((state) => {
-    const userId = state.user?.uid;
-    if (userId) {
-        useRoadmapStore.persist.rehydrate();
-    }
-});

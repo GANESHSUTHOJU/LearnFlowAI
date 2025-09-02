@@ -26,7 +26,9 @@ export default function AppLayout({
   useEffect(() => {
     if (isClient && !loading) {
       if (user) {
+        // Set user and rehydrate store
         setUser(user.uid);
+        useRoadmapStore.persist.rehydrate();
       } else {
         router.push('/login');
       }
