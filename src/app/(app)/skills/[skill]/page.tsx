@@ -3,7 +3,7 @@
 
 import { GlassCard, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, BookOpen, Clock, BarChart, CheckCircle, HelpCircle, Lock, Youtube } from "lucide-react";
+import { ArrowRight, BookOpen, Clock, BarChart, CheckCircle, HelpCircle, Lock, Youtube, Loader2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRoadmapStore } from "@/store/roadmap-store";
@@ -11,9 +11,10 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import QuizClient from "@/components/quiz/quiz-client";
 import { useParams } from "next/navigation";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { generateSkillBanner } from "@/ai/flows/generate-skill-banner";
 import { Skeleton } from "@/components/ui/skeleton";
+import { generatePersonalizedRoadmap, type GeneratePersonalizedRoadmapOutput } from "@/ai/flows/generate-personalized-roadmap";
 
 // Placeholder data - this would eventually come from a database
 const coursesData: { [key: string]: any[] } = {
@@ -131,14 +132,18 @@ const skillDetails: { [key: string]: { name: string, description: string } } = {
   "backend-systems": { name: "Backend Systems", description: "Courses to build robust server-side applications and APIs." },
 };
 
+type QuizQuestion = GeneratePersonalizedRoadmapOutput['quiz'][0];
+
 export default function SkillCoursesPage() {
   const params = useParams();
   const skill = params.skill as string;
   const { toast } = useToast();
-  const { courses, startCourse, completeModule } = useRoadmapStore();
+  const { courses, startCourse, completeModule, updateQuizScore } = useRoadmapStore();
   const [watchedVideos, setWatchedVideos] = useState<string[]>([]);
   const [courseImages, setCourseImages] = useState<Record<string, string>>({});
   const [isLoadingImages, setIsLoadingImages] = useState(true);
+  const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>([]);
+  const [isGeneratingQuiz, setIsGeneratingQuiz] = useState(false);
 
   const skillInfo = useMemo(() => skillDetails[skill] || { name: "Courses", description: "Explore the available courses." }, [skill]);
   const courseList = useMemo(() => coursesData[skill] || [], [skill]);
@@ -185,6 +190,43 @@ export default function SkillCoursesPage() {
 
   const allCoursesCompleted = courseList.every(course => completedCoursesForSkill.includes(course.title));
 
+  const handleGenerateQuiz = useCallback(async () => {
+    if (!allCoursesCompleted || isGeneratingQuiz) return;
+
+    setIsGeneratingQuiz(true);
+    toast({
+        title: "Generating Your Quiz...",
+        description: "Please wait a moment while the AI creates your questions.",
+    });
+
+    try {
+        const result = await generatePersonalizedRoadmap({
+            goal: skillInfo.name,
+            currentSkillLevel: 'intermediate', // Assume intermediate for quiz generation
+            skillOntology: courseList.map(c => c.title).join(', '),
+        });
+        setQuizQuestions(result.quiz);
+    } catch (e) {
+        console.error("Failed to generate quiz:", e);
+        toast({
+            variant: "destructive",
+            title: "Quiz Generation Failed",
+            description: "Sorry, there was an error creating your quiz. Please try again.",
+        });
+    } finally {
+        setIsGeneratingQuiz(false);
+    }
+
+  }, [allCoursesCompleted, isGeneratingQuiz, skillInfo.name, courseList, toast]);
+
+
+  useEffect(() => {
+    if (allCoursesCompleted && quizQuestions.length === 0 && !isGeneratingQuiz) {
+        handleGenerateQuiz();
+    }
+  }, [allCoursesCompleted, quizQuestions.length, isGeneratingQuiz, handleGenerateQuiz]);
+
+
   const handleCompleteCourse = (title: string) => {
     completeModule(skillInfo.name, title);
     toast({
@@ -195,16 +237,6 @@ export default function SkillCoursesPage() {
 
   const handleWatchVideo = (title: string) => {
     setWatchedVideos(prev => [...prev, title]);
-  }
-
-  const handleQuizClick = () => {
-    if (!allCoursesCompleted) {
-        toast({
-            variant: "destructive",
-            title: "Quiz Locked",
-            description: "You haven't completed all modules yet.",
-        });
-    }
   }
 
   return (
@@ -289,14 +321,38 @@ export default function SkillCoursesPage() {
          <div className="space-y-8">
             <h2 className="text-2xl font-bold font-headline">Final Quiz</h2>
             {allCoursesCompleted ? (
-                <QuizClient />
+                isGeneratingQuiz ? (
+                    <GlassCard>
+                        <CardContent className="p-6 flex flex-col items-center justify-center text-center h-48">
+                            <Loader2 className="w-12 h-12 text-primary animate-spin mb-4" />
+                            <h3 className="font-bold text-xl">Generating Your Quiz...</h3>
+                            <p className="text-muted-foreground mt-2">The AI is preparing your questions. Please wait.</p>
+                        </CardContent>
+                    </GlassCard>
+                ) : quizQuestions.length > 0 ? (
+                    <QuizClient 
+                        quizQuestions={quizQuestions} 
+                        courseTitle={skillInfo.name}
+                        onQuizComplete={(score) => updateQuizScore(skillInfo.name, score)}
+                    />
+                ) : (
+                    <GlassCard>
+                        <CardContent className="p-6 flex flex-col items-center justify-center text-center h-48">
+                            <h3 className="font-bold text-xl">Ready for your quiz?</h3>
+                            <p className="text-muted-foreground mt-2">Click the button below to generate your questions.</p>
+                            <Button onClick={handleGenerateQuiz} className="mt-4">
+                                Generate Quiz
+                            </Button>
+                        </CardContent>
+                    </GlassCard>
+                )
             ) : (
                  <GlassCard>
                     <CardContent className="p-6 flex flex-col items-center justify-center text-center">
                        <Lock className="w-12 h-12 text-muted-foreground mb-4" />
                        <h3 className="font-bold text-xl">Quiz Locked</h3>
                        <p className="text-muted-foreground mt-2">You haven't completed all modules yet.</p>
-                       <Button onClick={handleQuizClick} variant="outline" className="mt-4">
+                       <Button onClick={() => toast({ variant: 'destructive', title: 'Quiz is locked.', description: 'Please complete all courses in this skill category to unlock the final quiz.'})} variant="outline" className="mt-4">
                            Take the Quiz
                        </Button>
                     </CardContent>
@@ -307,8 +363,3 @@ export default function SkillCoursesPage() {
     </div>
   );
 }
-    
-
-    
-
-    
