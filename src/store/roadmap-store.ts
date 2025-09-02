@@ -105,44 +105,39 @@ export const useRoadmapStore = create<RoadmapState>()(
       storage: createJSONStorage(() => localStorage),
       // Dynamically set the storage key based on the user ID
       getStorage: () => {
-          const { userId } = useRoadmapStore.getState();
+          // This function is called every time an action is performed.
+          // We get the latest userId from the store.
+          const userId = useRoadmapStore.getState().userId;
+          
+          if (!userId) {
+              // If there's no user, we use a dummy storage that does nothing.
+              // This prevents writing to a generic key or throwing errors.
+              return {
+                  getItem: () => null,
+                  setItem: () => {},
+                  removeItem: () => {},
+              };
+          }
+
+          // If there is a user, we use a user-specific key for localStorage.
           const userSpecificStorage = {
-              getItem: (name: string) => {
-                  const strg = localStorage.getItem(`${name}-${userId}`);
-                  return strg;
+              getItem: (name: string): string | null => {
+                  return localStorage.getItem(`${name}-${userId}`);
               },
-              setItem: (name: string, value: string) => {
-                  if (userId) {
-                      localStorage.setItem(`${name}-${userId}`, value);
-                  }
+              setItem: (name: string, value: string): void => {
+                  localStorage.setItem(`${name}-${userId}`, value);
               },
-              removeItem: (name: string) => {
+              removeItem: (name: string): void => {
                   localStorage.removeItem(`${name}-${userId}`);
               },
           };
-
-          if (userId) {
-              return userSpecificStorage;
-          }
-          
-          // Return a dummy storage if no user is logged in to prevent writing to a generic key
-          return {
-              getItem: () => null,
-              setItem: () => undefined,
-              removeItem: () => undefined,
-          };
+          return userSpecificStorage;
       },
-      onRehydrateStorage: () => {
+      onRehydrateStorage: (state) => {
         // This function is called when the store is rehydrated from storage.
         // We can use it to log or perform actions after data is loaded.
-        return (state, error) => {
-          if (error) {
-            console.error('An error happened during storage rehydration', error);
-          }
-        };
+        console.log("Hydration finished.");
       },
-       // Important: This prevents the store from being rehydrated until a user is set.
-      skipHydration: true,
     }
   )
 );
