@@ -5,9 +5,9 @@ import * as React from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CheckCircle, XCircle, ChevronRight, RefreshCw, Loader } from "lucide-react"
+import { CheckCircle, XCircle, ChevronRight, RefreshCw, Loader, Lightbulb } from "lucide-react"
 import { generateQuiz, Quiz, QuizQuestion } from "@/ai/flows/generate-quiz"
-import { useSearchParams } from "next/navigation"
+import { useSearchParams, useRouter } from "next/navigation"
 import { Skeleton } from "../ui/skeleton"
 import AnimatedError from "../ui/animated-error"
 import { toast } from "sonner"
@@ -15,7 +15,8 @@ import { toast } from "sonner"
 
 export default function QuizClient() {
   const searchParams = useSearchParams();
-  const topic = searchParams.get("topic") || "a random topic";
+  const router = useRouter();
+  const topic = searchParams.get("topic");
 
   const [quiz, setQuiz] = React.useState<Quiz | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -28,6 +29,10 @@ export default function QuizClient() {
   const [quizFinished, setQuizFinished] = React.useState(false)
 
   const fetchQuiz = React.useCallback(async () => {
+    if (!topic) {
+        setIsLoading(false);
+        return;
+    }
     setIsLoading(true);
     setError(null);
     setQuiz(null);
@@ -78,9 +83,31 @@ export default function QuizClient() {
     setIsCorrect(null)
     setScore(0)
     setQuizFinished(false)
-    if (questions) {
+    if (questions && topic) {
       setQuiz({ topic, questions });
     }
+  }
+
+  if (!topic && !isLoading) {
+    return (
+        <Card className="w-full max-w-2xl mx-auto text-center">
+            <CardHeader>
+                <div className="mx-auto bg-primary/10 rounded-full p-4 w-fit">
+                    <Lightbulb className="h-12 w-12 text-primary" />
+                </div>
+                <CardTitle className="mt-4 text-3xl font-bold">Choose a Topic</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <p className="text-lg text-muted-foreground">
+                    Please select a skill or generate a roadmap to start a quiz.
+                </p>
+            </CardContent>
+            <CardFooter className="flex-col sm:flex-row gap-4 justify-center">
+                <Button size="lg" onClick={() => router.push('/skills')}>Explore Skills</Button>
+                <Button size="lg" variant="outline" onClick={() => router.push('/roadmap')}>Generate a Roadmap</Button>
+            </CardFooter>
+        </Card>
+    )
   }
 
   if (isLoading) {
