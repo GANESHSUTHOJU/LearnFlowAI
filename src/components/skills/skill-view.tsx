@@ -17,7 +17,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
 import { useState } from "react";
-import Image from "next/image";
+
+interface Topic {
+    id: string;
+    title: string;
+    completed: boolean;
+}
 
 const SkillView = ({ skillId }: { skillId: string }) => {
   const router = useRouter();
@@ -26,16 +31,26 @@ const SkillView = ({ skillId }: { skillId: string }) => {
   const [isAdding, setIsAdding] = useState(false);
   const skill = skills.find((s) => s.id === skillId);
   
-  // A simple way to generate topics based on skill name. 
-  // In a real app, this would come from a database.
-  const generateTopics = (skillName: string) => {
-    return [
-      { id: "1", title: `Introduction to ${skillName}`, completed: true },
-      { id: "2", title: `Core Concepts of ${skillName}`, completed: false },
-      { id: "3", title: `Advanced Techniques in ${skillName}`, completed: false },
-      { id: "4", title: `Practicing ${skillName}`, completed: false },
-      { id: "5", title: `Mastering ${skillName}`, completed: false },
-    ]
+  const generateTopics = (skillName: string, total: number, completed: number): Topic[] => {
+    const topicTemplates = [
+        `Introduction to ${skillName}`,
+        `Core Concepts of ${skillName}`,
+        `Intermediate ${skillName}`,
+        `Advanced Techniques in ${skillName}`,
+        `Real-world Applications of ${skillName}`,
+        `Best Practices in ${skillName}`,
+        `Project with ${skillName}`,
+        `Mastering ${skillName}`,
+    ];
+
+    return Array.from({ length: total }, (_, i) => {
+        const title = topicTemplates[i] || `${skillName} - Topic ${i + 1}`;
+        return {
+            id: `${skillId}-${i + 1}`,
+            title: title,
+            completed: i < completed,
+        }
+    });
   }
 
   const handleStartSkill = async () => {
@@ -96,9 +111,8 @@ const SkillView = ({ skillId }: { skillId: string }) => {
     );
   }
   
-  const topics = generateTopics(skill.name);
-  const completedTopics = topics.filter(t => t.completed).length;
-  const progress = (completedTopics / topics.length) * 100;
+  const topics = generateTopics(skill.name, skill.totalTopics, skill.completedTopics);
+  const progress = skill.totalTopics > 0 ? (skill.completedTopics / skill.totalTopics) * 100 : 0;
 
   return (
     <div className="space-y-8">
@@ -135,7 +149,7 @@ const SkillView = ({ skillId }: { skillId: string }) => {
           <CardDescription>
             Complete all topics to master this skill.
           </CardDescription>
-        </CardHeader>
+        </Header>
         <CardContent>
           <div className="space-y-4">
             {topics.map((topic) => (
