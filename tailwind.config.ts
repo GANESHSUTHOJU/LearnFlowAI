@@ -72,20 +72,20 @@ const config = {
           to: { height: "0" },
         },
         "float-x-slow-1": {
-            "0%, 100%": { transform: "translateX(-20px)" },
-            "50%": { transform: "translateX(20px)" },
+            "0%, 100%": { transform: 'translateX(-20px)' },
+            "50%": { transform: 'translateX(20px)' },
         },
         "float-x-slow-2": {
-            "0%, 100%": { transform: "translateX(30px)" },
-            "50%": { transform: "translateX(-30px)" },
+            "0%, 100%": { transform: 'translateX(30px)' },
+            "50%": { transform: 'translateX(-30px)' },
         },
         "float-x-fast-1": {
-            "0%, 100%": { transform: "translateX(15px) translateY(-15px)" },
-            "50%": { transform: "translateX(-15px) translateY(15px)" },
+            "0%, 100%": { transform: 'translateX(15px) translateY(-15px)' },
+            "50%": { transform: 'translateX(-15px) translateY(15px)' },
         },
         "float-x-fast-2": {
-            "0%, 100%": { transform: "translateX(-10px) translateY(10px)" },
-            "50%": { transform: "translateX(10px) translateY(-10px)" },
+            "0%, 100%": { transform: 'translateX(-10px) translateY(10px)' },
+            "50%": { transform: 'translateX(10px) translateY(-10px)' },
         },
       },
       animation: {

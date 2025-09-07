@@ -30,14 +30,14 @@ export default function HomePage() {
           <h1 className="text-2xl font-bold font-display text-white">LearnFlowAI</h1>
         </div>
         <nav className="flex items-center gap-4">
-          <Link href="/login" passHref>
-            <Button asChild variant="ghost" className="text-white hover:bg-white/10">
-              <a>Login</a>
+          <Link href="/login">
+            <Button variant="ghost" className="text-white hover:bg-white/10">
+              Login
             </Button>
           </Link>
-          <Link href="/signup" passHref>
-            <Button asChild className="bg-indigo-500 text-white hover:bg-indigo-600 rounded-full">
-             <a>Sign Up</a>
+          <Link href="/signup">
+            <Button className="bg-indigo-500 text-white hover:bg-indigo-600 rounded-full">
+             Sign Up
             </Button>
           </Link>
         </nav>
@@ -82,12 +82,10 @@ export default function HomePage() {
                       placeholder="What do you want to learn today?"
                       className="max-w-lg flex-1 bg-white/10 border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 h-12 rounded-full px-6"
                     />
-                    <Link href="/roadmap" passHref>
-                      <Button asChild type="submit" className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-full h-12 px-8">
-                          <a>
-                            Start Learning
-                            <ArrowRight className="ml-2 h-4 w-4" />
-                          </a>
+                    <Link href="/roadmap">
+                      <Button type="submit" className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-full h-12 px-8">
+                          Start Learning
+                          <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </Link>
                   </div>
@@ -205,12 +203,10 @@ export default function HomePage() {
               </p>
             </div>
             <div className="mx-auto w-full max-w-sm space-y-2">
-                <Link href="/signup" passHref>
-                    <Button asChild type="submit" size="lg" className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-full h-12 px-8 text-base">
-                        <a>
-                          Sign Up for Free
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </a>
+                <Link href="/signup">
+                    <Button type="submit" size="lg" className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-full h-12 px-8 text-base">
+                        Sign Up for Free
+                        <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                 </Link>
             </div>
