@@ -10,6 +10,7 @@ const popularSkills = [
   "Data Science",
   "Next.js",
   "TypeScript",
+  "C++",
   "Graphic Design",
   "Project Management",
   "Public Speaking",
