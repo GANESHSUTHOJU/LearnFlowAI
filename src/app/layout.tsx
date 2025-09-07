@@ -3,7 +3,6 @@
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 import { AuthProvider } from '@/hooks/use-auth';
-import ParticleBackground from '@/components/ui/particle-background';
 
 export default function RootLayout({
   children,
@@ -22,7 +21,6 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased min-h-screen bg-background flex flex-col">
         <div id="particles-js"></div>
-        <ParticleBackground />
         <AuthProvider>
             <main className="flex-1 flex flex-col z-10">
                 {children}
