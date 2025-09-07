@@ -13,7 +13,6 @@ const getPlaceholderVideos = (skillName: string) => [
     title: `Ultimate Beginner's Guide to ${skillName}`,
     thumbnail: "https://picsum.photos/400/225?random=1",
     dataAiHint: "tech tutorial",
-    url: "https://www.youtube.com",
     channel: "Learn Everything Fast",
   },
   {
@@ -21,7 +20,6 @@ const getPlaceholderVideos = (skillName: string) => [
     title: `10 Advanced ${skillName} Tricks You Should Know`,
     thumbnail: "https://picsum.photos/400/225?random=2",
     dataAiHint: "abstract concept",
-    url: "https://www.youtube.com",
     channel: "Pro Coder",
   },
   {
@@ -29,7 +27,6 @@ const getPlaceholderVideos = (skillName: string) => [
     title: `Full ${skillName} Project Tutorial (Build a Real App)`,
     thumbnail: "https://picsum.photos/400/225?random=3",
     dataAiHint: "code screen",
-    url: "https://www.youtube.com",
     channel: "DevSimplified",
   },
    {
@@ -37,7 +34,6 @@ const getPlaceholderVideos = (skillName: string) => [
     title: `A Day in the Life of a ${skillName} Engineer`,
     thumbnail: "https://picsum.photos/400/225?random=4",
     dataAiHint: "person thinking",
-    url: "https://www.youtube.com",
     channel: "TechLead",
   },
 ];
@@ -56,7 +52,13 @@ const YouTubeVideos = ({ skillName }: YouTubeVideosProps) => {
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {videos.map((video) => (
-            <a href={video.url} target="_blank" rel="noopener noreferrer" key={video.id} className="group">
+            <a 
+              href={`https://www.youtube.com/results?search_query=${encodeURIComponent(video.title)}`} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              key={video.id} 
+              className="group"
+            >
               <Card className="overflow-hidden h-full transition-shadow duration-200 group-hover:shadow-lg">
                 <div className="aspect-video relative">
                     <Image 
