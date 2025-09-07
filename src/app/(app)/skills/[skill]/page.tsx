@@ -188,7 +188,7 @@ export default function SkillCoursesPage() {
     };
 
     fetchCourseBanners();
-  }, [skill, skillInfo.name, courseList.length, startCourse]);
+  }, [skill, skillInfo.name, courseList.length, startCourse, courseList]);
 
   const allCoursesCompleted = courseList.every(course => completedCoursesForSkill.includes(course.title));
 
