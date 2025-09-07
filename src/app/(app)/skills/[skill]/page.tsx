@@ -14,7 +14,7 @@ import { useParams } from "next/navigation";
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { generateSkillBanner } from "@/ai/flows/generate-skill-banner";
 import { Skeleton } from "@/components/ui/skeleton";
-import { generatePersonalizedRoadmap, type GeneratePersonalizedRoadmapOutput } from "@/ai/flows/generate-personalized-roadmap";
+import { generateQuiz, type GenerateQuizOutput } from "@/ai/flows/generate-quiz";
 
 // Placeholder data - this would eventually come from a database
 const coursesData: { [key: string]: any[] } = {
@@ -132,7 +132,7 @@ const skillDetails: { [key: string]: { name: string, description: string } } = {
   "backend-systems": { name: "Backend Systems", description: "Courses to build robust server-side applications and APIs." },
 };
 
-type QuizQuestion = GeneratePersonalizedRoadmapOutput['quiz'][0];
+type QuizQuestion = GenerateQuizOutput['quiz'][0];
 
 export default function SkillCoursesPage() {
   const params = useParams();
@@ -202,7 +202,7 @@ export default function SkillCoursesPage() {
     });
 
     try {
-        const result = await generatePersonalizedRoadmap({
+        const result = await generateQuiz({
             goal: skillInfo.name,
             currentSkillLevel: 'intermediate', // Assume intermediate for quiz generation
             skillOntology: courseList.map(c => c.title).join(', '),

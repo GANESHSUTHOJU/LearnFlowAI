@@ -7,3 +7,4 @@ import '@/ai/flows/chatbot-tutor-guidance.ts';
 import '@/ai/flows/generate-project-plan.ts';
 import '@/ai/flows/generate-skill-banner.ts';
 import '@/ai/flows/roadmap-to-speech.ts';
+import '@/ai/flows/generate-quiz.ts';
