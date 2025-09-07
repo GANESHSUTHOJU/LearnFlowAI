@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle, Circle, ArrowRight, BookOpen, BrainCircuit, Loader2, PlusCircle } from "lucide-react";
+import { CheckCircle, Circle, ArrowRight, BookOpen, BrainCircuit, Loader2, PlusCircle, FileQuestion } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
@@ -135,9 +135,14 @@ const SkillView = ({ skillId }: { skillId: string }) => {
             <Progress value={progress} />
           </div>
         </CardContent>
-        <CardFooter className="flex justify-end">
+        <CardFooter className="flex justify-end gap-4">
+          <Button asChild variant="outline">
+            <Link href={`/quiz?topic=${encodeURIComponent(skill.name)}`}>
+              Take a Quiz <FileQuestion className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
           <Button asChild>
-            <Link href={`/tutor?skill=${skill.name}`}>
+            <Link href={`/tutor?skill=${encodeURIComponent(skill.name)}`}>
               Start Learning Session <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
