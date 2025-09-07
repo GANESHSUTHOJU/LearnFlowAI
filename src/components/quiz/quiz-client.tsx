@@ -4,7 +4,7 @@
 import * as React from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { CheckCircle, XCircle, ChevronRight, RefreshCw, Loader, Lightbulb } from "lucide-react"
 import { generateQuiz, Quiz, QuizQuestion } from "@/ai/flows/generate-quiz"
 import { useSearchParams, useRouter } from "next/navigation"
