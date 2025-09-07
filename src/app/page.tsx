@@ -30,11 +30,15 @@ export default function HomePage() {
           <h1 className="text-2xl font-bold font-display text-white">LearnFlowAI</h1>
         </div>
         <nav className="flex items-center gap-4">
-          <Link href="/login" passHref>
-            <Button variant="ghost" className="text-white hover:bg-white/10">Login</Button>
+          <Link href="/login" legacyBehavior passHref>
+            <Button variant="ghost" className="text-white hover:bg-white/10" asChild>
+              <a>Login</a>
+            </Button>
           </Link>
-          <Link href="/signup" passHref>
-            <Button className="bg-indigo-500 text-white hover:bg-indigo-600 rounded-full">Sign Up</Button>
+          <Link href="/signup" legacyBehavior passHref>
+            <Button className="bg-indigo-500 text-white hover:bg-indigo-600 rounded-full" asChild>
+             <a>Sign Up</a>
+            </Button>
           </Link>
         </nav>
       </header>
