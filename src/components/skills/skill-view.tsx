@@ -171,7 +171,7 @@ const SkillView = ({ skillId }: { skillId: string }) => {
                   {topic.title}
                 </span>
                 {!topic.completed && (
-                  <Button variant="ghost" size="sm" onClick={() => router.push(`/tutor?skill=${skill.name}&topic=${topic.title}`)}>
+                  <Button variant="ghost" size="sm" onClick={() => window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(topic.title)}`, '_blank')}>
                     Start
                   </Button>
                 )}
