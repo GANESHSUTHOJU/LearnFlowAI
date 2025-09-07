@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview A flow for providing AI tutor guidance.
@@ -7,7 +8,7 @@ import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 import { googleAI } from '@genkit-ai/googleai';
 
-export const ChatMessageSchema = z.object({
+const ChatMessageSchema = z.object({
   role: z.enum(['user', 'model']),
   content: z.string(),
 });

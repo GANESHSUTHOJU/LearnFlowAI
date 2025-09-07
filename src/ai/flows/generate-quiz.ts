@@ -8,7 +8,7 @@ import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 import { googleAI } from '@genkit-ai/googleai';
 
-export const QuizQuestionSchema = z.object({
+const QuizQuestionSchema = z.object({
   question: z.string().describe('The quiz question.'),
   options: z.array(z.string()).length(4).describe('An array of 4 possible answers.'),
   correctAnswer: z.string().describe('The correct answer from the options.'),
