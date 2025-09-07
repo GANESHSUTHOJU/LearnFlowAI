@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useRef } from "react";
@@ -30,14 +31,14 @@ export default function HomePage() {
           <h1 className="text-2xl font-bold font-display text-white">LearnFlowAI</h1>
         </div>
         <nav className="flex items-center gap-4">
-          <Link href="/login" legacyBehavior passHref>
-            <Button variant="ghost" className="text-white hover:bg-white/10" asChild>
-              <a>Login</a>
+          <Link href="/login" passHref>
+            <Button variant="ghost" className="text-white hover:bg-white/10">
+              Login
             </Button>
           </Link>
-          <Link href="/signup" legacyBehavior passHref>
-            <Button className="bg-indigo-500 text-white hover:bg-indigo-600 rounded-full" asChild>
-             <a>Sign Up</a>
+          <Link href="/signup" passHref>
+            <Button className="bg-indigo-500 text-white hover:bg-indigo-600 rounded-full">
+             Sign Up
             </Button>
           </Link>
         </nav>
@@ -203,12 +204,12 @@ export default function HomePage() {
               </p>
             </div>
             <div className="mx-auto w-full max-w-sm space-y-2">
-              <Button type="submit" size="lg" asChild className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-full h-12 px-8 text-base">
-                <Link href="/signup">
-                  Sign Up for Free
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
+                <Button type="submit" size="lg" asChild className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-full h-12 px-8 text-base">
+                    <Link href="/signup">
+                        Sign Up for Free
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                </Button>
             </div>
           </div>
         </section>
