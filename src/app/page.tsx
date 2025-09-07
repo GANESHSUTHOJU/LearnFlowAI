@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useRef, useState, useEffect } from "react";
@@ -88,7 +89,7 @@ export default function HomePage() {
                       className="max-w-lg flex-1 bg-white/10 border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 h-12 rounded-full px-6"
                     />
                     <Button asChild type="submit" className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-full h-12 px-8">
-                      <Link href="/roadmap">
+                      <Link href="/signup">
                         Start Learning
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
