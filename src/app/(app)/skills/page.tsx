@@ -10,18 +10,23 @@ import { useRouter } from "next/navigation";
 
 const popularSkills = [
   "React",
-  "Python",
+  "Python for Data Science",
   "Machine Learning",
-  "Data Science",
+  "DevOps Engineering",
   "Next.js",
   "TypeScript",
-  "C++",
+  "C++ Game Development",
   "Graphic Design",
   "Project Management",
   "Public Speaking",
   "Creative Writing",
   "Sourdough Baking",
-  "Kubernetes"
+  "Kubernetes",
+  "Filmmaking and Cinematography",
+  "Mechanical Engineering Basics",
+  "Mobile App Marketing",
+  "Financial Modeling",
+  "Ethical Hacking",
 ];
 
 export default function SkillsPage() {
@@ -39,8 +44,9 @@ export default function SkillsPage() {
 
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      // The useEffect already filters, but we can add specific on-enter logic here if needed.
-      // For now, if there's an exact match, we could navigate, but filtering is enough.
+      if(searchQuery && filteredSkills.length === 0){
+        handleCreateRoadmap();
+      }
     }
   };
 
