@@ -30,12 +30,12 @@ export default function HomePage() {
           <h1 className="text-2xl font-bold font-display text-white">LearnFlowAI</h1>
         </Link>
         <nav className="flex items-center gap-4">
-          <Link href="/login" legacyBehavior passHref>
+          <Link href="/login" passHref legacyBehavior>
             <Button asChild variant="ghost" className="text-white hover:bg-white/10">
               <a>Login</a>
             </Button>
           </Link>
-          <Link href="/signup" legacyBehavior passHref>
+          <Link href="/signup" passHref legacyBehavior>
              <Button asChild className="bg-indigo-500 text-white hover:bg-indigo-600 rounded-full">
                 <a>Sign Up</a>
              </Button>
@@ -84,10 +84,10 @@ export default function HomePage() {
                     />
                     <Link href="/roadmap" passHref legacyBehavior>
                       <Button asChild type="submit" className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-full h-12 px-8">
-                          <a>
-                            Start Learning
-                            <ArrowRight className="ml-2 h-4 w-4" />
-                          </a>
+                            <a>
+                                Start Learning
+                                <ArrowRight className="ml-2 h-4 w-4" />
+                            </a>
                       </Button>
                     </Link>
                   </div>
@@ -206,11 +206,11 @@ export default function HomePage() {
             </div>
             <div className="mx-auto w-full max-w-sm space-y-2">
                <Link href="/signup" passHref legacyBehavior>
-                <Button asChild size="lg" className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-full h-12 px-8 text-base">
-                  <a>
-                    Sign Up for Free
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </a>
+                <Button asChild size="lg" className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-full h-12 px-8 text-base w-full">
+                    <a>
+                        Sign Up for Free
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                    </a>
                 </Button>
               </Link>
             </div>
@@ -234,5 +234,3 @@ export default function HomePage() {
     </div>
   );
 }
-
-    
