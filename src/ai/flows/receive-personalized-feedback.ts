@@ -5,7 +5,7 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
-import { geminiPro } from '@genkit-ai/googleai';
+import { googleAI } from '@genkit-ai/googleai';
 
 const FeedbackInputSchema = z.object({
   topic: z.string().describe("The topic or skill the user is learning."),
@@ -47,7 +47,7 @@ const receivePersonalizedFeedbackFlow = ai.defineFlow(
     The output must be a valid JSON object adhering to the schema.`;
 
     const {output} = await ai.generate({
-      model: geminiPro,
+      model: googleAI.model('gemini-1.5-flash-latest'),
       prompt: prompt,
       output: {
         schema: FeedbackOutputSchema,

@@ -5,7 +5,7 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
-import { geminiPro } from '@genkit-ai/googleai';
+import { googleAI } from '@genkit-ai/googleai';
 
 const RoadmapSchema = z.object({
   title: z.string().describe("A concise, engaging title for the learning roadmap. For example, 'Mastering TypeScript'."),
@@ -45,7 +45,7 @@ const generateRoadmapFlow = ai.defineFlow(
     Here is the topic: ${topic}`;
 
     const {output} = await ai.generate({
-      model: geminiPro,
+      model: googleAI.model('gemini-1.5-flash-latest'),
       prompt: prompt,
       output: {
         schema: RoadmapSchema,

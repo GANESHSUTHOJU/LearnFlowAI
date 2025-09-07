@@ -5,7 +5,7 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
-import { geminiPro } from '@genkit-ai/googleai';
+import { googleAI } from '@genkit-ai/googleai';
 
 export const ChatMessageSchema = z.object({
   role: z.enum(['user', 'model']),
@@ -50,7 +50,7 @@ const chatbotTutorGuidanceFlow = ai.defineFlow(
     }
     
     const {output} = await ai.generate({
-      model: geminiPro,
+      model: googleAI.model('gemini-1.5-flash-latest'),
       system: systemPrompt,
       history: history,
       prompt: lastMessage.content,

@@ -5,7 +5,7 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
-import { geminiPro } from '@genkit-ai/googleai';
+import { googleAI } from '@genkit-ai/googleai';
 
 export const QuizQuestionSchema = z.object({
   question: z.string().describe('The quiz question.'),
@@ -40,7 +40,7 @@ The output must be a valid JSON object that adheres to the provided schema.
 Topic: ${topic}`;
 
     const {output} = await ai.generate({
-      model: geminiPro,
+      model: googleAI.model('gemini-1.5-flash-latest'),
       prompt: prompt,
       output: {
         schema: QuizSchema,

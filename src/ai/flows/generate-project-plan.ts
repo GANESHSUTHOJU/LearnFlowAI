@@ -5,7 +5,7 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
-import { geminiPro } from '@genkit-ai/googleai';
+import { googleAI } from '@genkit-ai/googleai';
 
 const ProjectPlanSchema = z.object({
   projectName: z.string().describe('A catchy and relevant name for the project.'),
@@ -39,7 +39,7 @@ const generateProjectPlanFlow = ai.defineFlow(
     Topic: ${topic}`;
 
     const {output} = await ai.generate({
-      model: geminiPro,
+      model: googleAI.model('gemini-1.5-flash-latest'),
       prompt: prompt,
       output: {
         schema: ProjectPlanSchema,
