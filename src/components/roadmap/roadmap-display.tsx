@@ -4,20 +4,25 @@
 import { useState, useEffect } from "react";
 import { GlassCard, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
-import { Check, Rocket, Youtube, Lock, AlertTriangle, ArrowRight, XCircle, CheckCircle, Trophy } from "lucide-react";
+import { Check, Rocket, Youtube, Lock, AlertTriangle, ArrowRight, XCircle, CheckCircle, Trophy, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useRoadmapStore } from "@/store/roadmap-store";
 import { useToast } from "@/hooks/use-toast";
 import type { GeneratePersonalizedRoadmapOutput } from "@/ai/flows/generate-personalized-roadmap";
+import type { GenerateQuizOutput } from "@/ai/flows/generate-quiz";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import QuizClient from "../quiz/quiz-client";
 
+type QuizQuestion = GenerateQuizOutput['quiz'][0];
+
 interface RoadmapDisplayProps {
   roadmap: GeneratePersonalizedRoadmapOutput;
+  quiz: QuizQuestion[] | null;
+  isGeneratingQuiz: boolean;
 }
 
-export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
+export default function RoadmapDisplay({ roadmap, quiz, isGeneratingQuiz }: RoadmapDisplayProps) {
   const { toast } = useToast();
   const { courses, completeModule, updateQuizScore, startCourse, completeCourse } = useRoadmapStore();
   
@@ -131,13 +136,30 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
 
         <div>
             <h2 className="text-2xl font-bold font-headline mb-4">Final Quiz</h2>
-            {allStepsCompleted ? (
-                <QuizClient 
-                    quizQuestions={roadmap.quiz}
-                    courseTitle={roadmapTitle}
-                    onQuizComplete={(score) => updateQuizScore(roadmapTitle, score)}
-                    onQuizFinish={() => setQuizFinished(true)}
-                />
+             {allStepsCompleted ? (
+                isGeneratingQuiz ? (
+                    <GlassCard>
+                        <CardContent className="p-6 flex flex-col items-center justify-center text-center h-48">
+                            <Loader2 className="w-12 h-12 text-primary animate-spin mb-4" />
+                            <h3 className="font-bold text-xl">Generating Your Quiz...</h3>
+                            <p className="text-muted-foreground mt-2">The AI is preparing your questions. Please wait.</p>
+                        </CardContent>
+                    </GlassCard>
+                ) : quiz ? (
+                    <QuizClient 
+                        quizQuestions={quiz}
+                        courseTitle={roadmapTitle}
+                        onQuizComplete={(score) => updateQuizScore(roadmapTitle, score)}
+                        onQuizFinish={() => setQuizFinished(true)}
+                    />
+                ) : (
+                    <GlassCard>
+                         <CardContent className="p-6 flex flex-col items-center justify-center text-center h-48">
+                            <h3 className="font-bold text-xl">Quiz Not Found</h3>
+                             <p className="text-muted-foreground mt-2">There was an issue generating the quiz.</p>
+                         </CardContent>
+                    </GlassCard>
+                )
             ) : (
                  <GlassCard>
                     <CardContent className="p-6 flex flex-col items-center justify-center text-center">

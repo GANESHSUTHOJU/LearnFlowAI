@@ -26,16 +26,8 @@ const RoadmapStepSchema = z.object({
     youtubeSearchQuery: z.string().describe("A concise search query for finding relevant tutorials on YouTube for this step."),
 });
 
-const QuizQuestionSchema = z.object({
-    question: z.string().describe("The quiz question."),
-    options: z.array(z.string()).length(4).describe("An array of 4 multiple-choice options."),
-    correctAnswer: z.string().describe("The correct answer from the options."),
-    explanation: z.string().describe("A detailed explanation of why the correct answer is correct."),
-});
-
 const GeneratePersonalizedRoadmapOutputSchema = z.object({
   roadmap: z.array(RoadmapStepSchema).describe('The generated learning roadmap as a list of steps.'),
-  quiz: z.array(QuizQuestionSchema).describe('A comprehensive quiz with up to 10 multiple-choice questions related to the roadmap.'),
 });
 export type GeneratePersonalizedRoadmapOutput = z.infer<typeof GeneratePersonalizedRoadmapOutputSchema>;
 
@@ -47,7 +39,7 @@ const prompt = ai.definePrompt({
   name: 'generatePersonalizedRoadmapPrompt',
   input: {schema: GeneratePersonalizedRoadmapInputSchema},
   output: {schema: GeneratePersonalizedRoadmapOutputSchema},
-  prompt: `You are an expert learning roadmap and quiz generator. Based on the user's goal and current skill level, generate a personalized learning roadmap and a short, 10-question quiz.
+  prompt: `You are an expert learning roadmap generator. Based on the user's goal and current skill level, generate a personalized learning roadmap.
 
 Goal: {{{goal}}}
 Current Skill Level: {{{currentSkillLevel}}}
@@ -55,12 +47,6 @@ Current Skill Level: {{{currentSkillLevel}}}
 Here is the skill ontology: {{{skillOntology}}}
 
 Generate a clear, step-by-step list for the roadmap. Each step must have a step number, a title, a brief description, and a concise YouTube search query.
-
-After the roadmap, generate a quiz with 10 multiple-choice questions that covers all the topics in the roadmap. For each question, you MUST provide:
-1. The question text.
-2. An array of exactly 4 options.
-3. The correct answer text, which must be one of the 4 options.
-4. A detailed explanation for why the correct answer is correct.
 `, 
 });
 

@@ -1,43 +1,68 @@
 
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import GeneratorForm from "@/components/roadmap/generator-form";
 import RoadmapDisplay from "@/components/roadmap/roadmap-display";
 import { generatePersonalizedRoadmap, type GeneratePersonalizedRoadmapOutput } from "@/ai/flows/generate-personalized-roadmap";
+import { generateQuiz, type GenerateQuizOutput } from "@/ai/flows/generate-quiz";
 import { useSearchParams } from "next/navigation";
 import { Loader2, Wand2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { roadmapToSpeech, RoadmapToSpeechOutput } from "@/ai/flows/roadmap-to-speech";
+import { useToast } from "@/hooks/use-toast";
+import { GlassCard } from "@/components/ui/glass-card";
+import { CardContent } from "@/components/ui/card";
+
+type QuizQuestion = GenerateQuizOutput['quiz'][0];
 
 export default function RoadmapPage() {
   const searchParams = useSearchParams();
-  const goal = searchParams.get("goal");
-  const skillLevel = searchParams.get("skillLevel");
+  const goalParam = searchParams.get("goal");
+  const skillLevelParam = searchParams.get("skillLevel");
 
   const [roadmapData, setRoadmapData] = useState<GeneratePersonalizedRoadmapOutput | null>(null);
+  const [quizData, setQuizData] = useState<QuizQuestion[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isGeneratingQuiz, setIsGeneratingQuiz] = useState(false);
 
   const [isReadingAloud, setIsReadingAloud] = useState(false);
   const [audioData, setAudioData] = useState<RoadmapToSpeechOutput | null>(null);
+  const { toast } = useToast();
 
   const handleGenerate = async (goal: string, skillLevel: string) => {
     setIsLoading(true);
+    setIsGeneratingQuiz(false);
     setError(null);
     setRoadmapData(null);
+    setQuizData(null);
     try {
-      const response = await generatePersonalizedRoadmap({
+      const roadmapResponse = await generatePersonalizedRoadmap({
         goal: goal,
         currentSkillLevel: skillLevel,
         skillOntology: "Web Development: HTML, CSS, JavaScript, React, Node.js, Databases",
       });
-      setRoadmapData(response);
+      setRoadmapData(roadmapResponse);
+
+      // Now generate the quiz
+      setIsGeneratingQuiz(true);
+      toast({
+        title: "Generating Your Quiz...",
+        description: "The roadmap is ready. Now the AI is creating your questions.",
+      });
+      const quizResponse = await generateQuiz({
+          goal: goal,
+          currentSkillLevel: skillLevel,
+      });
+      setQuizData(quizResponse.quiz);
+
     } catch (e) {
       console.error(e);
-      setError("Could not generate roadmap. Please try again.");
+      setError("Could not generate the roadmap or quiz. Please try again.");
     } finally {
       setIsLoading(false);
+      setIsGeneratingQuiz(false);
     }
   }
   
@@ -91,7 +116,11 @@ export default function RoadmapPage() {
                     Your browser does not support the audio element.
                 </audio>
             )}
-          <RoadmapDisplay roadmap={roadmapData} />
+          <RoadmapDisplay 
+            roadmap={roadmapData} 
+            quiz={quizData} 
+            isGeneratingQuiz={isGeneratingQuiz}
+          />
         </div>
       )}
       {error && <p className="text-destructive">{error}</p>}
