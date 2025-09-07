@@ -46,19 +46,11 @@ To get a local copy up and running, follow these simple steps.
     ```
 
 3.  **Set up environment variables:**
-    Create a `.env` file in the root of your project and add your Firebase configuration details. You can get these from your Firebase project settings.
+    Copy the example environment file `.env.example` to a new file named `.env`.
+    ```sh
+    cp .env.example .env
     ```
-    # Firebase Client SDK Configuration
-    NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
-    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
-    NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
-    NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
-
-    # Genkit/Gemini API Key
-    GEMINI_API_KEY=your_gemini_api_key
-    ```
+    Now, open the `.env` file and add your Firebase and Genkit/Gemini API keys. You can get the Firebase credentials from your Firebase project settings under **Project settings > General > Your apps > SDK setup and configuration**.
 
 4.  **Run the development server:**
     ```sh
