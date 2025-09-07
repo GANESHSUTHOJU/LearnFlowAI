@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useRef } from "react";
@@ -30,12 +31,12 @@ export default function HomePage() {
           <h1 className="text-2xl font-bold font-display text-white">LearnFlowAI</h1>
         </Link>
         <nav className="flex items-center gap-4">
-          <Link href="/login" passHref>
+          <Link href="/login" passHref legacyBehavior>
             <Button asChild variant="ghost" className="text-white hover:bg-white/10">
               <a>Login</a>
             </Button>
           </Link>
-          <Link href="/signup" passHref>
+          <Link href="/signup" passHref legacyBehavior>
              <Button asChild className="bg-indigo-500 text-white hover:bg-indigo-600 rounded-full">
                 <a>Sign Up</a>
              </Button>
@@ -82,7 +83,7 @@ export default function HomePage() {
                       placeholder="What do you want to learn today?"
                       className="max-w-lg flex-1 bg-white/10 border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 h-12 rounded-full px-6"
                     />
-                    <Link href="/roadmap" passHref>
+                    <Link href="/roadmap" passHref legacyBehavior>
                       <Button asChild type="submit" className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-full h-12 px-8">
                           <a>
                             Start Learning
@@ -205,7 +206,7 @@ export default function HomePage() {
               </p>
             </div>
             <div className="mx-auto w-full max-w-sm space-y-2">
-               <Link href="/signup" passHref>
+               <Link href="/signup" passHref legacyBehavior>
                 <Button asChild size="lg" className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-full h-12 px-8 text-base">
                   <a>
                     Sign Up for Free
