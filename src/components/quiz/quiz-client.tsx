@@ -1,49 +1,60 @@
+
 "use client"
 
 import * as React from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CheckCircle, XCircle, ChevronRight, RefreshCw } from "lucide-react"
+import { CheckCircle, XCircle, ChevronRight, RefreshCw, Loader } from "lucide-react"
+import { generateQuiz, Quiz, QuizQuestion } from "@/ai/flows/generate-quiz"
+import { useSearchParams } from "next/navigation"
+import { Skeleton } from "../ui/skeleton"
+import AnimatedError from "../ui/animated-error"
+import { toast } from "sonner"
 
-type Question = {
-  question: string
-  options: string[]
-  correctAnswer: string
-  explanation: string
-}
-
-const dummyQuestions: Question[] = [
-  {
-    question: "What is JSX?",
-    options: [
-      "A JavaScript library",
-      "A syntax extension for JavaScript",
-      "A CSS preprocessor",
-      "A database query language",
-    ],
-    correctAnswer: "A syntax extension for JavaScript",
-    explanation: "JSX stands for JavaScript XML. It allows you to write HTML-like syntax in your JavaScript code, which makes creating React elements more intuitive.",
-  },
-  {
-    question: "How do you pass data to a component?",
-    options: ["Using state", "Using props", "Using methods", "Using context"],
-    correctAnswer: "Using props",
-    explanation: "Props (short for properties) are used to pass data from a parent component to a child component in a uni-directional flow.",
-  },
-]
 
 export default function QuizClient() {
-  const [questions, setQuestions] = React.useState<Question[]>(dummyQuestions)
+  const searchParams = useSearchParams();
+  const topic = searchParams.get("topic") || "a random topic";
+
+  const [quiz, setQuiz] = React.useState<Quiz | null>(null);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = React.useState(0)
   const [selectedAnswer, setSelectedAnswer] = React.useState<string | null>(null)
   const [isCorrect, setIsCorrect] = React.useState<boolean | null>(null)
   const [score, setScore] = React.useState(0)
   const [quizFinished, setQuizFinished] = React.useState(false)
 
+  const fetchQuiz = React.useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    setQuiz(null);
+    try {
+      const generatedQuiz = await generateQuiz(topic);
+      setQuiz(generatedQuiz);
+      handleRestart(generatedQuiz.questions);
+      toast.success(`Quiz for "${topic}" generated!`);
+    } catch (e) {
+      console.error("Error generating quiz:", e);
+      const errorMessage = e instanceof Error ? e.message : "An unknown error occurred.";
+      setError(`Sorry, I had trouble generating a quiz. ${errorMessage}`);
+      toast.error("Failed to generate quiz.");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [topic]);
+
+  React.useEffect(() => {
+    fetchQuiz();
+  }, [fetchQuiz]);
+
+
   const handleAnswer = (answer: string) => {
+    if (!quiz) return;
     setSelectedAnswer(answer)
-    const correct = answer === questions[currentQuestionIndex].correctAnswer
+    const correct = answer === quiz.questions[currentQuestionIndex].correctAnswer
     setIsCorrect(correct)
     if (correct) {
       setScore(score + 1)
@@ -51,7 +62,8 @@ export default function QuizClient() {
   }
 
   const handleNext = () => {
-    if (currentQuestionIndex < questions.length - 1) {
+    if (!quiz) return;
+    if (currentQuestionIndex < quiz.questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1)
       setSelectedAnswer(null)
       setIsCorrect(null)
@@ -60,17 +72,55 @@ export default function QuizClient() {
     }
   }
 
-  const handleRestart = () => {
+  const handleRestart = (questions?: QuizQuestion[]) => {
     setCurrentQuestionIndex(0)
     setSelectedAnswer(null)
     setIsCorrect(null)
     setScore(0)
     setQuizFinished(false)
+    if (questions) {
+      setQuiz({ topic, questions });
+    }
   }
 
-  const currentQuestion = questions[currentQuestionIndex]
+  if (isLoading) {
+    return (
+      <div className="w-full max-w-2xl mx-auto space-y-8">
+        <div className="flex justify-center items-center gap-2 text-muted-foreground">
+          <Loader className="h-6 w-6 animate-spin" />
+          <p className="text-lg">Generating your quiz on &quot;{topic}&quot;...</p>
+        </div>
+        <Card className="w-full max-w-2xl mx-auto">
+            <CardHeader>
+                <Skeleton className="h-8 w-3/4" />
+            </CardHeader>
+            <CardContent className="space-y-6">
+                <Skeleton className="h-10 w-full" />
+                <div className="space-y-3">
+                    <Skeleton className="h-12 w-full" />
+                    <Skeleton className="h-12 w-full" />
+                    <Skeleton className="h-12 w-full" />
+                    <Skeleton className="h-12 w-full" />
+                </div>
+            </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
-  if (quizFinished) {
+  if (error) {
+    return (
+        <div className="w-full max-w-2xl mx-auto">
+            <AnimatedError message={error} />
+            <Button onClick={() => fetchQuiz()} className="mt-4">
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Try Again
+            </Button>
+        </div>
+    );
+  }
+
+  if (quizFinished || !quiz) {
     return (
       <Card className="w-full max-w-2xl mx-auto">
         <CardHeader>
@@ -80,10 +130,10 @@ export default function QuizClient() {
           <p className="text-xl">
             You scored{" "}
             <span className="font-bold text-primary">
-              {score} out of {questions.length}
+              {score} out of {quiz?.questions.length || 0}
             </span>
           </p>
-          <Button onClick={handleRestart}>
+          <Button onClick={() => handleRestart(quiz?.questions)}>
             <RefreshCw className="mr-2 h-4 w-4" />
             Restart Quiz
           </Button>
@@ -92,11 +142,13 @@ export default function QuizClient() {
     )
   }
 
+  const currentQuestion = quiz.questions[currentQuestionIndex]
+
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
         <CardTitle>
-          Question {currentQuestionIndex + 1} / {questions.length}
+          Question {currentQuestionIndex + 1} / {quiz.questions.length}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -141,7 +193,7 @@ export default function QuizClient() {
               </div>
               <p className="text-sm">{currentQuestion.explanation}</p>
               <Button className="mt-4 w-full" onClick={handleNext}>
-                {currentQuestionIndex < questions.length - 1 ? "Next Question" : "Finish Quiz"}
+                {currentQuestionIndex < quiz.questions.length - 1 ? "Next Question" : "Finish Quiz"}
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
             </motion.div>
@@ -151,3 +203,5 @@ export default function QuizClient() {
     </Card>
   )
 }
+
+    
