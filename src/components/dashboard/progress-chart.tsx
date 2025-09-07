@@ -10,8 +10,10 @@ export default function ProgressChart() {
 
   const startedCount = courses.length;
   const completedCount = courses.filter(c => c.isCompleted).length;
-  const averageQuizScore = courses.length > 0
-    ? Math.round(courses.reduce((acc, course) => acc + (course.quizScore ?? 0), 0) / courses.length)
+  const completedWithScores = courses.filter(c => c.isCompleted && c.quizScore !== null);
+  
+  const averageQuizScore = completedWithScores.length > 0
+    ? Math.round(completedWithScores.reduce((acc, course) => acc + (course.quizScore ?? 0), 0) / completedWithScores.length)
     : null;
 
   return (

@@ -32,10 +32,14 @@ export default function CompletedCourses() {
                                        <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
                                        <p className="font-semibold">{course.title}</p>
                                     </div>
-                                    {course.quizScore !== null && (
+                                    {course.quizScore !== null ? (
                                          <div className="flex items-center text-sm text-muted-foreground gap-2 flex-shrink-0">
                                             <PieChart className="w-4 h-4" />
                                             <span className="font-bold">{course.quizScore}%</span>
+                                        </div>
+                                    ) : (
+                                        <div className="text-sm text-muted-foreground">
+                                            <span>No quiz</span>
                                         </div>
                                     )}
                                 </li>

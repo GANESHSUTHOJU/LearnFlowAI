@@ -4,7 +4,7 @@
 import { useRoadmapStore } from "@/store/roadmap-store";
 import { GlassCard, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, GitMerge, CheckCircle, PieChart } from "lucide-react";
+import { ArrowRight, GitMerge, PieChart } from "lucide-react";
 import Link from "next/link";
 import { Progress } from "../ui/progress";
 
@@ -33,13 +33,13 @@ export default function ProgressTracker() {
                                 <li key={index} className="space-y-2">
                                     <p className="font-semibold">{course.title}</p>
                                     <div className="flex items-center gap-4">
-                                        <Progress value={course.modulesCompleted / course.totalModules * 100} className="w-[70%]" />
+                                        <Progress value={Math.round((course.modulesCompleted / course.totalModules) * 100)} className="flex-1" />
                                         <span className="text-xs text-muted-foreground">{course.modulesCompleted}/{course.totalModules} Modules</span>
                                     </div>
                                     {course.quizScore !== null && (
                                          <div className="flex items-center text-sm text-muted-foreground gap-2">
                                             <PieChart className="w-4 h-4" />
-                                            <span>Quiz Score: {course.quizScore}%</span>
+                                            <span>Quiz Score: {course.quizScore}% (Pending Completion)</span>
                                         </div>
                                     )}
                                 </li>
