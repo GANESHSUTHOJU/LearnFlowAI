@@ -184,7 +184,7 @@ export default function HomePage() {
               </motion.div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         <motion.section
           ref={ctaRef}
@@ -211,7 +211,7 @@ export default function HomePage() {
               </Button>
             </div>
           </div>
-        </section>
+        </motion.section>
       </main>
 
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t border-white/10">
