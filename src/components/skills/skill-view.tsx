@@ -1,5 +1,6 @@
 "use client";
 
+import { useProgressStore } from "@/store/progress-store";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,40 +13,36 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { CheckCircle, Circle, ArrowRight } from "lucide-react";
 import Link from "next/link";
-
-interface SkillTopic {
-  id: string;
-  title: string;
-  completed: boolean;
-}
-
-interface Skill {
-  id: string;
-  name: string;
-  description: string;
-  progress: number;
-  topics: SkillTopic[];
-}
-
-// Dummy data
-const dummySkill: Skill = {
-  id: "react",
-  name: "React Fundamentals",
-  description:
-    "Master the core concepts of React, including components, state, props, and hooks, to build modern, interactive web applications.",
-  progress: 40,
-  topics: [
-    { id: "1", title: "Introduction to JSX", completed: true },
-    { id: "2", title: "Components and Props", completed: true },
-    { id: "3", title: "State and Lifecycle", completed: false },
-    { id: "4", title: "Handling Events", completed: false },
-    { id: "5", title: "Conditional Rendering", completed: false },
-  ],
-};
+import { useRouter } from "next/navigation";
 
 const SkillView = ({ skillId }: { skillId: string }) => {
-  // In a real app, you would fetch skill data based on skillId
-  const skill = dummySkill;
+  const router = useRouter();
+  const { skills, loading } = useProgressStore();
+  const skill = skills.find((s) => s.id === skillId);
+  
+  // A simple way to generate topics based on skill name. 
+  // In a real app, this would come from a database.
+  const generateTopics = (skillName: string) => {
+    return [
+      { id: "1", title: `Introduction to ${skillName}`, completed: true },
+      { id: "2", title: `Core Concepts of ${skillName}`, completed: false },
+      { id: "3", title: `Advanced Techniques in ${skillName}`, completed: false },
+      { id: "4", title: `Practicing ${skillName}`, completed: false },
+      { id: "5", title: `Mastering ${skillName}`, completed: false },
+    ]
+  }
+
+  if (loading) {
+    return <div>Loading skill details...</div>;
+  }
+
+  if (!skill) {
+    return <div>Skill not found!</div>;
+  }
+  
+  const topics = generateTopics(skill.name);
+  const completedTopics = topics.filter(t => t.completed).length;
+  const progress = (completedTopics / topics.length) * 100;
 
   return (
     <div className="space-y-8">
@@ -53,7 +50,7 @@ const SkillView = ({ skillId }: { skillId: string }) => {
         <CardHeader>
           <CardTitle className="text-3xl font-bold">{skill.name}</CardTitle>
           <CardDescription className="text-lg">
-            {skill.description}
+            Master the core concepts of {skill.name} to build your expertise.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -62,14 +59,14 @@ const SkillView = ({ skillId }: { skillId: string }) => {
               <span className="text-sm font-medium text-muted-foreground">
                 Progress
               </span>
-              <span className="text-sm font-bold">{skill.progress}%</span>
+              <span className="text-sm font-bold">{progress.toFixed(0)}%</span>
             </div>
-            <Progress value={skill.progress} />
+            <Progress value={progress} />
           </div>
         </CardContent>
         <CardFooter className="flex justify-end">
           <Button asChild>
-            <Link href={`/tutor?skill=${skill.id}`}>
+            <Link href={`/tutor?skill=${skill.name}`}>
               Start Learning Session <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
@@ -85,7 +82,7 @@ const SkillView = ({ skillId }: { skillId: string }) => {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {skill.topics.map((topic) => (
+            {topics.map((topic) => (
               <div
                 key={topic.id}
                 className="flex items-center p-4 rounded-md bg-secondary"
@@ -103,7 +100,7 @@ const SkillView = ({ skillId }: { skillId: string }) => {
                   {topic.title}
                 </span>
                 {!topic.completed && (
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" onClick={() => router.push(`/tutor?skill=${skill.name}&topic=${topic.title}`)}>
                     Start
                   </Button>
                 )}
