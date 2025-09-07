@@ -1,9 +1,9 @@
 
 import { create } from 'zustand';
-import { getUserProgress, listenToUserProgress } from '@/services/progress-service';
+import { getUserProgress, listenToUserProgress, addSkillToProgress } from '@/services/progress-service';
 import type { Unsubscribe } from 'firebase/firestore';
 
-interface Skill {
+export interface Skill {
     id: string;
     name: string;
     completed: boolean;
@@ -30,6 +30,7 @@ export interface ProgressState {
   error: string | null;
   fetchProgress: (userId: string) => Promise<void>;
   listenForProgress: (userId: string) => Unsubscribe;
+  addSkill: (userId: string, skillId: string) => Promise<void>;
 }
 
 export const useProgressStore = create<ProgressState>((set, get) => ({
@@ -72,5 +73,24 @@ export const useProgressStore = create<ProgressState>((set, get) => ({
       });
     });
     return unsubscribe;
+  },
+
+  addSkill: async (userId: string, skillId: string) => {
+    // Optimistic update
+    const newSkill: Skill = { id: skillId, name: skillId, completed: false, totalTopics: 5, completedTopics: 0 };
+    set(state => ({
+        skills: [...state.skills, newSkill]
+    }));
+
+    try {
+        await addSkillToProgress(userId, skillId);
+    } catch(e) {
+        const errorMessage = e instanceof Error ? e.message : "An unknown error occurred while adding skill.";
+        set({error: errorMessage});
+        // Rollback optimistic update on error
+        set(state => ({
+            skills: state.skills.filter(s => s.id !== skillId)
+        }));
+    }
   }
 }));

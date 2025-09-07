@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useProgressStore } from "@/store/progress-store";
@@ -11,13 +12,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle, Circle, ArrowRight } from "lucide-react";
+import { CheckCircle, Circle, ArrowRight, BookOpen, BrainCircuit, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/use-auth";
+import { useState } from "react";
+import Image from "next/image";
 
 const SkillView = ({ skillId }: { skillId: string }) => {
   const router = useRouter();
-  const { skills, loading } = useProgressStore();
+  const { user } = useAuth();
+  const { skills, loading, addSkill } = useProgressStore();
+  const [isAdding, setIsAdding] = useState(false);
   const skill = skills.find((s) => s.id === skillId);
   
   // A simple way to generate topics based on skill name. 
@@ -32,12 +38,62 @@ const SkillView = ({ skillId }: { skillId: string }) => {
     ]
   }
 
+  const handleStartSkill = async () => {
+    if (user) {
+      setIsAdding(true);
+      await addSkill(user.uid, skillId);
+      setIsAdding(false);
+    }
+  }
+
+
   if (loading) {
-    return <div>Loading skill details...</div>;
+    return (
+        <div className="flex items-center justify-center h-40">
+            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+            <p className="ml-4 text-muted-foreground">Loading skill details...</p>
+        </div>
+    );
   }
 
   if (!skill) {
-    return <div>Skill not found!</div>;
+    return (
+        <Card className="text-center">
+            <CardHeader>
+                <div className="mx-auto bg-primary/10 rounded-full p-4 w-fit">
+                    <BookOpen className="h-12 w-12 text-primary" />
+                </div>
+                <CardTitle className="mt-4 text-3xl font-bold">Start Learning {skillId}</CardTitle>
+                <CardDescription className="text-lg">
+                    This skill isn&apos;t in your learning plan yet. Add it to begin your journey.
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <p className="text-muted-foreground max-w-md mx-auto">
+                    By adding this skill, you can track your progress, get personalized recommendations, and receive guidance from our AI Tutor.
+                </p>
+            </CardContent>
+            <CardFooter className="flex-col gap-4">
+                <Button size="lg" onClick={handleStartSkill} disabled={isAdding}>
+                    {isAdding ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Adding...
+                        </>
+                    ) : (
+                        <>
+                            <PlusCircle className="mr-2 h-4 w-4" />
+                            Start Learning Skill
+                        </>
+                    )}
+                </Button>
+                <Button variant="outline" onClick={() => router.push('/roadmap')}>
+                    <BrainCircuit className="mr-2 h-4 w-4" />
+                    Generate a Custom Roadmap
+                </Button>
+            </CardFooter>
+        </Card>
+    );
   }
   
   const topics = generateTopics(skill.name);
