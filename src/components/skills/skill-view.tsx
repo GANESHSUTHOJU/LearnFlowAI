@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle, Circle, ArrowRight, BookOpen, BrainCircuit, Loader2 } from "lucide-react";
+import { CheckCircle, Circle, ArrowRight, BookOpen, BrainCircuit, Loader2, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
@@ -65,7 +65,7 @@ const SkillView = ({ skillId }: { skillId: string }) => {
                 </div>
                 <CardTitle className="mt-4 text-3xl font-bold">Start Learning {skillId}</CardTitle>
                 <CardDescription className="text-lg">
-                    This skill isn&apos;t in your learning plan yet. Add it to begin your journey.
+                    This skill isn't in your learning plan yet. Add it to begin your journey.
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -150,7 +150,7 @@ const SkillView = ({ skillId }: { skillId: string }) => {
                 )}
                 <span
                   className={`flex-grow font-medium ${
-                    topic.completed ? "line-through text-muted-foreground" : ""
+                    topic.completed ? "text-muted-foreground" : ""
                   }`}
                 >
                   {topic.title}
