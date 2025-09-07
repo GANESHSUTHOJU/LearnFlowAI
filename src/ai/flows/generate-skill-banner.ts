@@ -33,11 +33,8 @@ const generateSkillBannerFlow = ai.defineFlow(
   },
   async ({ skillTitle }) => {
     const { media } = await ai.generate({
-      model: 'googleai/gemini-2.0-flash-preview-image-generation',
+      model: 'googleai/imagen-4.0-fast-generate-001',
       prompt: `Generate an abstract, visually appealing banner image representing the skill of "${skillTitle}". The image should be artistic and metaphorical, not literal. Use a modern, tech-focused aesthetic. Aspect ratio 16:9.`,
-      config: {
-        responseModalities: ['TEXT', 'IMAGE'],
-      },
     });
 
     if (!media?.url) {
