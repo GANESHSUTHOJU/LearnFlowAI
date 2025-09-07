@@ -15,7 +15,6 @@ type QuizQuestion = {
   options: string[];
   correctAnswer: string;
   explanation: string;
-  incorrectExplanations: string[];
 };
 
 interface QuizClientProps {
@@ -57,32 +56,9 @@ export default function QuizClient({ quizQuestions, courseTitle, onQuizComplete,
         setQuizFinished(true);
     }
   }
-  
-  const getIncorrectExplanation = () => {
-      if (!selectedAnswer || isCorrect) return "";
-      
-      // Find the index of the user's incorrect answer in the options array
-      const selectedOptionIndex = currentQuestion.options.findIndex(opt => opt === selectedAnswer);
-      
-      // Map the index from the overall options array to the index in the incorrectExplanations array
-      let incorrectIndex = 0;
-      let count = -1;
-      for (let i = 0; i < currentQuestion.options.length; i++) {
-        if(currentQuestion.options[i] !== currentQuestion.correctAnswer) {
-          count++;
-        }
-        if(i === selectedOptionIndex) {
-          incorrectIndex = count;
-          break;
-        }
-      }
-
-      return currentQuestion.incorrectExplanations[incorrectIndex];
-  }
-
 
   if(quizFinished) {
-    const finalScore = Math.round((score / quizQuestions.length) * 100);
+    const finalScore = Math.round(((score + 1) / quizQuestions.length) * 100);
     return (
         <GlassCard>
             <CardContent className="p-8 flex flex-col items-center justify-center text-center">
@@ -160,11 +136,10 @@ export default function QuizClient({ quizQuestions, courseTitle, onQuizComplete,
                 {isCorrect ? 'Correct!' : 'Incorrect'}
               </AlertTitle>
             <AlertDescription className="space-y-3 mt-3 pl-7">
-                <p>{isCorrect ? currentQuestion.explanation : getIncorrectExplanation()}</p>
+                <p>{currentQuestion.explanation}</p>
                 {!isCorrect && (
                   <div className="p-4 bg-background/50 rounded-md border border-green-500/20">
                       <p className="font-bold">The correct answer is: <span className="font-semibold">{currentQuestion.correctAnswer}</span></p>
-                      <p className="mt-2">{currentQuestion.explanation}</p>
                   </div>
                 )}
             </AlertDescription>

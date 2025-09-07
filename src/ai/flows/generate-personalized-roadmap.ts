@@ -31,7 +31,6 @@ const QuizQuestionSchema = z.object({
     options: z.array(z.string()).length(4).describe("An array of 4 multiple-choice options."),
     correctAnswer: z.string().describe("The correct answer from the options."),
     explanation: z.string().describe("A detailed explanation of why the correct answer is correct."),
-    incorrectExplanations: z.array(z.string()).length(3).describe("An array of 3 detailed explanations for why the other three options are incorrect. The order of these explanations should correspond to the order of the incorrect options."),
 });
 
 const GeneratePersonalizedRoadmapOutputSchema = z.object({
@@ -62,7 +61,6 @@ After the roadmap, generate a quiz with up to 25 multiple-choice questions that 
 2. An array of exactly 4 options.
 3. The correct answer text, which must be one of the 4 options.
 4. A detailed explanation for why the correct answer is correct.
-5. An array of 3 detailed explanations for why the other three options are incorrect. The order of these explanations should correspond to the order of the incorrect options.
 `, 
 });
 
