@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useRef, useState, useEffect } from "react";
@@ -16,11 +17,21 @@ const FADE_UP_ANIMATION_VARIANTS = {
 };
 
 export default function HomePage() {
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
     const featuresRef = useRef(null);
     const featuresInView = useInView(featuresRef, { once: true, margin: "-100px" });
   
     const ctaRef = useRef(null);
     const ctaInView = useInView(ctaRef, { once: true, margin: "-100px" });
+
+    if (!isClient) {
+        return null;
+    }
 
   return (
     <div className="flex flex-col min-h-[100vh] bg-[#222222] text-white font-sans">
@@ -232,3 +243,5 @@ export default function HomePage() {
     </div>
   );
 }
+
+    
