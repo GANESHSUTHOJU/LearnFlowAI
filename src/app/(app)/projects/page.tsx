@@ -40,9 +40,11 @@ export default function ProjectsPage() {
             Apply your skills to real-world projects.
           </p>
         </div>
-        <Button>
-          <PlusCircle className="mr-2 h-4 w-4" />
-          New Project
+        <Button asChild>
+          <Link href="/roadmap">
+            <PlusCircle className="mr-2 h-4 w-4" />
+            New Project
+          </Link>
         </Button>
       </div>
 

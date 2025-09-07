@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Sidebar, SidebarItemProps } from "@/components/ui/app-sidebar";
-import { LayoutDashboard, Book, BrainCircuit, Bot } from "lucide-react";
+import { LayoutDashboard, Book, BrainCircuit, Bot, FolderKanban } from "lucide-react";
 import { Logo } from "@/components/logo";
 
 const sidebarItems: SidebarItemProps[] = [
@@ -12,6 +12,7 @@ const sidebarItems: SidebarItemProps[] = [
   { id: "skills", label: "Skills", icon: Book, href: "/skills" },
   { id: "roadmap", label: "Roadmap Generator", icon: BrainCircuit, href: "/roadmap" },
   { id: "tutor", label: "AI Tutor", icon: Bot, href: "/tutor" },
+  { id: "projects", label: "Projects", icon: FolderKanban, href: "/projects" },
 ];
 
 
