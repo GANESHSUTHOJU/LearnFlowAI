@@ -52,13 +52,14 @@ export default function QuizClient({ quizQuestions, courseTitle, onQuizComplete,
     } else {
         const finalScore = Math.round((score / quizQuestions.length) * 100);
         onQuizComplete(finalScore);
-        onQuizFinish?.();
+        if(onQuizFinish) onQuizFinish();
         setQuizFinished(true);
     }
   }
 
   if(quizFinished) {
-    const finalScore = Math.round(((score + 1) / quizQuestions.length) * 100);
+    // This score is calculated before the final state update, so we use the score directly.
+    const finalScore = Math.round((score / quizQuestions.length) * 100);
     return (
         <GlassCard>
             <CardContent className="p-8 flex flex-col items-center justify-center text-center">

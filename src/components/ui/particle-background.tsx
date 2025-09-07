@@ -6,18 +6,29 @@ import { useEffect } from 'react';
 declare global {
     interface Window {
         particlesJS: any;
+        pJSDom: any[];
     }
 }
+
+const SCRIPT_ID = 'particles-js-script';
+const CONTAINER_ID = 'particles-js';
+
 
 export default function ParticleBackground() {
 
     useEffect(() => {
+        // Prevent script from being added multiple times
+        if (document.getElementById(SCRIPT_ID)) {
+            return;
+        }
+
         const script = document.createElement('script');
+        script.id = SCRIPT_ID;
         script.src = 'https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js';
         script.async = true;
         script.onload = () => {
             if(window.particlesJS) {
-                window.particlesJS("particles-js", {
+                window.particlesJS(CONTAINER_ID, {
                     "particles": {
                         "number": { "value": 120, "density": { "enable": true, "value_area": 800 } },
                         "color": { "value": "#ffffff" },
@@ -52,14 +63,22 @@ export default function ParticleBackground() {
             }
         };
 
-        document.body.appendChild(script);
+        document.head.appendChild(script);
 
         return () => {
-            document.body.removeChild(script);
-            // Optional: If particles.js has a destroy method, call it here
-            const pjs = document.querySelector('#particles-js canvas');
-            if (pjs && pjs.parentElement) {
-                pjs.parentElement.remove();
+            // Clean up particles instance and its canvas
+            if (window.pJSDom && window.pJSDom.length > 0) {
+                 const pJS = window.pJSDom.find((p) => p.pJS.canvas.el.parentElement?.id === CONTAINER_ID);
+                 if (pJS) {
+                    pJS.pJS.fn.vendors.destroypJS();
+                 }
+                 window.pJSDom = window.pJSDom.filter(p => p !== pJS);
+            }
+            
+            // Remove the script tag
+            const scriptToRemove = document.getElementById(SCRIPT_ID);
+            if (scriptToRemove) {
+                scriptToRemove.remove();
             }
         };
 
