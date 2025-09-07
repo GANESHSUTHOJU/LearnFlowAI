@@ -1,4 +1,4 @@
-import { genkit, configureGenkit } from 'genkit';
+import { genkit } from 'genkit';
 import { googleAI } from '@genkit-ai/googleai';
 
 // This check is commented out because it can cause issues in certain deployment
@@ -9,7 +9,7 @@ import { googleAI } from '@genkit-ai/googleai';
 //   );
 // }
 
-configureGenkit({
+export const ai = genkit({
   plugins: [
     googleAI({
       // The API key is loaded from the GEMINI_API_KEY environment variable.
@@ -19,5 +19,3 @@ configureGenkit({
   enableTracing: true,
   flowStateStore: 'dev-local'
 });
-
-export { genkit as ai };
