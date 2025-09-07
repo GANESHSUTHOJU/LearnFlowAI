@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useAuth } from "@/hooks/use-auth";
@@ -6,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Sidebar, SidebarItemProps } from "@/components/ui/app-sidebar";
 import { LayoutDashboard, Book, BrainCircuit, Bot, FolderKanban } from "lucide-react";
 import { Logo } from "@/components/logo";
+import { useProgressStore } from "@/store/progress-store";
 
 const sidebarItems: SidebarItemProps[] = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
@@ -21,21 +23,38 @@ export default function AppLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { user, loading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
+  const { listenForProgress } = useProgressStore();
   const router = useRouter();
   const [isClient, setIsClient] = useState(false);
+  const [unsubscribe, setUnsubscribe] = useState<(() => void) | null>(null);
+
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
   useEffect(() => {
-    if (isClient && !loading && !user) {
+    if (isClient && !authLoading && !user) {
       router.push("/login");
     }
-  }, [user, loading, router, isClient]);
+  }, [user, authLoading, router, isClient]);
 
-  if (loading || !user) {
+  useEffect(() => {
+    if (user && !unsubscribe) {
+      const unsub = listenForProgress(user.uid);
+      setUnsubscribe(() => unsub);
+    }
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, [user, listenForProgress, unsubscribe]);
+
+
+  if (authLoading || !user) {
     return (
       <div className="flex h-screen w-screen items-center justify-center">
         <Logo className="h-10 w-10 animate-spin" />

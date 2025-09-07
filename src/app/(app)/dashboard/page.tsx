@@ -6,19 +6,10 @@ import { ProgressChart } from "@/components/dashboard/progress-chart";
 import { ProgressTracker } from "@/components/dashboard/progress-tracker";
 import { AiInsights } from "@/components/dashboard/ai-insights";
 import { useProgressStore } from "@/store/progress-store";
-import { useAuth } from "@/hooks/use-auth";
-import { useEffect } from "react";
 import { Logo } from "@/components/logo";
 
 export default function DashboardPage() {
-    const { user } = useAuth();
-    const { loading, fetchProgress } = useProgressStore();
-
-    useEffect(() => {
-        if (user) {
-            fetchProgress(user.uid);
-        }
-    }, [user, fetchProgress]);
+    const { loading } = useProgressStore();
 
     if (loading) {
         return (
