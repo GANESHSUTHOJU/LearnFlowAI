@@ -1,7 +1,8 @@
+
 "use client"
 
 import { TrendingUp } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
 import {
   Card,
@@ -16,35 +17,27 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-
-export const description = "A bar chart with a custom tooltip"
-
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-]
+import { useProgressStore } from "@/store/progress-store"
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  lessons: {
+    label: "Lessons",
     color: "hsl(var(--primary))",
   },
 }
 
 export function ProgressChart() {
+  const { learningActivity, activityTrend } = useProgressStore();
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Learning Activity</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardDescription>Your lesson completions over the last 6 months.</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={chartData}>
+          <BarChart accessibilityLayer data={learningActivity}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="month"
@@ -53,20 +46,31 @@ export function ProgressChart() {
               axisLine={false}
               tickFormatter={(value) => value.slice(0, 3)}
             />
+            <YAxis />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="dashed" />}
             />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
+            <Bar dataKey="lessons" fill="var(--color-lessons)" radius={4} />
           </BarChart>
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          {activityTrend > 0 ? (
+            <>
+              Trending up by {activityTrend.toFixed(1)}% this month <TrendingUp className="h-4 w-4" />
+            </>
+          ) : activityTrend < 0 ? (
+            <>
+              Trending down by {Math.abs(activityTrend).toFixed(1)}% this month <TrendingUp className="h-4 w-4 rotate-180" />
+            </>
+          ) : (
+            "Activity is stable this month."
+          )}
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          Showing total lessons completed in the last 6 months
         </div>
       </CardFooter>
     </Card>

@@ -1,9 +1,36 @@
+
+"use client";
+
 import { CompletedCourses } from "@/components/dashboard/completed-courses";
 import { ProgressChart } from "@/components/dashboard/progress-chart";
 import { ProgressTracker } from "@/components/dashboard/progress-tracker";
 import { AiInsights } from "@/components/dashboard/ai-insights";
+import { useProgressStore } from "@/store/progress-store";
+import { useAuth } from "@/hooks/use-auth";
+import { useEffect } from "react";
+import { Logo } from "@/components/logo";
 
 export default function DashboardPage() {
+    const { user } = useAuth();
+    const { loading, fetchProgress } = useProgressStore();
+
+    useEffect(() => {
+        if (user) {
+            fetchProgress(user.uid);
+        }
+    }, [user, fetchProgress]);
+
+    if (loading) {
+        return (
+            <div className="flex h-screen w-full items-center justify-center -mt-20">
+                <div className="flex flex-col items-center gap-4">
+                    <Logo className="h-10 w-10 animate-spin" />
+                    <p className="text-muted-foreground">Loading your dashboard...</p>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div className="space-y-8">
             <div className="text-center md:text-left">
