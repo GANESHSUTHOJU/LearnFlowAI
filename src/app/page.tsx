@@ -30,10 +30,10 @@ export default function HomePage() {
           <h1 className="text-2xl font-bold font-display text-white">LearnFlowAI</h1>
         </div>
         <nav className="flex items-center gap-4">
-          <Link href="/login">
+          <Link href="/login" passHref>
             <Button variant="ghost" className="text-white hover:bg-white/10">Login</Button>
           </Link>
-          <Link href="/signup">
+          <Link href="/signup" passHref>
             <Button className="bg-indigo-500 text-white hover:bg-indigo-600 rounded-full">Sign Up</Button>
           </Link>
         </nav>
@@ -207,7 +207,7 @@ export default function HomePage() {
               </Button>
             </div>
           </div>
-        </motion.section>
+        </section>
       </main>
 
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t border-white/10">
