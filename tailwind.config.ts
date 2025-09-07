@@ -19,7 +19,8 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-sans)", "sans-serif"],
+        sans: ["var(--font-inter)", "sans-serif"],
+        display: ["var(--font-space-grotesk)", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -70,14 +71,34 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "float-x-slow-1": {
+            "0%, 100%": { transform: "translateX(-20px)" },
+            "50%": { transform: "translateX(20px)" },
+        },
+        "float-x-slow-2": {
+            "0%, 100%": { transform: "translateX(30px)" },
+            "50%": { transform: "translateX(-30px)" },
+        },
+        "float-x-fast-1": {
+            "0%, 100%": { transform: "translateX(15px) translateY(-15px)" },
+            "50%": { transform: "translateX(-15px) translateY(15px)" },
+        },
+        "float-x-fast-2": {
+            "0%, 100%": { transform: "translateX(-10px) translateY(10px)" },
+            "50%": { transform: "translateX(10px) translateY(-10px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "float-x-slow-1": "float-x-slow-1 10s ease-in-out infinite",
+        "float-x-slow-2": "float-x-slow-2 12s ease-in-out infinite",
+        "float-x-fast-1": "float-x-fast-1 8s ease-in-out infinite",
+        "float-x-fast-2": "float-x-fast-2 9s ease-in-out infinite",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 } satisfies Config
 
 export default config
