@@ -100,8 +100,8 @@ export default function HomePage() {
                     <Image
                     src="https://picsum.photos/600/400"
                     data-ai-hint="abstract learning"
-                    width="600"
-                    height="400"
+                    width={600}
+                    height={400}
                     alt="Hero"
                     className="mx-auto aspect-video overflow-hidden rounded-xl object-cover"
                     />
@@ -184,7 +184,7 @@ export default function HomePage() {
               </motion.div>
             </div>
           </div>
-        </motion.section>
+        </section>
 
         <motion.section
           ref={ctaRef}
@@ -211,7 +211,7 @@ export default function HomePage() {
               </Button>
             </div>
           </div>
-        </motion.section>
+        </section>
       </main>
 
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t border-white/10">
