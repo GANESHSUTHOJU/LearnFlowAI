@@ -27,6 +27,10 @@ export default function HomePage() {
 
   const ctaRef = useRef(null);
   const ctaInView = useInView(ctaRef, { once: true, margin: "-100px" });
+  
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col min-h-[100vh] bg-[#222222] text-white font-sans">
@@ -129,8 +133,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {isMounted && (
-          <>
+        
             <motion.section
               ref={featuresRef}
               initial="hidden"
@@ -220,8 +223,7 @@ export default function HomePage() {
                 </div>
               </div>
             </motion.section>
-          </>
-        )}
+         
       </main>
 
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t border-white/10">
