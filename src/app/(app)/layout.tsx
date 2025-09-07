@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Sidebar, SidebarItemProps } from "@/components/ui/app-sidebar";
-import { LayoutDashboard, Book, BrainCircuit, Bot, FolderKanban } from "lucide-react";
+import { LayoutDashboard, Book, BrainCircuit, Bot, FolderKanban, FileQuestion } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { useProgressStore } from "@/store/progress-store";
 
@@ -15,6 +15,7 @@ const sidebarItems: SidebarItemProps[] = [
   { id: "roadmap", label: "Roadmap Generator", icon: BrainCircuit, href: "/roadmap" },
   { id: "tutor", label: "AI Tutor", icon: Bot, href: "/tutor" },
   { id: "projects", label: "Projects", icon: FolderKanban, href: "/projects" },
+  { id: "quiz", label: "Quiz", icon: FileQuestion, href: "/quiz" },
 ];
 
 
