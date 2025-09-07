@@ -24,14 +24,7 @@ interface Topic {
     completed: boolean;
 }
 
-const SkillView = ({ skillId }: { skillId: string }) => {
-  const router = useRouter();
-  const { user } = useAuth();
-  const { skills, loading, addSkill } = useProgressStore();
-  const [isAdding, setIsAdding] = useState(false);
-  const skill = skills.find((s) => s.id === skillId);
-  
-  const generateTopics = (skillName: string, total: number, completed: number): Topic[] => {
+const generateTopics = (skillId: string, skillName: string, total: number, completed: number): Topic[] => {
     const topicTemplates = [
         `Introduction to ${skillName}`,
         `Core Concepts of ${skillName}`,
@@ -51,7 +44,15 @@ const SkillView = ({ skillId }: { skillId: string }) => {
             completed: i < completed,
         }
     });
-  }
+}
+
+const SkillView = ({ skillId }: { skillId: string }) => {
+  const router = useRouter();
+  const { user } = useAuth();
+  const { skills, loading, addSkill } = useProgressStore();
+  const [isAdding, setIsAdding] = useState(false);
+  const skill = skills.find((s) => s.id === skillId);
+  
 
   const handleStartSkill = async () => {
     if (user) {
@@ -111,7 +112,7 @@ const SkillView = ({ skillId }: { skillId: string }) => {
     );
   }
   
-  const topics = generateTopics(skill.name, skill.totalTopics, skill.completedTopics);
+  const topics = generateTopics(skill.id, skill.name, skill.totalTopics, skill.completedTopics);
   const progress = skill.totalTopics > 0 ? (skill.completedTopics / skill.totalTopics) * 100 : 0;
 
   return (
@@ -149,7 +150,7 @@ const SkillView = ({ skillId }: { skillId: string }) => {
           <CardDescription>
             Complete all topics to master this skill.
           </CardDescription>
-        </Header>
+        </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {topics.map((topic) => (
