@@ -40,6 +40,7 @@ const generateRoadmapFlow = ai.defineFlow(
     The roadmap should be encouraging, easy to follow, and provide high-quality, free online resources.
     The structure should be logical, starting from fundamental concepts and progressing to more advanced topics.
     Each step must contain a description, key concepts to focus on, and a few links to excellent free resources.
+    IMPORTANT: For each resource, the 'url' field must be a single, valid URL. Do not include multiple URLs in one field.
 
     The output must be a valid JSON object that adheres to the provided schema. Ensure all descriptions are in markdown format for rich text rendering.
 
