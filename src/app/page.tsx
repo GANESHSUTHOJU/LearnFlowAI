@@ -32,13 +32,13 @@ export default function HomePage() {
         </div>
         <nav className="flex items-center gap-4">
           <Link href="/login" passHref>
-            <Button variant="ghost" className="text-white hover:bg-white/10">
-              Login
+            <Button asChild variant="ghost" className="text-white hover:bg-white/10">
+              <a>Login</a>
             </Button>
           </Link>
           <Link href="/signup" passHref>
-            <Button className="bg-indigo-500 text-white hover:bg-indigo-600 rounded-full">
-             Sign Up
+            <Button asChild className="bg-indigo-500 text-white hover:bg-indigo-600 rounded-full">
+             <a>Sign Up</a>
             </Button>
           </Link>
         </nav>
