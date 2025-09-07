@@ -82,12 +82,12 @@ export default function HomePage() {
                       placeholder="What do you want to learn today?"
                       className="max-w-lg flex-1 bg-white/10 border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 h-12 rounded-full px-6"
                     />
-                    <Link href="/roadmap" passHref>
-                      <Button type="submit" className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-full h-12 px-8">
+                    <Button asChild type="submit" className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-full h-12 px-8">
+                      <Link href="/roadmap">
                         Start Learning
                         <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </Link>
+                      </Link>
+                    </Button>
                   </div>
                 </motion.div>
               </motion.div>
@@ -184,7 +184,7 @@ export default function HomePage() {
               </motion.div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         <motion.section
           ref={ctaRef}
@@ -203,12 +203,12 @@ export default function HomePage() {
               </p>
             </div>
             <div className="mx-auto w-full max-w-sm space-y-2">
-               <Link href="/signup" passHref>
-                <Button size="lg" className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-full h-12 px-8 text-base w-full">
+               <Button asChild size="lg" className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-full h-12 px-8 text-base w-full">
+                <Link href="/signup">
                     Sign Up for Free
                     <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
           </div>
         </section>
