@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +16,11 @@ const FADE_UP_ANIMATION_VARIANTS = {
 };
 
 export default function HomePage() {
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const featuresRef = useRef(null);
   const featuresInView = useInView(featuresRef, { once: true, margin: "-100px" });
 
@@ -123,95 +128,99 @@ export default function HomePage() {
           </div>
         </section>
 
-        <motion.section
-          ref={featuresRef}
-          initial="hidden"
-          animate={featuresInView ? "show" : "hidden"}
-          variants={{
-            hidden: {},
-            show: { transition: { staggerChildren: 0.15 } },
-          }}
-          className="w-full py-20 md:py-28 lg:py-32"
-        >
-          <div className="container space-y-16 px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <motion.div
-                variants={FADE_UP_ANIMATION_VARIANTS}
-                className="inline-block rounded-full bg-indigo-500/20 text-indigo-300 text-sm px-4 py-1 font-medium"
-              >
-                Core Features
-              </motion.div>
-              <motion.h2
-                variants={FADE_UP_ANIMATION_VARIANTS}
-                className="text-3xl font-bold tracking-tighter sm:text-5xl font-display"
-              >
-                An Entirely New Way to Learn
-              </motion.h2>
-              <motion.p
-                variants={FADE_UP_ANIMATION_VARIANTS}
-                className="max-w-[900px] text-gray-300 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
-              >
-                Our AI-driven platform adapts to your unique learning style, ensuring you achieve your goals faster and more effectively.
-              </motion.p>
-            </div>
-            <div className="mx-auto grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-3">
-              <motion.div variants={FADE_UP_ANIMATION_VARIANTS}>
-                <GlassCard className="grid gap-4 h-full">
-                  <BrainCircuit className="h-8 w-8 text-indigo-400" />
-                  <h3 className="text-xl font-bold font-display">Roadmap Generator</h3>
-                  <p className="text-sm text-gray-300">
-                    Generates personalized learning roadmaps using A* search, Beam Search, and Constraint Satisfaction.
-                  </p>
-                </GlassCard>
-              </motion.div>
-              <motion.div variants={FADE_UP_ANIMATION_VARIANTS}>
-                <GlassCard className="grid gap-4 h-full">
-                  <CheckCircle className="h-8 w-8 text-teal-400" />
-                  <h3 className="text-xl font-bold font-display">Adaptive Quiz Coach</h3>
-                  <p className="text-sm text-gray-300">
-                    An RL-powered tool that uses quiz history and skill graph data to suggest the most relevant questions.
-                  </p>
-                </GlassCard>
-              </motion.div>
-              <motion.div variants={FADE_UP_ANIMATION_VARIANTS}>
-                <GlassCard className="grid gap-4 h-full">
-                  <Zap className="h-8 w-8 text-yellow-400" />
-                  <h3 className="text-xl font-bold font-display">Performance Predictor</h3>
-                  <p className="text-sm text-gray-300">
-                    Predicts learner performance, difficulty level, and dropout risk using Bayesian Networks.
-                  </p>
-                </GlassCard>
-              </motion.div>
-            </div>
-          </div>
-        </motion.section>
+        {isMounted && (
+          <>
+            <motion.section
+              ref={featuresRef}
+              initial="hidden"
+              animate={featuresInView ? "show" : "hidden"}
+              variants={{
+                hidden: {},
+                show: { transition: { staggerChildren: 0.15 } },
+              }}
+              className="w-full py-20 md:py-28 lg:py-32"
+            >
+              <div className="container space-y-16 px-4 md:px-6">
+                <div className="flex flex-col items-center justify-center space-y-4 text-center">
+                  <motion.div
+                    variants={FADE_UP_ANIMATION_VARIANTS}
+                    className="inline-block rounded-full bg-indigo-500/20 text-indigo-300 text-sm px-4 py-1 font-medium"
+                  >
+                    Core Features
+                  </motion.div>
+                  <motion.h2
+                    variants={FADE_UP_ANIMATION_VARIANTS}
+                    className="text-3xl font-bold tracking-tighter sm:text-5xl font-display"
+                  >
+                    An Entirely New Way to Learn
+                  </motion.h2>
+                  <motion.p
+                    variants={FADE_UP_ANIMATION_VARIANTS}
+                    className="max-w-[900px] text-gray-300 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+                  >
+                    Our AI-driven platform adapts to your unique learning style, ensuring you achieve your goals faster and more effectively.
+                  </motion.p>
+                </div>
+                <div className="mx-auto grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-3">
+                  <motion.div variants={FADE_UP_ANIMATION_VARIANTS}>
+                    <GlassCard className="grid gap-4 h-full">
+                      <BrainCircuit className="h-8 w-8 text-indigo-400" />
+                      <h3 className="text-xl font-bold font-display">Roadmap Generator</h3>
+                      <p className="text-sm text-gray-300">
+                        Generates personalized learning roadmaps using A* search, Beam Search, and Constraint Satisfaction.
+                      </p>
+                    </GlassCard>
+                  </motion.div>
+                  <motion.div variants={FADE_UP_ANIMATION_VARIANTS}>
+                    <GlassCard className="grid gap-4 h-full">
+                      <CheckCircle className="h-8 w-8 text-teal-400" />
+                      <h3 className="text-xl font-bold font-display">Adaptive Quiz Coach</h3>
+                      <p className="text-sm text-gray-300">
+                        An RL-powered tool that uses quiz history and skill graph data to suggest the most relevant questions.
+                      </p>
+                    </GlassCard>
+                  </motion.div>
+                  <motion.div variants={FADE_UP_ANIMATION_VARIANTS}>
+                    <GlassCard className="grid gap-4 h-full">
+                      <Zap className="h-8 w-8 text-yellow-400" />
+                      <h3 className="text-xl font-bold font-display">Performance Predictor</h3>
+                      <p className="text-sm text-gray-300">
+                        Predicts learner performance, difficulty level, and dropout risk using Bayesian Networks.
+                      </p>
+                    </GlassCard>
+                  </motion.div>
+                </div>
+              </div>
+            </motion.section>
 
-        <motion.section
-          ref={ctaRef}
-          initial="hidden"
-          animate={ctaInView ? "show" : "hidden"}
-          variants={FADE_UP_ANIMATION_VARIANTS}
-          className="w-full py-20 md:py-28 lg:py-32"
-        >
-          <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
-            <div className="space-y-4">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-5xl font-display">
-                Ready to Unlock Your Potential?
-              </h2>
-              <p className="mx-auto max-w-[600px] text-gray-300 md:text-xl/relaxed">
-                Join LearnFlowAI today and start your personalized learning journey. It's free to get started.
-              </p>
-            </div>
-            <div className="mx-auto w-full max-w-sm space-y-2">
-               <Button asChild size="lg" className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-full h-12 px-8 text-base w-full">
-                <Link href="/signup">
-                    Sign Up for Free
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </motion.section>
+            <motion.section
+              ref={ctaRef}
+              initial="hidden"
+              animate={ctaInView ? "show" : "hidden"}
+              variants={FADE_UP_ANIMATION_VARIANTS}
+              className="w-full py-20 md:py-28 lg:py-32"
+            >
+              <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
+                <div className="space-y-4">
+                  <h2 className="text-3xl font-bold tracking-tighter md:text-5xl font-display">
+                    Ready to Unlock Your Potential?
+                  </h2>
+                  <p className="mx-auto max-w-[600px] text-gray-300 md:text-xl/relaxed">
+                    Join LearnFlowAI today and start your personalized learning journey. It's free to get started.
+                  </p>
+                </div>
+                <div className="mx-auto w-full max-w-sm space-y-2">
+                   <Button asChild size="lg" className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-full h-12 px-8 text-base w-full">
+                    <Link href="/signup">
+                        Sign Up for Free
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            </motion.section>
+          </>
+        )}
       </main>
 
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t border-white/10">
