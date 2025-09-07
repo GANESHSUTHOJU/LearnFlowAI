@@ -31,6 +31,7 @@ To get a local copy up and running, follow these simple steps.
 
 - Node.js (v18 or later)
 - npm or yarn
+- A Google AI API Key with the Gemini API enabled.
 
 ### Installation
 
@@ -46,11 +47,10 @@ To get a local copy up and running, follow these simple steps.
     ```
 
 3.  **Set up environment variables:**
-    Copy the example environment file `.env.example` to a new file named `.env`.
-    ```sh
-    cp .env.example .env
+    Create a file named `.env` in the root of the project and add your Google AI API key:
     ```
-    Now, open the `.env` file and add your Firebase and Genkit/Gemini API keys. You can get the Firebase credentials from your Firebase project settings under **Project settings > General > Your apps > SDK setup and configuration**.
+    GEMINI_API_KEY=your_google_ai_api_key_here
+    ```
 
 4.  **Run the development server:**
     ```sh
