@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowRight, BrainCircuit, Zap, CheckCircle } from "lucide-react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { Logo } from "@/components/logo";
 import { GlassCard } from "@/components/ui/glass-card";
@@ -23,11 +23,6 @@ export default function HomePage() {
         setIsClient(true);
     }, []);
 
-    const featuresRef = useRef(null);
-    const featuresInView = useInView(featuresRef, { once: true, margin: "-100px" });
-  
-    const ctaRef = useRef(null);
-    const ctaInView = useInView(ctaRef, { once: true, margin: "-100px" });
 
     if (!isClient) {
         return null;
@@ -136,9 +131,9 @@ export default function HomePage() {
 
         
             <motion.section
-              ref={featuresRef}
               initial="hidden"
-              animate={featuresInView ? "show" : "hidden"}
+              whileInView="show"
+              viewport={{ once: true, amount: 0.2 }}
               variants={{
                 hidden: {},
                 show: { transition: { staggerChildren: 0.15 } },
@@ -199,9 +194,9 @@ export default function HomePage() {
             </motion.section>
 
             <motion.section
-              ref={ctaRef}
               initial="hidden"
-              animate={ctaInView ? "show" : "hidden"}
+              whileInView="show"
+              viewport={{ once: true, amount: 0.5 }}
               variants={FADE_UP_ANIMATION_VARIANTS}
               className="w-full py-20 md:py-28 lg:py-32"
             >
@@ -243,5 +238,3 @@ export default function HomePage() {
     </div>
   );
 }
-
-    
