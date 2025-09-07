@@ -77,7 +77,7 @@ export default function HomePage() {
                   variants={FADE_UP_ANIMATION_VARIANTS}
                   className="w-full max-w-md space-y-2"
                 >
-                  <form className="flex space-x-2">
+                  <div className="flex space-x-2">
                     <Input
                       type="text"
                       placeholder="What do you want to learn today?"
@@ -89,7 +89,7 @@ export default function HomePage() {
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>
-                  </form>
+                  </div>
                 </motion.div>
               </motion.div>
               <motion.div
